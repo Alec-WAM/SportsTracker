@@ -1,0 +1,79 @@
+.game-card-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    flex-basis: 0;
+    padding: 5px 2rem;
+
+    border: 1px solid black;
+    // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    // box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    border-radius: 5px;
+    margin: 0.5rem 1rem;
+    background-color: white;
+
+    .game-card-main {
+        display: flex;
+        justify-content: space-between;
+
+        .game-team-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .team-logo {
+                width: 100px;
+            }
+
+            .team-name {
+                font-size: 15px;
+                font-weight: bold;
+            }
+
+            .stats {
+                font-size: 12px;
+                font-weight: bold;
+            }
+        }
+
+        .game-time-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+
+            .game-series {
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .game-date {
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .game-time {
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .tv-providers {
+                display: flex;
+                gap: 0.5rem;
+
+                .tv-provider {
+                    cursor: pointer;
+                    z-index: 5;
+                    width: 30px;
+                }
+            }
+
+            .view-game-link {
+                font-size: 16px;
+                text-decoration: none;
+            }
+        }
+    }
+}

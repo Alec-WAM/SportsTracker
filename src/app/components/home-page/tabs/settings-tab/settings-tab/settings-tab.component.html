@@ -1,0 +1,33 @@
+<div class="tab-container">    
+    <div class="settings-container">
+        <p-accordion [multiple]="true">
+            <p-accordionTab header="TV Broadcasters" [selected]="true">                
+                <div class="settings-tv-providers-container">
+                    <span>Empty URLs will open to NBA.com game instance</span>
+                    @for (broadcaster of nbaBroadcasters; track broadcaster) {
+                        <div class="tv-provider">
+                            <img 
+                                src="/assets/images/logos/broadcasters/{{broadcaster.images[0].image_name}}.svg" 
+                                class="broadcaster-logo"
+                                [ngStyle]="{
+                                    'width': broadcaster.images[0].width
+                                }"
+                            />
+                            <span *ngIf="broadcaster.id !== NBA_LEAGUE_PASS_ID" class="broadcaster-name">{{broadcaster.name}}</span>
+                            <input pInputText type="text" class="p-inputtext-sm broadcaster-url" placeholder="URL" [(ngModel)]="this.nbaBroadcasterURLs[broadcaster.id]" (ngModelChange)="this.updateNBAURL(broadcaster.id, $event)"/>
+                            <p-button class="broadcaster-reset-url" icon="pi pi-replay" [rounded]="true" [text]="true" (onClick)="this.resetNBADefault(broadcaster.id)"></p-button>
+                        </div>
+                    }
+                    @empty {
+                        <div>
+                            No items found
+                        </div>
+                    }
+                </div>
+            </p-accordionTab>
+        </p-accordion>
+    </div>
+    <div class="reset-button-container">
+        <p-button label="Reset to Default" icon="pi pi-trash" [text]="true" [raised]="true" severity="danger" (onClick)="this.settingsService.resetToDefault()"></p-button>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="tab-container">
+    <div 
+        class="schedule-filters"
+        [ngStyle]="{
+            '--primary-color': (this._team?.primary_color ?? 'white')
+        }"
+    >
+        <p-checkbox [(ngModel)]="this.filterFuture" [binary]="true" label="Upcoming" (onChange)="this.changeFutureFilter($event)"></p-checkbox>
+    </div>
+    <div *ngIf="this._team?.nba_id" class="schedule-list">
+        @for (game of this.games; track game) {
+            <!-- <div class="game-item">{{ game }}</div> -->
+            <app-nba-game-card [game]="game"></app-nba-game-card>
+        }
+        @empty {
+            <span class="empty-list">No games found</span>
+        }
+    </div>
+</div>
