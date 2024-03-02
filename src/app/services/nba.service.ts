@@ -12,6 +12,7 @@ import { NotificationService } from './notification.service';
   providedIn: 'root'
 })
 export class NBAService {
+  readonly NBA_SCHEDULE: string = "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json";
   readonly ESPN_STANDINGS: string = "https://site.web.api.espn.com/apis/v2/sports/basketball/nba/standings?season=2024"
 
   schedule: LeagueSchedule | undefined;
@@ -36,6 +37,12 @@ export class NBAService {
     //   }
     // })
 
+    //https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022300844.json
+    this.http.get("http://localhost:4200/static/json/liveData/boxscore/boxscore_0022300844.json").subscribe({
+        next: (value: any) => {
+          console.log(value);
+        }
+      })
     // this.http.get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams").subscribe({
     //   next: (value: any) => {
     //     console.log(value)
@@ -183,13 +190,20 @@ export class NBAService {
     }
     const actions: NotificationAction[] = [];
     actions.push({
-      action: 'https://google.com',
+      action: 'game',
       title: 'View Game'
     })
+    const data = {
+      "onActionClick": {
+        "default": {"operation": "openWindow"},
+        "game": {"operation": "navigateLastFocusedOrOpen", "url": "https://google.com/"},
+      }
+    }
     this.notificationService.showNotification("Test Notification", {
       body: "Game Starting",
       icon: icon,
-      actions: actions
+      actions: actions,
+      data: data
     })
   }
 
@@ -204,6 +218,13 @@ export class NBAService {
 
   getGame(gameId: string): NBAGame|undefined {
     return this.all_games?.find((game) => game.gameId === gameId);
+  }
+
+  getTeamGames(team: NBATeam): NBAGame[] {
+    const game_ids = this.team_games?.get(team.nba_id);
+    return game_ids ? game_ids.map((id) => {
+      return this.getGame(id) as NBAGame;
+    }) : []
   }
 
   getBroadcaster(broadcasterId: string): NBABroudcaster|undefined {

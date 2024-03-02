@@ -44,6 +44,12 @@
         <p-button label="Download" (onClick)="downloadSchedule()"></p-button>
         <p-button label="Notification" (onClick)="this.nbaService.sendTestNotification(this.selectedTeam)"></p-button>
     </div>
+    <!-- 0022300848-->
+    @if (nextGame$ | async; as nextGame) {
+        <app-nba-boxscore *ngIf="nextGame.gameId" [game]="nextGame"></app-nba-boxscore>
+    }
+    
+
     <div class="team-info"
         [ngStyle]="{
             'border': '2px solid ' + (this.selectedTeam?.primary_color ?? 'black')

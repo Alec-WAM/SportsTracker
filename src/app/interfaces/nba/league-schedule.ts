@@ -22,6 +22,20 @@ export interface NBAGame {
     tvBroadcasters?: NBABroudcaster[]
 }
 
+
+export const EMPTY_NBA_SCHEDULE_TEAM: NBAScheduleTeam = {
+    teamId: 0
+}
+
+export const EMPTY_NBA_GAME: NBAGame = {
+    gameId: "",
+    gameDateTimeUTC: "",
+    awayTeam: EMPTY_NBA_SCHEDULE_TEAM,
+    homeTeam: EMPTY_NBA_SCHEDULE_TEAM,
+    branchLink: "",
+    seriesText: ""
+}
+
 export interface NBAScheduleTeam {
     teamId: number;    
 }

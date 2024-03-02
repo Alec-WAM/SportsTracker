@@ -63,10 +63,7 @@ export class NbaTabScheduleComponent implements OnInit {
       return;
     }
 
-    const game_ids = this.nbaService.team_games?.get(team.nba_id);
-    this.games = game_ids?.map((id) => {
-      return this.nbaService.getGame(id) as NBAGame;
-    }).filter((game) => this.filterGame(game));
+    this.games = this.nbaService.getTeamGames(team).filter((game) => this.filterGame(game));
     console.log(this.games)
   }
 

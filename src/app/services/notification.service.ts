@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { SwPush } from '@angular/service-worker';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
+
+  swPush = inject(SwPush);
 
   constructor() { }
 
@@ -30,11 +33,23 @@ export class NotificationService {
     }
 
     if (Notification.permission === 'granted') {
-      new Notification(title, options);
+      // new Notification(title, options);
+      navigator.serviceWorker.getRegistration().then((reg) => {
+        console.log(reg)
+        if (reg != null) {
+          reg.showNotification(title, options);
+        }
+      });
     } 
     else if (Notification.permission !== "denied") {
       this.requestPermission(() => {
-        new Notification(title, options);
+        // new Notification(title, options);
+        const promise = navigator.serviceWorker.getRegistration();
+        promise.then((reg) => {
+          if (reg != null) {
+            reg.showNotification(title, options);
+          }
+        });
       });
     }
     else {

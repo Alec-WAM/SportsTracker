@@ -52,7 +52,7 @@ export class SettingsService {
       broadcasterURLs: {
         nbaURLs: defaultURLs
       },
-      favoriteTeams: {
+      favoriteTeam: {
         nbaTeamId: undefined
       }
     } as Settings;

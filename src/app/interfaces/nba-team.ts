@@ -9,6 +9,17 @@ export interface NBATeam {
     secondary_color: string;
 }
 
+export const EMPTY_NBA_TEAM: NBATeam = {
+    nba_id: "",
+    full_name: "",
+    short_name: "",
+    conference: "",
+    image: "",
+    espn_id: "",
+    primary_color: "",
+    secondary_color: ""
+}
+
 export const TEAMS: NBATeam[] = [
     {
         nba_id: "1610612737",
@@ -275,7 +286,7 @@ export const TEAMS: NBATeam[] = [
         full_name: "San Antonio Spurs",
         short_name: "Spurs",
         conference: "West",
-        image: "kings",
+        image: "spurs",
         espn_id: "24",
         primary_color: "#000000",
         secondary_color: "#c4ced4"
