@@ -14,11 +14,31 @@
         margin-top: 2rem;
         margin-bottom: 2rem;
 
-        .settings-tv-providers-container {
+        .settings-accordion-container {
             display: flex;
             flex-direction: column;
             gap: 5px;
             padding: 1rem;
+
+
+            .nba-schedule-container{
+                display: flex;
+                justify-content: space-between;
+
+                .nba-schedule-header-text {
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+
+                .nba-schedule-text {
+                    font-size: 14px;
+                }
+
+                .nba-schedule-button-container {
+                    display: flex;
+                    gap: 5px;
+                }
+            }
 
             .tv-provider {
                 display: flex;

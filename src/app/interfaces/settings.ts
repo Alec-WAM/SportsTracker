@@ -2,8 +2,11 @@ export interface Settings {
     broadcasterURLs: {
         nbaURLs: BroadcasterURLSetting[]
     }
-    favoriteTeam: {
+    favoriteTeams: {
         nbaTeamId: string|undefined;
+    }
+    followingTeams: {
+        nbaTeams: string[]
     }
 }
 

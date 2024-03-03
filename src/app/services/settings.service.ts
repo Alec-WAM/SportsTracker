@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BroadcasterURLSetting, Settings } from '../interfaces/settings';
 import { BROADCASTERS } from '../interfaces/nba/league-schedule';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 export const SETTINGS_LOCAL_STORAGE: string = "SportsApp-Settings";
 
@@ -10,6 +11,9 @@ export const SETTINGS_LOCAL_STORAGE: string = "SportsApp-Settings";
 export class SettingsService {
   
   settings: Settings|undefined;
+
+  followedNBATeams = signal<string[]>([]);
+  followedNBATeams$ = toObservable(this.followedNBATeams);
 
   constructor() {
     this.loadSettings();
@@ -24,7 +28,14 @@ export class SettingsService {
     else {
       this.resetToDefault();
     }
+    const storedFollowedNBATeams = this.settings?.followingTeams?.nbaTeams ?? [];
+    this.followedNBATeams.set(storedFollowedNBATeams);
     console.log(this.settings)    
+  }
+
+  notifyNBAFavoritesChange(): void {
+    const storedFollowedNBATeams = this.settings?.followingTeams?.nbaTeams ?? [];
+    this.followedNBATeams.set(storedFollowedNBATeams);
   }
 
   saveSettings(): void {
@@ -52,8 +63,11 @@ export class SettingsService {
       broadcasterURLs: {
         nbaURLs: defaultURLs
       },
-      favoriteTeam: {
+      favoriteTeams: {
         nbaTeamId: undefined
+      },
+      followingTeams: {
+        nbaTeams: []
       }
     } as Settings;
     this.saveSettings();

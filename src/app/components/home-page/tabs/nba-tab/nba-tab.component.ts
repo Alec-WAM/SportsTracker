@@ -13,6 +13,7 @@ import { NbaBoxscoreComponent } from './nba-boxscore/nba-boxscore/nba-boxscore.c
 import { EMPTY_NBA_GAME, NBAGame } from '../../../../interfaces/nba/league-schedule';
 import { toObservable } from '@angular/core/rxjs-interop';
 import moment from 'moment';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @Component({
@@ -21,6 +22,7 @@ import moment from 'moment';
   imports: [
     CommonModule,
     FormsModule,
+    TooltipModule,
 
     ButtonModule,
     DropdownModule,
@@ -59,8 +61,8 @@ export class NbaTabComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeTab = this.tabs[0];
-    if(this.nbaService.settingsService.settings?.favoriteTeam?.nbaTeamId){
-      this.selectedTeam = this.nbaService.getTeam(this.nbaService.settingsService.settings?.favoriteTeam?.nbaTeamId);
+    if(this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId){
+      this.selectedTeam = this.nbaService.getTeam(this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId);
     }
   }
 
@@ -83,66 +85,55 @@ export class NbaTabComponent implements OnInit {
 
   //TODO Check this every day if the tab is still open
   loadNextGame(team: NBATeam|undefined): void {
-    console.log("Loading next game")
     if(!team){
       this.nextGame.set(EMPTY_NBA_GAME);
       return;
     }
-    const allGames = this.nbaService.getTeamGames(team);
-    if(allGames.length <= 0){
-      this.nextGame.set(EMPTY_NBA_GAME);
-      return;
-    }
-    const now = moment();
-    console.log(now.hour())
-    //TODO Figure out how to still show games that are going on that are going past midnight
-    const futureGames = allGames.filter((game) => this.filterGame(game, now))
-    if(futureGames.length <= 0){
-      this.nextGame.set(EMPTY_NBA_GAME);
-      return;
-    }
-    const games = futureGames.sort((a, b) => {
-      const dateA = moment(a.gameDateTimeUTC, moment.ISO_8601);
-      const dateB = moment(b.gameDateTimeUTC, moment.ISO_8601);
-      return dateA.diff(dateB);
-    });
-    // console.log(games);
-    console.log(games[0])
-    this.nextGame.set(games[0]);
-  }
-
-  filterGame(game: NBAGame, now: moment.Moment): boolean {
-    let valid = false;
-    const gameMoment = moment(game.gameDateTimeUTC, moment.ISO_8601);
-    //Check for games that will cross over days
-    if(gameMoment.hour() >= 22 && now.hour() < 3){
-      const yesterday = now.clone().subtract(1, 'days');
-      if(yesterday.isSame(gameMoment, "D")){
-        valid = true;
-      }
-    }
-    if(gameMoment.isSameOrAfter(now, 'D')){
-      valid = true;
-    }
-
-    return valid;
+    const date = moment();
+    const nextGame = this.nbaService.getNextGame(date, team);
+    this.nextGame.set(nextGame);
   }
 
   toggleFavoriteTeam(): void {
     if(this.selectedTeam){
       if(this.nbaService.settingsService.settings){
-        const currentFavorite = this.nbaService.settingsService.settings?.favoriteTeam?.nbaTeamId;
+        const currentFavorite = this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId;
         console.log(currentFavorite)
         if(currentFavorite && currentFavorite !== this.selectedTeam.nba_id){
-          this.nbaService.settingsService.settings.favoriteTeam.nbaTeamId = this.selectedTeam.nba_id;
+          this.nbaService.settingsService.settings.favoriteTeams.nbaTeamId = this.selectedTeam.nba_id;
         }
         else if(currentFavorite){
-          this.nbaService.settingsService.settings.favoriteTeam.nbaTeamId = undefined;
+          this.nbaService.settingsService.settings.favoriteTeams.nbaTeamId = undefined;
         }
         else {
-          this.nbaService.settingsService.settings.favoriteTeam.nbaTeamId = this.selectedTeam.nba_id;
+          this.nbaService.settingsService.settings.favoriteTeams.nbaTeamId = this.selectedTeam.nba_id;
         }
-        console.log(this.nbaService.settingsService.settings.favoriteTeam.nbaTeamId)
+        console.log(this.nbaService.settingsService.settings.favoriteTeams.nbaTeamId)
+        this.nbaService.settingsService.saveSettings();
+      }
+    }
+  }
+
+  toggleFollowTeam(): void {
+    if(this.selectedTeam){
+      if(this.nbaService.settingsService.settings){
+        let followList = this.nbaService.settingsService.settings.followingTeams?.nbaTeams ?? [];
+
+        if(followList.includes(this.selectedTeam.nba_id)){
+          followList = followList.filter((team) => team !== this.selectedTeam?.nba_id);
+        }
+        else {
+          followList.push(this.selectedTeam.nba_id);
+        }
+        if(!this.nbaService.settingsService.settings.followingTeams){
+          this.nbaService.settingsService.settings.followingTeams = {
+            nbaTeams: followList
+          }
+        }
+        else {
+          this.nbaService.settingsService.settings.followingTeams.nbaTeams = followList;
+        }
+        this.nbaService.settingsService.notifyNBAFavoritesChange();
         this.nbaService.settingsService.saveSettings();
       }
     }

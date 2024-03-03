@@ -1,10 +1,17 @@
-import { ApplicationConfig, isDevMode } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { provideServiceWorker } from '@angular/service-worker';
+import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+
+const dbConfig: DBConfig  = {
+  name: 'SportsApp',
+  version: 1,
+  objectStoresMeta: []
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideServiceWorker('ngsw-worker.js', {
         enabled: !isDevMode(),
         registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
   ]
 };

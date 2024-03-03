@@ -72,7 +72,7 @@ export class NbaBoxscoreComponent implements OnInit {
     // }
   }
 
-  buildFutureBoxscore(nbaGame: NBAGame, gameTime: Moment): NBA_Boxscore {
+  buildFutureBoxscore(nbaGame: NBAGame, now: Moment, gameTime: Moment): NBA_Boxscore {
     const copyBoxScore: NBA_Boxscore = JSON.parse(JSON.stringify(EMPTY_NBA_BOXSCORE));
     const awayTeam: NBATeam = this.nbaService.getTeam(nbaGame.awayTeam.teamId) ?? EMPTY_NBA_TEAM;
     const homeTeam: NBATeam = this.nbaService.getTeam(nbaGame.homeTeam.teamId) ?? EMPTY_NBA_TEAM;
@@ -85,7 +85,17 @@ export class NbaBoxscoreComponent implements OnInit {
     copyBoxScore.homeTeamStandings = homeTeamStandings;
 
     copyBoxScore.gameStatus = this.STATUS_LATER;
-    copyBoxScore.gameStatusText = gameTime.format("h:mm a")
+    let timeText = "";
+    if(!gameTime.isSame(now, 'W') || gameTime.isBefore(now, 'D')){
+      timeText = gameTime.format("dddd, MMMM Do h:mm a");
+    }
+    else if(!gameTime.isSame(now, 'D')){
+      timeText = gameTime.format("dddd h:mm a");
+    }
+    else {
+      timeText = gameTime.format("h:mm a");
+    }
+    copyBoxScore.gameStatusText = timeText;
     copyBoxScore.nbaLink = nbaGame.branchLink;
     copyBoxScore.tvBroadcasters = nbaGame.tvBroadcasters;
     
@@ -108,9 +118,12 @@ export class NbaBoxscoreComponent implements OnInit {
     this.liveGameLastUpdate = `Last Updated: ${now.format("h:mm a")}`;
 
     if(now.isBefore(gameTime)){
-      const futureBoxscore: NBA_Boxscore = this.buildFutureBoxscore(nbaGame, gameTime);
-      this.boxscore.set(futureBoxscore);
-      this.startCountdown();
+      const futureBoxscore: NBA_Boxscore = this.buildFutureBoxscore(nbaGame, now, gameTime);
+      this.boxscore.set(futureBoxscore);      
+      this.time_til_start = undefined;
+      if(gameTime.isSame(now, 'D')){
+        this.startCountdown();
+      }
       return;
     }
 
@@ -187,7 +200,6 @@ export class NbaBoxscoreComponent implements OnInit {
       this.countdownSubscription?.unsubscribe();
       return;
     }
-    console.log("Updating Countdown");
     const now = moment();
     const duration = moment.duration(this.gameStartTime.diff(now));
     

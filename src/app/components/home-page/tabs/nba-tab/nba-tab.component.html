@@ -17,6 +17,14 @@
                     [ngStyle]="{
                         'color': (this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId === this.selectedTeam.nba_id ? '#fcba03' : 'grey')
                     }"
+                    pTooltip="Favorite Team"
+                ></i>
+            </p-button>
+            <p-button [rounded]="true" [text]="true" class="follow-button" (onClick)="this.toggleFollowTeam()">
+                <i 
+                    [class]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(this.selectedTeam.nba_id) ? 'pi pi-eye' : 'pi pi-eye-slash'" 
+                    style="font-size: 1rem; color: grey;"
+                    pTooltip="Following Team"
                 ></i>
             </p-button>
             <p-button [rounded]="true" [text]="true" class="notification-button" (onClick)="this.toggleNotifications()">

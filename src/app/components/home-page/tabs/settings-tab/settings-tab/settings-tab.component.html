@@ -1,8 +1,24 @@
 <div class="tab-container">    
     <div class="settings-container">
         <p-accordion [multiple]="true">
-            <p-accordionTab header="TV Broadcasters" [selected]="true">                
-                <div class="settings-tv-providers-container">
+            <p-accordionTab header="NBA" [selected]="true">                
+                <div class="settings-accordion-container">
+                    @if(this.nbaScheduleDate$ | async; as nbaScheduleStr){
+                        <div class="nba-schedule-container">
+                            <div style="display: flex; flex-direction: column;">
+                                <span class="nba-schedule-header-text">Schedule</span>
+                                <span class="nba-schedule-text">{{nbaScheduleStr}}</span>
+                            </div>
+                            <div class="nba-schedule-button-container">
+                                <p-button label="Download" icon='pi pi-download'></p-button>
+                                <p-button label="Delete" icon='pi pi-trash' severity="danger"></p-button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </p-accordionTab>
+            <p-accordionTab header="TV Broadcasters">                
+                <div class="settings-accordion-container">
                     <span>Empty URLs will open to NBA.com game instance</span>
                     @for (broadcaster of nbaBroadcasters; track broadcaster) {
                         <div class="tv-provider">

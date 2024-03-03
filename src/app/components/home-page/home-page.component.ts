@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
 import { TabViewModule } from 'primeng/tabview';
 import { TabMenuModule } from 'primeng/tabmenu';
-import { HomeTabComponent } from './tabs/home-tab/home-tab/home-tab.component';
+import { HomeTabComponent } from './tabs/home-tab/home-tab.component';
 import { NbaTabComponent } from './tabs/nba-tab/nba-tab.component';
 import { SettingsTabComponent } from './tabs/settings-tab/settings-tab/settings-tab.component';
 

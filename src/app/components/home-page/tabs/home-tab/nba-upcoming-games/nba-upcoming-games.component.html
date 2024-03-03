@@ -1,0 +1,34 @@
+<div class="nba-upcoming-games-container">
+    <div class="upcoming-games-header">
+        <img 
+            src="/assets/images/logos/nba-full.svg" 
+            class="nba-logo"
+        />
+    </div>
+    <div class="upcoming-games-container">
+        @if(upcomingGames$ | async; as upcomingGames){
+            @for(game of upcomingGames; track game.gameId){
+                <app-nba-boxscore [game]="game"></app-nba-boxscore>
+            }
+            @empty {
+                @if(this.followingCount && this.followingCount.length > 0) {
+                    <div class="upcoming-game-empty">No Games Found</div>
+                }
+                @else {            
+                    <div class="upcoming-game-empty">You are not following any teams</div>
+                }
+            }
+        }
+        @else if(this.followingCount && this.followingCount.length > 0) {            
+            @for(gameNumber of this.followingCount; track gameNumber){
+                <p-skeleton height="6rem" width="calc(100% - 2rem)" class="upcoming-game-skeleton mb-2"></p-skeleton>
+            }
+            @empty {
+                <div class="upcoming-game-empty">No Games Found</div>
+            }
+        }
+        @else {            
+            <div class="upcoming-game-empty">You are not following any teams</div>
+        }
+    </div>
+</div>

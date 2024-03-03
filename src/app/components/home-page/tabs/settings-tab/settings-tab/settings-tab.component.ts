@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { AccordionModule } from 'primeng/accordion';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -7,6 +7,9 @@ import { BROADCASTERS, BROADCASTER_NBA_LEAGUE_PASS_ID, NBABroudcaster } from '..
 import { SettingsService } from '../../../../../services/settings.service';
 import { FormsModule } from '@angular/forms';
 import { BroadcasterURLSetting } from '../../../../../interfaces/settings';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { DBService, DB_JSON_KEY_NBA_SCHEDULE, DB_STORE_JSON } from '../../../../../services/db.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-settings-tab',
@@ -25,14 +28,39 @@ import { BroadcasterURLSetting } from '../../../../../interfaces/settings';
 export class SettingsTabComponent implements OnInit {
   NBA_LEAGUE_PASS_ID = BROADCASTER_NBA_LEAGUE_PASS_ID;
   
+  nbaScheduleDate = signal<string>("");
+  nbaScheduleDate$ = toObservable(this.nbaScheduleDate)
+
   nbaBroadcasters: NBABroudcaster[]|undefined;
   test: string|undefined;
 
   nbaBroadcasterURLs: any;
 
-  constructor(public settingsService: SettingsService){}
+  constructor(public settingsService: SettingsService, public dbService: DBService){}
 
   ngOnInit(): void {
+
+    this.dbService.getJSONData(DB_JSON_KEY_NBA_SCHEDULE).then((value) => {
+      if(!value){
+        this.nbaScheduleDate.set("Schedule is not downloaded");
+      }
+      else {
+        const date = (value['meta'] ? value['meta']['time']  : "") ?? "";
+
+        if(date){
+          const momentDate = moment.utc(date, moment.ISO_8601);
+          const formattedDate = momentDate.format("MM/DD/YYYY h:mm a")
+          this.nbaScheduleDate.set("Downloaded " + formattedDate);
+        }
+        else {          
+          this.nbaScheduleDate.set("Schedule is missing download date");
+        }
+      }
+    })
+    .catch((error) => {
+      this.nbaScheduleDate.set("Error loading Schedule");
+    });
+
     this.nbaBroadcasters = BROADCASTERS.filter((broadcaster) => !broadcaster.parent_ids);
     this.nbaBroadcasterURLs = {};
     for(const broadcaster of this.nbaBroadcasters){
