@@ -94,7 +94,7 @@ export class NBAService {
             return;
           }
 
-          console.log(response)
+          console.info("Downloaded NBA Schedule")
           this.dbService.saveJSONData(DB_JSON_KEY_NBA_SCHEDULE, response).then(() => {
             this.convertSchedule(response);
           })
@@ -107,13 +107,13 @@ export class NBAService {
   }
 
   convertSchedule(json: any): void {
-    console.debug("Loading NBA Schedule...");
+    console.debug("Loading NBA Schedule from JSON...");
     this.all_games = [];
     this.schedule = undefined;
     this.team_games = new Map<string, string[]>();
 
     this.schedule = json as LeagueSchedule;
-    console.log(this.schedule);    
+    // console.log(this.schedule);    
 
     if(this.schedule?.leagueSchedule?.gameDates){
       const gameDates: NBAGameDate[] = this.schedule?.leagueSchedule?.gameDates;
@@ -122,7 +122,7 @@ export class NBAService {
       });
       this.all_games = ([] as NBAGame[]).concat(...gamesArray);
       this.all_games = this.all_games.map((game) => this.attachBroadcasters(game));
-      console.log(this.all_games)
+      // console.log(this.all_games)
 
       for(const game of this.all_games){
         const awayTeam = String(game.awayTeam.teamId);
@@ -138,7 +138,8 @@ export class NBAService {
         this.team_games.set(homeTeam, homeTeamGames);
       }
 
-      console.log(this.team_games)
+      // console.log(this.team_games)
+      console.debug("Loaded Team Games");
     }
 
     this.schedule_loaded.next();
@@ -147,7 +148,7 @@ export class NBAService {
       next: (value: any) => {
         const json = value;
         const entries = json['children']
-        this.loadESPNStats(entries)
+        this.loadESPNStats(entries);
       }
     });
   }
@@ -214,6 +215,7 @@ export class NBAService {
       this.espn_stats_west.set(team, espn_stat);
     }
     this.standings_loaded.next();
+    console.debug("Loaded Team Stats");
   }
 
   findStat(field: string, stats: any[]): number|undefined {
@@ -273,6 +275,13 @@ export class NBAService {
     }
     const strTeam = String(teamId);
     return TEAMS.find((team) => team.nba_id === strTeam);
+  }
+  
+  getTeamFromSlug(slug: string|undefined): NBATeam|undefined {
+    if(!slug){
+      return undefined;
+    }
+    return TEAMS.find((team) => team.url_slug === slug);
   }
 
   getGame(gameId: string): NBAGame|undefined {

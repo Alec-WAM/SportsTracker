@@ -10,8 +10,13 @@ export const routes: Routes = [
         pathMatch: 'full' 
     },
     {
-        path: 'home', 
+        path: 'home',
+        pathMatch: 'full',
         component: HomeTabComponent
+    },
+    {
+        path: 'nba/:team', 
+        component: NbaTabComponent
     },
     {
         path: 'nba', 
@@ -19,6 +24,7 @@ export const routes: Routes = [
     },
     {
         path: 'settings', 
+        pathMatch: 'full',
         component: SettingsTabComponent
     }
 ];

@@ -1,44 +1,46 @@
 <div class="tab-container">
     <div class="tab-header"        
         [ngStyle]="{
-            'border-bottom': '4px solid ' + (this.selectedTeam?.primary_color ?? 'black')
+            'border-bottom': '4px solid ' + (this.selectedTeam().nba_id ? this.selectedTeam().primary_color : 'black')
         }"
     >
-        <div 
-            class="selected-team-header" 
-            *ngIf="this.selectedTeam"
-        >
-            <img src="/assets/images/logos/{{this.selectedTeam.image}}.svg" class="selected-team-logo"/>
-            <span class="selected-team-name">{{ this.selectedTeam.full_name }}</span>
-            <p-button [rounded]="true" [text]="true" class="favorite-button" (onClick)="this.toggleFavoriteTeam()">
-                <i 
-                    class="pi pi-star-fill" 
-                    style="font-size: 1rem;"
-                    [ngStyle]="{
-                        'color': (this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId === this.selectedTeam.nba_id ? '#fcba03' : 'grey')
-                    }"
-                    pTooltip="Favorite Team"
-                ></i>
-            </p-button>
-            <p-button [rounded]="true" [text]="true" class="follow-button" (onClick)="this.toggleFollowTeam()">
-                <i 
-                    [class]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(this.selectedTeam.nba_id) ? 'pi pi-eye' : 'pi pi-eye-slash'" 
-                    style="font-size: 1rem; color: grey;"
-                    pTooltip="Following Team"
-                ></i>
-            </p-button>
-            <p-button [rounded]="true" [text]="true" class="notification-button" (onClick)="this.toggleNotifications()">
-                <img src="/assets/images/icons/{{this.notifications ? 'mat_notifications_active' : 'mat_notifications_add'}}.svg" style="width: 20px"/>
-            </p-button>
-            <div *ngIf="this.espnStats" class="team-stats">
-                <span>{{this.winLossStr}}</span>
-                <span>{{this.standingStr}}</span>
+        @if(selectedTeam$ | async; as selectedTeam){
+            <div 
+                class="selected-team-header" 
+                *ngIf="selectedTeam.nba_id"
+            >
+                <img src="/assets/images/logos/{{selectedTeam.image}}.svg" class="selected-team-logo"/>
+                <span class="selected-team-name">{{ selectedTeam.full_name }}</span>
+                <p-button [rounded]="true" [text]="true" class="favorite-button" (onClick)="this.toggleFavoriteTeam()">
+                    <i 
+                        class="pi pi-star-fill" 
+                        style="font-size: 1rem;"
+                        [ngStyle]="{
+                            'color': (this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId === selectedTeam.nba_id ? '#fcba03' : 'grey')
+                        }"
+                        pTooltip="Favorite Team"
+                    ></i>
+                </p-button>
+                <p-button [rounded]="true" [text]="true" class="follow-button" (onClick)="this.toggleFollowTeam()">
+                    <i 
+                        [class]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(selectedTeam.nba_id) ? 'pi pi-eye' : 'pi pi-eye-slash'" 
+                        style="font-size: 1rem; color: grey;"
+                        pTooltip="Following Team"
+                    ></i>
+                </p-button>
+                <p-button [rounded]="true" [text]="true" class="notification-button" (onClick)="this.toggleNotifications()">
+                    <img src="/assets/images/icons/{{this.notifications ? 'mat_notifications_active' : 'mat_notifications_add'}}.svg" style="width: 20px"/>
+                </p-button>
+                <div *ngIf="this.espnStats" class="team-stats">
+                    <span>{{this.winLossStr}}</span>
+                    <span>{{this.standingStr}}</span>
+                </div>
             </div>
-        </div>        
-        <p-dropdown class="team-dropdown" [options]="this.TEAMS" [(ngModel)]="this.selectedTeam" optionLabel="full_name" placeholder="Select a Team" (onChange)="this.changeTeam($event)">
+        }        
+        <p-dropdown class="team-dropdown" [options]="this.TEAMS" [(ngModel)]="dropDownValue" optionLabel="full_name" placeholder="Select a Team" (onChange)="this.changeTeamDropdown($event)">
             <ng-template pTemplate="selectedItem">
-                <div class="team-list-selected-item" *ngIf="this.selectedTeam">
-                    <div>{{ this.selectedTeam.full_name }}</div>
+                <div class="team-list-selected-item" *ngIf="this.selectedTeam().nba_id">
+                    <div>{{ this.selectedTeam().full_name }}</div>
                 </div>
             </ng-template>
             <ng-template let-team pTemplate="item">
@@ -50,31 +52,34 @@
             </ng-template>
         </p-dropdown>
         <p-button label="Download" (onClick)="downloadSchedule()"></p-button>
-        <p-button label="Notification" (onClick)="this.nbaService.sendTestNotification(this.selectedTeam)"></p-button>
+        <p-button label="Notification" (onClick)="this.nbaService.sendTestNotification(this.selectedTeam())"></p-button>
     </div>
     <!-- 0022300848-->
     @if (nextGame$ | async; as nextGame) {
         <app-nba-boxscore *ngIf="nextGame.gameId" [game]="nextGame"></app-nba-boxscore>
     }
     
-
-    <div class="team-info"
-        [ngStyle]="{
-            'border': '2px solid ' + (this.selectedTeam?.primary_color ?? 'black')
-        }"
-    >
-        <div 
-            class="tab-header-container"
-            [ngStyle]="{
-                'border-bottom': '2px solid ' + (this.selectedTeam?.primary_color ?? 'black'),
-                '--primary-color': (this.selectedTeam?.primary_color ?? 'black'),
-                '--secondary-color': (this.selectedTeam?.secondary_color ?? 'white')
-            }"
-        >
-            <p-tabMenu [model]="tabs" [activeItem]="activeTab" (activeItemChange)="onActiveTabChange($event)"></p-tabMenu>
-        </div>
-        <div class="team-tab-content" [ngSwitch]="this.activeTab?.id">
-            <app-nba-tab-schedule *ngSwitchDefault class="nba-tab-component" [team]="this.selectedTeam"></app-nba-tab-schedule>
-        </div>
-    </div>
+    @if(selectedTeam$ | async; as selectedTeam){
+        @if(selectedTeam.nba_id){
+            <div class="team-info"
+                [ngStyle]="{
+                    'border': '2px solid ' + (selectedTeam?.primary_color ?? 'black')
+                }"
+            >
+                <div 
+                    class="tab-header-container"
+                    [ngStyle]="{
+                        'border-bottom': '2px solid ' + (selectedTeam?.primary_color ?? 'black'),
+                        '--primary-color': (selectedTeam?.primary_color ?? 'black'),
+                        '--secondary-color': (selectedTeam?.secondary_color ?? 'white')
+                    }"
+                >
+                    <p-tabMenu [model]="tabs" [activeItem]="activeTab" (activeItemChange)="onActiveTabChange($event)"></p-tabMenu>
+                </div>
+                <div class="team-tab-content" [ngSwitch]="this.activeTab?.id">
+                    <app-nba-tab-schedule *ngSwitchDefault class="nba-tab-component" [team]="selectedTeam"></app-nba-tab-schedule>
+                </div>
+            </div>
+        }
+    }
 </div>

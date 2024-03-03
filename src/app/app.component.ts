@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { NBAService } from './services/nba.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'sports-app';
   
   tabs: MenuItem[] = [
@@ -36,4 +37,11 @@ export class AppComponent {
       routerLink: 'settings' 
     }
   ];
+
+  nbaService = inject(NBAService);
+
+  ngOnInit(): void {
+    this.nbaService.downloadLeagueSchedule();
+  }
+  
 }
