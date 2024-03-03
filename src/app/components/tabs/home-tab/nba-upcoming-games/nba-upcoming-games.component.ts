@@ -1,12 +1,11 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { NBAService } from '../../../../../services/nba.service';
-import { NBA_Boxscore } from '../../../../../interfaces/nba/nba-boxscore';
+import { NBAService } from '../../../../services/nba.service';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
-import { EMPTY_NBA_GAME, NBAGame } from '../../../../../interfaces/nba/league-schedule';
-import moment, { Moment } from "moment";
-import { deepCopy } from '../../../../../utils/util-functions';
+import { EMPTY_NBA_GAME, NBAGame } from '../../../../interfaces/nba/league-schedule';
+import moment from "moment";
+import { deepCopy } from '../../../../utils/util-functions';
 import { NbaBoxscoreComponent } from '../../nba-tab/nba-boxscore/nba-boxscore/nba-boxscore.component';
 
 @Component({

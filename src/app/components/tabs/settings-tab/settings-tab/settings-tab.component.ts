@@ -3,12 +3,12 @@ import { Component, OnInit, signal } from '@angular/core';
 import { AccordionModule } from 'primeng/accordion';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { BROADCASTERS, BROADCASTER_NBA_LEAGUE_PASS_ID, NBABroudcaster } from '../../../../../interfaces/nba/league-schedule';
-import { SettingsService } from '../../../../../services/settings.service';
+import { BROADCASTERS, BROADCASTER_NBA_LEAGUE_PASS_ID, NBABroudcaster } from '../../../../interfaces/nba/league-schedule';
+import { SettingsService } from '../../../../services/settings.service';
 import { FormsModule } from '@angular/forms';
-import { BroadcasterURLSetting } from '../../../../../interfaces/settings';
+import { BroadcasterURLSetting } from '../../../../interfaces/settings';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { DBService, DB_JSON_KEY_NBA_SCHEDULE, DB_STORE_JSON } from '../../../../../services/db.service';
+import { DBService, DB_JSON_KEY_NBA_SCHEDULE, DB_STORE_JSON } from '../../../../services/db.service';
 import moment from 'moment';
 
 @Component({

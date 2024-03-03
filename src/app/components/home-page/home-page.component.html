@@ -1,8 +1,0 @@
-<div class="home-page-container">
-    <p-tabMenu [model]="tabs" [activeItem]="activeTab" (activeItemChange)="onActiveTabChange($event)"></p-tabMenu>
-    <div class="tab-content" [ngSwitch]="this.activeTab?.id">
-        <app-home-tab *ngSwitchDefault class="tab-component"></app-home-tab>
-        <app-nba-tab *ngSwitchCase="'nba'" class="tab-component"></app-nba-tab>
-        <app-settings-tab *ngSwitchCase="'settings'" class="tab-component"></app-settings-tab>
-    </div>
-</div>

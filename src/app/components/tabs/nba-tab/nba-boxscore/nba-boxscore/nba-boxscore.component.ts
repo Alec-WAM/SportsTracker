@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component,  OnInit, inject, input, signal} from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
-import { NBABroudcaster, NBAGame } from '../../../../../../interfaces/nba/league-schedule';
-import { EMPTY_NBA_TEAM, NBATeam } from '../../../../../../interfaces/nba-team';
-import { NBAService } from '../../../../../../services/nba.service';
+import { NBABroudcaster, NBAGame } from '../../../../../interfaces/nba/league-schedule';
+import { EMPTY_NBA_TEAM, NBATeam } from '../../../../../interfaces/nba-team';
+import { NBAService } from '../../../../../services/nba.service';
 import moment, { Moment } from "moment";
-import { EMPTY_NBA_BOXSCORE, NBA_Boxscore, NBA_GAME_STATUS_FINISHED, NBA_GAME_STATUS_LATER, NBA_GAME_STATUS_LIVE } from '../../../../../../interfaces/nba/nba-boxscore';
-import { Subscription, catchError, from, interval, of, switchMap, timer } from 'rxjs';
-import { EMPTY_NBA_STATS } from '../../../../../../interfaces/nba/espn-nba';
-import { ProgressCircleComponent } from '../../../../../misc/progress-circle/progress-circle.component';
+import { EMPTY_NBA_BOXSCORE, NBA_Boxscore, NBA_GAME_STATUS_FINISHED, NBA_GAME_STATUS_LATER, NBA_GAME_STATUS_LIVE } from '../../../../../interfaces/nba/nba-boxscore';
+import { Subscription, catchError, from, interval, switchMap, timer } from 'rxjs';
+import { EMPTY_NBA_STATS } from '../../../../../interfaces/nba/espn-nba';
+import { ProgressCircleComponent } from '../../../../misc/progress-circle/progress-circle.component';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({

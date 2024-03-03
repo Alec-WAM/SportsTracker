@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { NBAService } from '../../../../../../services/nba.service';
-import { NBABroudcaster, NBAGame } from '../../../../../../interfaces/nba/league-schedule';
+import { NBAService } from '../../../../../services/nba.service';
+import { NBABroudcaster, NBAGame } from '../../../../../interfaces/nba/league-schedule';
 import { CommonModule } from '@angular/common';
-import { NBATeam } from '../../../../../../interfaces/nba-team';
+import { NBATeam } from '../../../../../interfaces/nba-team';
 import moment from "moment";
-import { ESPN_NBA_Stats } from '../../../../../../interfaces/nba/espn-nba';
+import { ESPN_NBA_Stats } from '../../../../../interfaces/nba/espn-nba';
 
 @Component({
   selector: 'app-nba-game-card',

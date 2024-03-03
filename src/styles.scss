@@ -9,6 +9,11 @@ html, body {
   margin: 0;
 }
 
+:host ::ng-deep app-root {
+  display: flex;
+  flex-direction: column;
+}
+
 :host ::ng-deep .p-menuitem-icon {
   .custom-icons {
     display: inline-block;

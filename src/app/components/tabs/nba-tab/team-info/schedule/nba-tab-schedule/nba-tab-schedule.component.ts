@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NBATeam } from '../../../../../../../interfaces/nba-team';
-import { NBAService } from '../../../../../../../services/nba.service';
+import { NBATeam } from '../../../../../../interfaces/nba-team';
+import { NBAService } from '../../../../../../services/nba.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NbaGameCardComponent } from '../../../nba-game-card/nba-game-card/nba-game-card.component';
 import { CheckboxModule } from 'primeng/checkbox';
-import { NBAGame } from '../../../../../../../interfaces/nba/league-schedule';
+import { NBAGame } from '../../../../../../interfaces/nba/league-schedule';
 import moment from "moment";
 
 @Component({
