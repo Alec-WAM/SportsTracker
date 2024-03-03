@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
   nbaService = inject(NBAService);
 
   ngOnInit(): void {
-    this.nbaService.downloadLeagueSchedule();
+    this.nbaService.loadLeagueSchedule();
   }
   
 }

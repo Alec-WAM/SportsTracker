@@ -23,6 +23,8 @@ export class NBAService {
   readonly ESPN_STANDINGS: string = "https://site.web.api.espn.com/apis/v2/sports/basketball/nba/standings?season=2024"
 
   dbService = inject(DBService);
+  
+  schedule_data_changed: Subject<void> = new Subject();
 
   schedule: LeagueSchedule | undefined;
   schedule_loaded: Subject<void> = new Subject();
@@ -35,7 +37,7 @@ export class NBAService {
 
   constructor(public http: HttpClient, public settingsService: SettingsService, public notificationService: NotificationService) { }
 
-  downloadLeagueSchedule(): void {
+  loadLeagueSchedule(): void {
     // "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json"
     // this.http.get("../../../2023-24_schedule.json").subscribe({
     //   next: (value: any) => {
@@ -81,24 +83,7 @@ export class NBAService {
     this.dbService.getJSONData(DB_JSON_KEY_NBA_SCHEDULE).then((value) => {
       if(!value){
         console.warn("NBA Schedule was not found... Downloading now");
-        from(fetch('http://localhost:4200/static/json/staticData/scheduleLeagueV2.json')).pipe(
-          switchMap(response => response.json()),
-          catchError((err, caught) => {
-            console.error(err);
-            return "error";
-          })
-        )
-        .subscribe((response) => {
-          if(response === "error"){
-            console.error("Unable to load NBA Schedule")
-            return;
-          }
-
-          console.info("Downloaded NBA Schedule")
-          this.dbService.saveJSONData(DB_JSON_KEY_NBA_SCHEDULE, response).then(() => {
-            this.convertSchedule(response);
-          })
-        });
+        this.downloadNBAJSONSchedule();
       }
       else {
         this.convertSchedule(value);
@@ -106,12 +91,39 @@ export class NBAService {
     })    
   }
 
+  //TODO Add Toast Message for success
+  downloadNBAJSONSchedule(): void {
+    from(fetch('http://localhost:4200/static/json/staticData/scheduleLeagueV2.json')).pipe(
+      switchMap(response => response.json()),
+      catchError((err, caught) => {
+        console.error(err);
+        return "error";
+      })
+    )
+    .subscribe((response) => {
+      if(response === "error"){
+        console.error("Unable to load NBA Schedule")
+        return;
+      }
+
+      console.info("Downloaded NBA Schedule")
+      this.dbService.saveJSONData(DB_JSON_KEY_NBA_SCHEDULE, response).then(() => {
+        this.convertSchedule(response);
+        this.schedule_data_changed.next();
+      })
+    });
+  }
+
   convertSchedule(json: any): void {
-    console.debug("Loading NBA Schedule from JSON...");
     this.all_games = [];
     this.schedule = undefined;
     this.team_games = new Map<string, string[]>();
 
+    if(!json){
+      this.clearSchedule();
+      return;
+    }
+    console.debug("Loading NBA Schedule from JSON...");
     this.schedule = json as LeagueSchedule;
     // console.log(this.schedule);    
 
@@ -151,6 +163,27 @@ export class NBAService {
         this.loadESPNStats(entries);
       }
     });
+  }
+
+  //TODO Add Toast Message for success
+  deleteNBASchedule(): void {
+    this.dbService.deleteJSONData(DB_JSON_KEY_NBA_SCHEDULE).then(() => {
+      this.clearSchedule();
+      this.schedule_data_changed.next();
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+  }
+
+  clearSchedule(): void {
+    this.all_games = [];
+    this.schedule = undefined;
+    this.team_games = new Map<string, string[]>();
+    this.espn_stats_east = new Map<string, ESPN_NBA_Stats>();
+    this.espn_stats_west = new Map<string, ESPN_NBA_Stats>();
+    this.schedule_loaded.next();
+    this.standings_loaded.next();
   }
 
   attachBroadcasters(game: NBAGame): NBAGame {

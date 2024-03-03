@@ -10,6 +10,7 @@ import { BroadcasterURLSetting } from '../../../../interfaces/settings';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { DBService, DB_JSON_KEY_NBA_SCHEDULE, DB_STORE_JSON } from '../../../../services/db.service';
 import moment from 'moment';
+import { NBAService } from '../../../../services/nba.service';
 
 @Component({
   selector: 'app-settings-tab',
@@ -30,19 +31,33 @@ export class SettingsTabComponent implements OnInit {
   
   nbaScheduleDate = signal<string>("");
   nbaScheduleDate$ = toObservable(this.nbaScheduleDate)
+  nbaScheduleCanDelete: boolean = false;
 
   nbaBroadcasters: NBABroudcaster[]|undefined;
-  test: string|undefined;
 
   nbaBroadcasterURLs: any;
 
-  constructor(public settingsService: SettingsService, public dbService: DBService){}
+  constructor(public settingsService: SettingsService, public dbService: DBService, public nbaService: NBAService){
+    this.nbaService.schedule_data_changed.subscribe(() => {
+      this.updateNBAScheduleMessage();
+    })
+  }
 
   ngOnInit(): void {
+    this.updateNBAScheduleMessage();
 
+    this.nbaBroadcasters = BROADCASTERS.filter((broadcaster) => !broadcaster.parent_ids);
+    this.nbaBroadcasterURLs = {};
+    for(const broadcaster of this.nbaBroadcasters){
+      this.nbaBroadcasterURLs[broadcaster.id] = this.settingsService.getNBABroadcasterURL(broadcaster.id)?.url;
+    }
+  }
+
+  updateNBAScheduleMessage(): void {
     this.dbService.getJSONData(DB_JSON_KEY_NBA_SCHEDULE).then((value) => {
       if(!value){
         this.nbaScheduleDate.set("Schedule is not downloaded");
+        this.nbaScheduleCanDelete = false;
       }
       else {
         const date = (value['meta'] ? value['meta']['time']  : "") ?? "";
@@ -55,19 +70,24 @@ export class SettingsTabComponent implements OnInit {
         else {          
           this.nbaScheduleDate.set("Schedule is missing download date");
         }
+        this.nbaScheduleCanDelete = true;
       }
     })
     .catch((error) => {
       this.nbaScheduleDate.set("Error loading Schedule");
     });
-
-    this.nbaBroadcasters = BROADCASTERS.filter((broadcaster) => !broadcaster.parent_ids);
-    this.nbaBroadcasterURLs = {};
-    for(const broadcaster of this.nbaBroadcasters){
-      this.nbaBroadcasterURLs[broadcaster.id] = this.settingsService.getNBABroadcasterURL(broadcaster.id)?.url;
-    }
   }
 
+  //NBA Settings
+  downloadNBASchedule(): void {
+    this.nbaService.downloadNBAJSONSchedule();
+  } 
+
+  deleteNBASchedule(): void {
+    this.nbaService.deleteNBASchedule();
+  } 
+
+  // TV Broadcasters
   updateNBAURL(broadcasterId: string, value: any): void {
     console.log("New Value:" + value)
     const setting = this.settingsService.getNBABroadcasterURL(broadcasterId);

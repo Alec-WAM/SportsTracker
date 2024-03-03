@@ -39,4 +39,12 @@ export class DBService {
     const store = tx.objectStore(DB_STORE_JSON);
     return store.get(key);
   }
+
+  async deleteJSONData(key: string): Promise<void> {
+    const db = await this.dbPromise;
+    const tx = db.transaction(DB_STORE_JSON, 'readwrite');
+    const store = tx.objectStore(DB_STORE_JSON);
+    await store.delete(key);
+    await tx.done;
+  }
 }

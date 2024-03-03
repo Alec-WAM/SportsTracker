@@ -23,6 +23,6 @@ export class HomeTabComponent {
   constructor(){}
 
   downloadSchedule(): void {
-    this.nbaService.downloadLeagueSchedule();
+    this.nbaService.loadLeagueSchedule();
   }
 }

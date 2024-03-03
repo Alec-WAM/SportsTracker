@@ -192,6 +192,6 @@ export class NbaTabComponent implements OnInit {
   }
 
   downloadSchedule(): void {
-    this.nbaService.downloadLeagueSchedule();
+    this.nbaService.loadLeagueSchedule();
   }
 }

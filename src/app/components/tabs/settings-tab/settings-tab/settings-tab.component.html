@@ -10,8 +10,8 @@
                                 <span class="nba-schedule-text">{{nbaScheduleStr}}</span>
                             </div>
                             <div class="nba-schedule-button-container">
-                                <p-button label="Download" icon='pi pi-download'></p-button>
-                                <p-button label="Delete" icon='pi pi-trash' severity="danger"></p-button>
+                                <p-button label="Download" icon='pi pi-download' (onClick)="downloadNBASchedule()"></p-button>
+                                <p-button label="Delete" icon='pi pi-trash' severity="danger" [disabled]="!this.nbaScheduleCanDelete" (onClick)="deleteNBASchedule()"></p-button>
                             </div>
                         </div>
                     }
