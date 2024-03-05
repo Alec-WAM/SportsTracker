@@ -4,7 +4,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { NBABroudcaster, NBAGame } from '../../../../../interfaces/nba/league-schedule';
 import { EMPTY_NBA_TEAM, NBATeam } from '../../../../../interfaces/nba-team';
-import { NBAService } from '../../../../../services/nba.service';
+import { NBAService, NBA_JSON_ENDPOINT } from '../../../../../services/nba.service';
 import moment, { Moment } from "moment";
 import { EMPTY_NBA_BOXSCORE, NBA_Boxscore, NBA_GAME_STATUS_FINISHED, NBA_GAME_STATUS_LATER, NBA_GAME_STATUS_LIVE } from '../../../../../interfaces/nba/nba-boxscore';
 import { Subscription, catchError, from, interval, switchMap, timer } from 'rxjs';
@@ -42,6 +42,7 @@ export class NbaBoxscoreComponent implements OnInit {
 
   time_til_start: string | undefined;
   countdownSubscription: Subscription|undefined;
+  preGameSubscription: Subscription|undefined;
   gameStartTime: Moment | undefined;
   
   liveGameUpdateSubscription: Subscription|undefined;
@@ -129,7 +130,7 @@ export class NbaBoxscoreComponent implements OnInit {
 
     const nbaLink = nbaGame?.branchLink ?? "";
     const tvBroadcasters = nbaGame?.tvBroadcasters;
-    from(fetch(`http://localhost:4200/static/json/liveData/boxscore/boxscore_${nbaGame.gameId}.json`)).pipe(
+    from(fetch(`${NBA_JSON_ENDPOINT}/liveData/boxscore/boxscore_${nbaGame.gameId}.json`)).pipe(
       switchMap(response => response.json()),
       catchError((err, caught) => {
         this.invalidGame = true;
@@ -207,8 +208,16 @@ export class NbaBoxscoreComponent implements OnInit {
     const mins = duration.minutes();
     this.time_til_start =  (hours > 0 ? `${hours} hr${hours > 1 ? 's': ''} and ` : "") + `${mins} min${mins > 1 ? 's': ''}`
 
-    if(now.isAfter(this.gameStartTime)){
+    if(this.gameStartTime && now.isAfter(this.gameStartTime)){
       this.updateBoxscoreSignal();
+
+      const preGameDone = this.gameStartTime.clone();
+      preGameDone.add(20, 'minutes');
+
+      this.preGameSubscription = timer(preGameDone.toDate()).subscribe(() => {
+        this.updateBoxscoreSignal();
+      });
+      
       this.gameStartTime = undefined;
       this.time_til_start = undefined;
       this.countdownSubscription?.unsubscribe();

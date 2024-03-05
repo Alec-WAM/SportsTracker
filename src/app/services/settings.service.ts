@@ -2,6 +2,8 @@ import { Injectable, signal } from '@angular/core';
 import { BroadcasterURLSetting, Settings } from '../interfaces/settings';
 import { BROADCASTERS } from '../interfaces/nba/league-schedule';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { NBA_NotificationSettings } from '../interfaces/notification';
+import { NBATeam } from '../interfaces/nba-team';
 
 export const SETTINGS_LOCAL_STORAGE: string = "SportsApp-Settings";
 
@@ -19,11 +21,16 @@ export class SettingsService {
     this.loadSettings();
   }
 
-  //TODO: Load from localStorage
   loadSettings(): void {
     const localStorageValue = localStorage.getItem(SETTINGS_LOCAL_STORAGE);
     if(localStorageValue){
       this.settings = JSON.parse(localStorageValue) as Settings;
+      if(!this.settings.notificationTeams){
+        this.settings.notificationTeams = {
+          nbaTeams: []
+        };
+        this.saveSettings();
+      }
     }
     else {
       this.resetToDefault();
@@ -59,17 +66,25 @@ export class SettingsService {
       defaultURLs.push(url);
     }
 
-    this.settings = {
-      broadcasterURLs: {
-        nbaURLs: defaultURLs
-      },
-      favoriteTeams: {
-        nbaTeamId: undefined
-      },
-      followingTeams: {
-        nbaTeams: []
-      }
-    } as Settings;
+    if(this.settings){
+      this.settings.broadcasterURLs = {
+          nbaURLs: defaultURLs
+      };
+    }
+    // this.settings = {
+    //   broadcasterURLs: {
+    //     nbaURLs: defaultURLs
+    //   },
+    //   favoriteTeams: {
+    //     nbaTeamId: undefined
+    //   },
+    //   followingTeams: {
+    //     nbaTeams: []
+    //   },
+    //   notificationTeams: {
+    //     nbaTeams: new Map<string, NotificationSettings>()
+    //   }
+    // } as Settings;
     this.saveSettings();
   }
 
@@ -79,6 +94,38 @@ export class SettingsService {
     }
     const urls = this.settings?.broadcasterURLs?.nbaURLs;
     return urls.find((url) => url.broadcasterId === broadcasterId);
+  }
+
+  setNBATeamNotificationSettings(team: NBATeam, notification: NBA_NotificationSettings | undefined): void {
+    if(!team?.nba_id || !this.settings){
+      return;
+    }
+
+    if(!this.settings.notificationTeams){
+      this.settings.notificationTeams = {
+        nbaTeams: []
+      }
+    }
+    if(!this.settings.notificationTeams.nbaTeams){
+      this.settings.notificationTeams.nbaTeams = [];
+    }
+
+    this.settings.notificationTeams.nbaTeams = this.settings.notificationTeams.nbaTeams.filter((settings) => settings.team_id !== team.nba_id);
+    if(notification){
+      this.settings.notificationTeams.nbaTeams.push(notification);
+    }
+    this.saveSettings();
+  }
+
+  getNBATeamNotificationSettings(team: NBATeam): NBA_NotificationSettings | undefined {
+    if(!team?.nba_id){
+      return undefined;
+    }
+
+    if(this.settings?.notificationTeams?.nbaTeams){
+      return this.settings.notificationTeams.nbaTeams.find((settings) => settings.team_id === team.nba_id);
+    }
+    return undefined;
   }
 
 }

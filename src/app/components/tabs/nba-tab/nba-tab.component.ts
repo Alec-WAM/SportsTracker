@@ -15,6 +15,9 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import moment from 'moment';
 import { TooltipModule } from 'primeng/tooltip';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Subscription, timer } from 'rxjs';
+import { deepCopy } from '../../../utils/util-functions';
+import { NotificationService } from '../../../services/notification.service';
 
 
 @Component({
@@ -55,14 +58,15 @@ export class NbaTabComponent implements OnInit {
   activeTab: MenuItem | undefined
 
   nextGame = signal<NBAGame>(EMPTY_NBA_GAME);
-  nextGame$ = toObservable(this.nextGame);
+  nextGame$ = toObservable(this.nextGame);  
+  nextGameRefreshSubscription: Subscription|undefined;
 
-  constructor(public nbaService: NBAService, private router: Router, private route: ActivatedRoute) {
+  constructor(public nbaService: NBAService, public notificationService: NotificationService, private router: Router, private route: ActivatedRoute) {
     this.route.paramMap.subscribe((value: ParamMap) => {
       this.loadFromParamMap(value);
     })
     this.nbaService.standings_loaded.subscribe((value) => {
-      this.updateTeamInfo(this.selectedTeam());
+      this.updateTeamInfo(this.selectedTeam(), false);
     });
     this.selectedTeam$.subscribe((value) => {
       // console.log("Selected Team changed")
@@ -110,8 +114,13 @@ export class NbaTabComponent implements OnInit {
     this.router.navigate(["/nba/" + team.url_slug]);
   }
 
-  updateTeamInfo(team: NBATeam){
-    // console.log("Updating Team Info: " + team.short_name)
+  updateTeamInfo(team: NBATeam, teamSwitch: boolean = true){
+    // console.log("Updating Team Info: " + team.short_name)    
+    if(teamSwitch && this.nextGameRefreshSubscription){
+      this.nextGameRefreshSubscription.unsubscribe();
+      this.nextGameRefreshSubscription = undefined;
+    }
+    this.notifications = this.nbaService.settingsService.getNBATeamNotificationSettings(team) != null;
     this.loadStats(team);
     this.loadNextGame(team);
   }
@@ -136,6 +145,22 @@ export class NbaTabComponent implements OnInit {
     const date = moment();
     const nextGame = this.nbaService.getNextGame(date, team);
     this.nextGame.set(nextGame);
+    if(this.nextGameRefreshSubscription){
+      this.nextGameRefreshSubscription.unsubscribe();
+    }
+    if(nextGame.gameId){
+      const startMoment = moment(nextGame.gameDateTimeUTC, moment.ISO_8601);
+      const refreshDate = startMoment.clone();
+      refreshDate.add('1', 'days');
+      refreshDate.set('hour', 2);
+      refreshDate.set('minute', 0);
+      refreshDate.set('second', 0);
+
+      this.nextGameRefreshSubscription = timer(refreshDate.toDate()).subscribe((value) => {
+        console.debug("Auto Loading Next Game")
+        this.loadNextGame(this.selectedTeam());
+      })
+    }
   }
 
   toggleFavoriteTeam(): void {
@@ -183,8 +208,26 @@ export class NbaTabComponent implements OnInit {
     }
   }
 
+  //TODO Add Notification Dialog (Start Game, End Game)
   toggleNotifications(): void {
     this.notifications = !this.notifications;
+    if(this.notifications){
+      const defaultNotificationSettings = this.nbaService.createDefaultNotificationSettings(this.selectedTeam());
+      if(defaultNotificationSettings){
+        this.nbaService.settingsService.setNBATeamNotificationSettings(this.selectedTeam(), defaultNotificationSettings);
+      }
+      else {
+        //TODO Add Error Toast
+        console.error("Unabled to create notifications");
+      }
+    }
+    else {
+      if(this.nextGameRefreshSubscription){
+        this.nextGameRefreshSubscription.unsubscribe();
+      }
+      this.nbaService.settingsService.setNBATeamNotificationSettings(this.selectedTeam(), undefined);
+    }
+    this.notificationService.buildNotifications();
   }
 
   onActiveTabChange(event: MenuItem) {

@@ -10,9 +10,11 @@ import { NotificationService } from './notification.service';
 import moment, { Moment } from "moment";
 import { deepCopy } from '../utils/util-functions';
 import { DBService, DB_JSON_KEY_NBA_SCHEDULE } from './db.service';
+import { NBA_NotificationSettings } from '../interfaces/notification';
 
 export const DB_OBJECT_NBA_SCHEDULE = 'nba-schedule';
 
+export const NBA_JSON_ENDPOINT: string = "https://cdn.nba.com/static/json"
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +37,7 @@ export class NBAService {
   espn_stats_west: Map<string, ESPN_NBA_Stats> | undefined;
   standings_loaded: Subject<void> = new Subject();
 
-  constructor(public http: HttpClient, public settingsService: SettingsService, public notificationService: NotificationService) { }
+  constructor(public http: HttpClient, public settingsService: SettingsService) { }
 
   loadLeagueSchedule(): void {
     // "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json"
@@ -93,7 +95,7 @@ export class NBAService {
 
   //TODO Add Toast Message for success
   downloadNBAJSONSchedule(): void {
-    from(fetch('http://localhost:4200/static/json/staticData/scheduleLeagueV2.json')).pipe(
+    from(fetch(`${NBA_JSON_ENDPOINT}/staticData/scheduleLeagueV2.json`)).pipe(
       switchMap(response => response.json()),
       catchError((err, caught) => {
         console.error(err);
@@ -277,29 +279,29 @@ export class NBAService {
   }
 
 
-  sendTestNotification(team: NBATeam|undefined): void {
-    let icon = "";
-    if(team){
-      icon = `/assets/images/logos/${team.image}.svg`;
-    }
-    const actions: NotificationAction[] = [];
-    actions.push({
-      action: 'game',
-      title: 'View Game'
-    })
-    const data = {
-      "onActionClick": {
-        "default": {"operation": "openWindow"},
-        "game": {"operation": "navigateLastFocusedOrOpen", "url": "https://google.com/"},
-      }
-    }
-    this.notificationService.showNotification("Test Notification", {
-      body: "Game Starting",
-      icon: icon,
-      actions: actions,
-      data: data
-    })
-  }
+  // sendTestNotification(team: NBATeam|undefined): void {
+  //   let icon = "";
+  //   if(team){
+  //     icon = `/assets/images/logos/${team.image}.svg`;
+  //   }
+  //   const actions: NotificationAction[] = [];
+  //   actions.push({
+  //     action: 'game',
+  //     title: 'View Game'
+  //   })
+  //   const data = {
+  //     "onActionClick": {
+  //       "default": {"operation": "openWindow"},
+  //       "game": {"operation": "navigateLastFocusedOrOpen", "url": "https://google.com/"},
+  //     }
+  //   }
+  //   this.notificationService.showNotification("Test Notification", {
+  //     body: "Game Starting",
+  //     icon: icon,
+  //     actions: actions,
+  //     data: data
+  //   })
+  // }
 
 
   getTeam(teamId: number|string|undefined): NBATeam|undefined {
@@ -340,7 +342,7 @@ export class NBAService {
       return dateA.diff(dateB);
     });
     return games[0];
-  }  
+  }
 
   filterNextGame(date: moment.Moment, game: NBAGame, ): boolean {
     let valid = false;
@@ -356,6 +358,14 @@ export class NBAService {
       valid = true;
     }
     return valid;
+  }
+
+  getTodayGame(date: moment.Moment, team: NBATeam): NBAGame|undefined {
+    const allGames = this.getTeamGames(team);
+    return allGames.find((game) => {
+      const gameMoment = moment(game.gameDateTimeUTC, moment.ISO_8601);      
+      return gameMoment.isSame(date, 'D');
+    })
   }
 
   getBroadcaster(broadcasterId: string): NBABroudcaster|undefined {
@@ -382,5 +392,17 @@ export class NBAService {
       return this.espn_stats_east?.get(team.espn_id);
     }
     return this.espn_stats_west?.get(team.espn_id);
+  }
+
+  createDefaultNotificationSettings(nbaTeam: NBATeam): NBA_NotificationSettings | undefined {
+    if(nbaTeam.nba_id){
+      return {
+        team_id: nbaTeam.nba_id,
+        gameReminder: true,
+        gameStart: true,
+        finalScore: false
+      } as NBA_NotificationSettings;
+    }
+    return undefined;
   }
 }

@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { NBAService } from './services/nba.service';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit {
   ];
 
   nbaService = inject(NBAService);
+  notificationService = inject(NotificationService);
 
   ngOnInit(): void {
     this.nbaService.loadLeagueSchedule();

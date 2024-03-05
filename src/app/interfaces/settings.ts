@@ -1,3 +1,8 @@
+//TODO Add NBA Live Game Update Interval
+
+import { NBA_NotificationSettings } from "./notification";
+
+//TODO Add NBA Upcoming Game Update Interval
 export interface Settings {
     broadcasterURLs: {
         nbaURLs: BroadcasterURLSetting[]
@@ -7,6 +12,9 @@ export interface Settings {
     }
     followingTeams: {
         nbaTeams: string[]
+    },
+    notificationTeams: {
+        nbaTeams: NBA_NotificationSettings[]
     }
 }
 
