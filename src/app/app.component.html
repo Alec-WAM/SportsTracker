@@ -2,3 +2,41 @@
 <div class="root-wrapper">
     <router-outlet></router-outlet>
 </div>
+<p-toast 
+    position="bottom-center"
+    key="nba-game" 
+    (onClose)="this.toastService.closeToast($event)" 
+    [baseZIndex]="5000"
+    styleClass="nba-game-ptoast"
+ >
+    <ng-template let-message pTemplate="message">
+        <div class="toast-message">
+            @if(message.data?.nbaGame; as game){
+                <div class="nba-game-toast">
+                    <div class="team-logo-container">
+                        <a [href]="'/nba/'+game.awayTeam.url_slug"><img src="/assets/images/logos/{{game.awayTeam.image}}.svg" class="team-logo" /></a>
+                        <span class="versus-text">vs.</span>
+                        <a [href]="'/nba/'+game.homeTeam.url_slug"><img src="/assets/images/logos/{{game.homeTeam.image}}.svg" class="team-logo"/></a>
+                    </div>
+                    <span class="message-summary">{{message.summary ? message.summary+": " : ""}}{{message.detail}}</span>
+                    <p-button 
+                        class="p-button-sm" 
+                        [link]="true" 
+                        label="View Game" 
+                        icon="pi pi-external-link" iconPos="right"
+                        (click)="this.toastService.viewNBAGame(game)"
+                    ></p-button>
+                </div>
+            }
+            @else {
+                Missing Game
+            }
+            <!-- <div class="flex align-items-center gap-2">
+                <p-avatar image="https://primefaces.org/cdn/primeng/images/avatar/amyelsner.png" shape="circle" />
+                <span class="font-bold text-900">Amy Elsner</span>
+            </div>
+            <div class="font-medium text-lg my-3 text-900">{{ message.summary }}</div>
+            <p-button class="p-button-sm" label="Reply" (click)="onConfirm()"></p-button> -->
+        </div>
+    </ng-template>
+</p-toast>

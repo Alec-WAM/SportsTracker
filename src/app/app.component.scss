@@ -15,3 +15,34 @@
     flex-direction: column;
     overflow-y: hidden;
 }
+
+:host ::ng-deep .nba-game-ptoast {
+    width: 50% !important;
+
+    .p-toast-message-content {
+        background: white;
+        border: 2.5px solid black;
+    }
+}
+
+.toast-message {
+    display: flex;
+    width: 100%;
+
+    .nba-game-toast {
+        display: flex;
+        width: 100%;
+        margin: 0 1rem;
+        justify-content: space-between;
+        align-items: center;
+
+        .team-logo-container {
+            display: flex;
+            align-items: center;
+
+            .team-logo {
+                width: 50px;
+            }
+        }
+    }
+}

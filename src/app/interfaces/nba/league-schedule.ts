@@ -1,3 +1,5 @@
+import { NBATeam } from "../nba-team";
+
 export interface LeagueSchedule {
     meta: any;
     leagueSchedule: {
@@ -22,9 +24,14 @@ export interface NBAGame {
     tvBroadcasters?: NBABroudcaster[]
 }
 
-
 export const EMPTY_NBA_SCHEDULE_TEAM: NBAScheduleTeam = {
     teamId: 0
+}
+
+export interface ToastNBAGame {
+    nbaGame: NBAGame;
+    homeTeam: NBATeam;
+    awayTeam: NBATeam;
 }
 
 export const EMPTY_NBA_GAME: NBAGame = {

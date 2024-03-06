@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, signal} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
@@ -18,6 +18,8 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { deepCopy } from '../../../utils/util-functions';
 import { NotificationService } from '../../../services/notification.service';
+import { ToastService } from '../../../services/toast.service';
+import { NBA_Notification } from '../../../interfaces/notification';
 
 
 @Component({
@@ -61,7 +63,11 @@ export class NbaTabComponent implements OnInit {
   nextGame$ = toObservable(this.nextGame);  
   nextGameRefreshSubscription: Subscription|undefined;
 
-  constructor(public nbaService: NBAService, public notificationService: NotificationService, private router: Router, private route: ActivatedRoute) {
+  nbaService = inject(NBAService);
+  notificationService = inject(NotificationService);
+  toastService = inject(ToastService);
+
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.route.paramMap.subscribe((value: ParamMap) => {
       this.loadFromParamMap(value);
     })
@@ -236,5 +242,19 @@ export class NbaTabComponent implements OnInit {
 
   downloadSchedule(): void {
     this.nbaService.loadLeagueSchedule();
+  }
+
+  sendNotification(): void {
+    if(this.selectedTeam()){
+      if(this.nextGame()){
+        const notification: NBA_Notification = {
+          team: this.selectedTeam(),
+          title: '',
+          description: 'Game in Progress',
+          nbaGame: this.nextGame()
+        };
+        this.notificationService.sendNotification(notification)
+      }
+    }
   }
 }

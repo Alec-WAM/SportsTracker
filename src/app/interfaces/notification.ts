@@ -1,5 +1,6 @@
 import { Subscription } from "rxjs";
 import { NBATeam } from "./nba-team";
+import { NBAGame } from "./nba/league-schedule";
 
 export interface NotificationSettings {    
     gameReminder: boolean;
@@ -15,6 +16,6 @@ export interface NBA_Notification {
     team: NBATeam;
     title: string;
     description: string;
-    nbaLink: string;
+    nbaGame?: NBAGame;
     timerSub?: Subscription;
 }

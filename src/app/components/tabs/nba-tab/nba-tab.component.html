@@ -52,7 +52,7 @@
             </ng-template>
         </p-dropdown>
         <p-button label="Download" (onClick)="downloadSchedule()"></p-button>
-        <!-- <p-button label="Notification" (onClick)="this.nbaService.sendTestNotification(this.selectedTeam())"></p-button> -->
+        <p-button label="Notification" (onClick)="sendNotification()"></p-button>
     </div>
     <!-- 0022300848-->
     @if (nextGame$ | async; as nextGame) {

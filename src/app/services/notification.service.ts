@@ -4,6 +4,7 @@ import { NBA_Notification } from '../interfaces/notification';
 import moment from 'moment';
 import { Subscription, timer } from 'rxjs';
 import { NBAService } from './nba.service';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class NotificationService {
   readonly NOTIFICATION_TIME = 10;
   swPush = inject(SwPush);
   nbaService = inject(NBAService);
+  toastService = inject(ToastService);
 
   dailyTimerSub: Subscription | undefined;
   todaysNBANotifications: NBA_Notification[] = [];
@@ -79,12 +81,12 @@ export class NotificationService {
 
             const description = `${awayTeam?.short_name} vs. ${homeTeam?.short_name} @ ${gameMoment.format("h:mm a")}`;
 
-            const remiderNotification = {
+            const remiderNotification: NBA_Notification = {
               team: team,
               title: "Upcoming Game",
               description: description,
-              nbaLink: todayGame.branchLink
-            } as NBA_Notification;
+              nbaGame: todayGame
+            };
 
             const notification = this.sendNotificationAtTime(now, dateRemider, remiderNotification);
             this.todaysNBANotifications.push(notification);
@@ -99,12 +101,12 @@ export class NotificationService {
 
             const title = now.isBefore(preGameTime) ? "Game Starting" : "Game in Progress";
             const description = `${awayTeam?.short_name} vs. ${homeTeam?.short_name}`;
-            const remiderNotification = {
+            const remiderNotification: NBA_Notification = {
               team: team,
               title: title,
               description: description,
-              nbaLink: todayGame.branchLink
-            } as NBA_Notification;
+              nbaGame: todayGame
+            }
 
             const notification = this.sendNotificationAtTime(now, gameMoment, remiderNotification);
             this.todaysNBANotifications.push(notification);
@@ -145,33 +147,39 @@ export class NotificationService {
   }
 
   sendNotification(notification: NBA_Notification): void {
-    let icon = "";
-    if(notification.team){
-      icon = `/assets/images/logos/${notification.team.image}.svg`;
+    //Toast message if page is visible
+    if(!document.hidden){
+      this.toastService.showToast(notification);
     }
-    const actions: NotificationAction[] = [];
-    const data = {
-      "onActionClick": {
-        "default": {"operation": "navigateLastFocusedOrOpen", url: `/nba/${notification.team?.url_slug ?? ""}`},
-      } as any
+    else {
+      let icon = "";
+      if(notification.team){
+        icon = `/assets/images/logos/${notification.team.image}.svg`;
+      }
+      const actions: NotificationAction[] = [];
+      const data = {
+        "onActionClick": {
+          "default": {"operation": "navigateLastFocusedOrOpen", url: `/nba/${notification.team?.url_slug ?? ""}`},
+        } as any
+      }
+      
+      if(notification.nbaGame){
+        actions.push({
+          action: 'game',
+          title: 'View Game'
+        })
+        data.onActionClick["game"] = {"operation": "openWindow", "url": notification.nbaGame.branchLink};
+      }
+      
+      const options = {
+        body: notification.description,
+        icon: icon,
+        actions: actions,
+        data: data
+      }
+      
+      this.showNotification(notification.title, options);
     }
-    
-    if(notification.nbaLink){
-      actions.push({
-        action: 'game',
-        title: 'View Game'
-      })
-      data.onActionClick["game"] = {"operation": "openWindow", "url": notification.nbaLink};
-    }
-    
-    const options = {
-      body: notification.description,
-      icon: icon,
-      actions: actions,
-      data: data
-    }
-    
-    this.showNotification(notification.title, options)
   }
 
   showNotification(title: string, options?: NotificationOptions) {

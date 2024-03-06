@@ -6,6 +6,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { provideServiceWorker } from '@angular/service-worker';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { MessageService } from 'primeng/api';
 
 const dbConfig: DBConfig  = {
   name: 'SportsApp',
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
         enabled: !isDevMode(),
         registrationStrategy: 'registerWhenStable:30000'
     }),
-    importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
+    importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig)),
+    MessageService
   ]
 };
