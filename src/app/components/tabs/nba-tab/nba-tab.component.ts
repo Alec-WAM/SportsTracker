@@ -16,9 +16,8 @@ import moment from 'moment';
 import { TooltipModule } from 'primeng/tooltip';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
-import { deepCopy } from '../../../utils/util-functions';
 import { NotificationService } from '../../../services/notification.service';
-import { ToastService } from '../../../services/toast.service';
+import { TAG_GENERAL_MESSAGE, ToastService } from '../../../services/toast.service';
 import { NBA_Notification } from '../../../interfaces/notification';
 
 
@@ -93,7 +92,14 @@ export class NbaTabComponent implements OnInit {
         return team;
       }
       else {
-        console.error("Can't find team from slug " + slug)
+        console.error("Can't find team from slug " + slug);
+        this.toastService.showInfoToast({ 
+          key: TAG_GENERAL_MESSAGE, 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: `Invalid Team URL (${slug})` 
+        });
+        this.router.navigate(["/nba/"]);
       }
     }
     else {
@@ -223,8 +229,13 @@ export class NbaTabComponent implements OnInit {
         this.nbaService.settingsService.setNBATeamNotificationSettings(this.selectedTeam(), defaultNotificationSettings);
       }
       else {
-        //TODO Add Error Toast
         console.error("Unabled to create notifications");
+        this.toastService.showInfoToast({ 
+          key: TAG_GENERAL_MESSAGE, 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: 'Unabled to create notifications' 
+        });
       }
     }
     else {

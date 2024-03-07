@@ -5,7 +5,7 @@
 <p-toast 
     position="bottom-center"
     key="nba-game" 
-    (onClose)="this.toastService.closeToast($event)" 
+    (onClose)="this.toastService.closeNBAToast($event)" 
     [baseZIndex]="5000"
     styleClass="nba-game-ptoast"
  >
@@ -31,12 +31,13 @@
             @else {
                 Missing Game
             }
-            <!-- <div class="flex align-items-center gap-2">
-                <p-avatar image="https://primefaces.org/cdn/primeng/images/avatar/amyelsner.png" shape="circle" />
-                <span class="font-bold text-900">Amy Elsner</span>
-            </div>
-            <div class="font-medium text-lg my-3 text-900">{{ message.summary }}</div>
-            <p-button class="p-button-sm" label="Reply" (click)="onConfirm()"></p-button> -->
         </div>
     </ng-template>
+</p-toast>
+<p-toast 
+    position="top-right"
+    key="general" 
+    (onClose)="this.toastService.closeGeneralToast($event)" 
+    [baseZIndex]="5000"
+ >
 </p-toast>

@@ -6,11 +6,12 @@ import { Subject, catchError, from, switchMap } from 'rxjs';
 import { NBATeam, TEAMS } from '../interfaces/nba-team';
 import { ESPN_NBA_Stats } from '../interfaces/nba/espn-nba';
 import { SettingsService } from './settings.service';
-import { NotificationService } from './notification.service';
 import moment, { Moment } from "moment";
 import { deepCopy } from '../utils/util-functions';
 import { DBService, DB_JSON_KEY_NBA_SCHEDULE } from './db.service';
 import { NBA_NotificationSettings } from '../interfaces/notification';
+import { MessageService } from 'primeng/api';
+import { TAG_GENERAL_MESSAGE } from './toast.service';
 
 export const DB_OBJECT_NBA_SCHEDULE = 'nba-schedule';
 
@@ -25,6 +26,7 @@ export class NBAService {
   readonly ESPN_STANDINGS: string = "https://site.web.api.espn.com/apis/v2/sports/basketball/nba/standings?season=2024"
 
   dbService = inject(DBService);
+  messageService = inject(MessageService);
   
   schedule_data_changed: Subject<void> = new Subject();
 
@@ -93,12 +95,17 @@ export class NBAService {
     })    
   }
 
-  //TODO Add Toast Message for success
   downloadNBAJSONSchedule(): void {
     from(fetch(`${NBA_JSON_ENDPOINT}/staticData/scheduleLeagueV2.json`)).pipe(
       switchMap(response => response.json()),
       catchError((err, caught) => {
         console.error(err);
+        this.messageService.add({ 
+          key: TAG_GENERAL_MESSAGE, 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: 'Unable to download NBA Schedule' 
+        });
         return "error";
       })
     )
@@ -112,6 +119,13 @@ export class NBAService {
       this.dbService.saveJSONData(DB_JSON_KEY_NBA_SCHEDULE, response).then(() => {
         this.convertSchedule(response);
         this.schedule_data_changed.next();
+        
+        this.messageService.add({ 
+          key: TAG_GENERAL_MESSAGE, 
+          severity: 'success', 
+          summary: 'Success', 
+          detail: 'Downloaded the NBA Schedule' 
+        });
       })
     });
   }
@@ -167,11 +181,16 @@ export class NBAService {
     });
   }
 
-  //TODO Add Toast Message for success
   deleteNBASchedule(): void {
     this.dbService.deleteJSONData(DB_JSON_KEY_NBA_SCHEDULE).then(() => {
       this.clearSchedule();
       this.schedule_data_changed.next();
+      this.messageService.add({ 
+        key: TAG_GENERAL_MESSAGE, 
+        severity: 'error', 
+        summary: 'Deleted', 
+        detail: 'Deleted the NBA Schedule' 
+      });
     })
     .catch((error) => {
       console.error(error);

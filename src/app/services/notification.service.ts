@@ -68,7 +68,6 @@ export class NotificationService {
         if(todayGame){
           console.log(todayGame)
           const gameMoment = moment(todayGame.gameDateTimeUTC, moment.ISO_8601);
-
           if(notSettings.gameReminder && now.isBefore(gameMoment)){
             const dateRemider = now.clone();
             dateRemider.set('hour', this.NOTIFICATION_TIME);
@@ -149,7 +148,7 @@ export class NotificationService {
   sendNotification(notification: NBA_Notification): void {
     //Toast message if page is visible
     if(!document.hidden){
-      this.toastService.showToast(notification);
+      this.toastService.showNBAToast(notification);
     }
     else {
       let icon = "";

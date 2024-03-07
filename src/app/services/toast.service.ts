@@ -7,6 +7,9 @@ import { NBAService } from './nba.service';
 import { deepCopy } from '../utils/util-functions';
 import { EMPTY_NBA_TEAM } from '../interfaces/nba-team';
 
+export const TAG_GENERAL_MESSAGE = "general";
+export const TAG_NBA_MESSAGE = "nba-game";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +21,11 @@ export class ToastService {
   constructor() { }
 
   
-  showToast(notification: NBA_Notification): void {
+  showInfoToast(message: Message): void {
+    this.messageService.add(message);
+  }
+
+  showNBAToast(notification: NBA_Notification): void {
     const homeTeam = this.nbaService.getTeam(notification.nbaGame?.homeTeam.teamId) ?? deepCopy(EMPTY_NBA_TEAM);
     const awayTeam = this.nbaService.getTeam(notification.nbaGame?.awayTeam.teamId) ?? deepCopy(EMPTY_NBA_TEAM);
     const toastGame: ToastNBAGame = {
@@ -30,7 +37,7 @@ export class ToastService {
       nbaGame: toastGame
     }
     const message: Message = {
-      key: 'nba-game',
+      key: TAG_NBA_MESSAGE,
       summary: notification.title,
       detail: notification.description,
       severity: 'custom',
@@ -41,17 +48,17 @@ export class ToastService {
     this.messageService.add(message);
   }
 
-  sendMessage(): void {
-    // this.messageService.add()
-  }
-
   viewNBAGame(toastGame: ToastNBAGame): void {    
     if(toastGame?.nbaGame.branchLink){
       window.open(toastGame.nbaGame.branchLink, "_blank");
     }
   }
 
-  closeToast(event: ToastCloseEvent): void {
+  closeGeneralToast(event: ToastCloseEvent): void {
+
+  }
+
+  closeNBAToast(event: ToastCloseEvent): void {
 
   }
 }

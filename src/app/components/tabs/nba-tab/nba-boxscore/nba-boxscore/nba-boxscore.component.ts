@@ -11,7 +11,9 @@ import { Subscription, catchError, from, interval, switchMap, timer } from 'rxjs
 import { EMPTY_NBA_STATS } from '../../../../../interfaces/nba/espn-nba';
 import { ProgressCircleComponent } from '../../../../misc/progress-circle/progress-circle.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { TAG_GENERAL_MESSAGE, ToastService } from '../../../../../services/toast.service';
 
+//TODO Add clickable team logo
 @Component({
   selector: 'app-nba-boxscore',
   standalone: true,
@@ -25,7 +27,7 @@ import { TooltipModule } from 'primeng/tooltip';
   templateUrl: './nba-boxscore.component.html',
   styleUrl: './nba-boxscore.component.scss'
 })
-export class NbaBoxscoreComponent implements OnInit {
+export class NbaBoxscoreComponent {
   readonly TIMEOUTS_ARRAY = Array.from(Array(7).keys());
   readonly LIVE_UPDATE_INTERVAL = 60;
 
@@ -51,26 +53,12 @@ export class NbaBoxscoreComponent implements OnInit {
   updateToolip: string|undefined;
   liveGameLastUpdate: string|undefined;
 
-  // _game: NBAGame|undefined;
-  // awayTeam: NBATeam|undefined;
-  // homeTeam: NBATeam|undefined;
-  // link: string|undefined;
-
-  // seriesText: string|undefined;
-  // dateStr: string|undefined;
-  // timeStr: string|undefined;
-
   nbaService = inject(NBAService);
+  toastService = inject(ToastService);
   constructor(){
     this.game$.subscribe((value) => {
       this.updateBoxscoreSignal();
     });
-  }
-
-  ngOnInit(): void {
-    // if(this.game()){
-    //   this.updateBoxscoreSignal();
-    // }
   }
 
   buildFutureBoxscore(nbaGame: NBAGame, now: Moment, gameTime: Moment): NBA_Boxscore {
@@ -136,6 +124,13 @@ export class NbaBoxscoreComponent implements OnInit {
         this.invalidGame = true;
         this.boxscore.set(EMPTY_NBA_BOXSCORE);
         console.error(err);
+        const gameCode = (nbaGame as any)['gameCode'] ?? "Unknown Game";
+        this.toastService.showInfoToast({ 
+          key: TAG_GENERAL_MESSAGE, 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: `Unable to load the boxscore for (${gameCode})` 
+        });
         return "error";
       })
     )
