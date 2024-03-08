@@ -275,10 +275,6 @@ export class NbaTabComponent implements OnInit {
     this.activeTab = event;
   }
 
-  downloadSchedule(): void {
-    this.nbaService.loadLeagueSchedule();
-  }
-
   sendNotification(): void {
     if(this.selectedTeam()){
       if(this.nextGame()){

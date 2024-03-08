@@ -11,30 +11,32 @@
             >
                 <img src="/assets/images/logos/{{selectedTeam.image}}.svg" class="selected-team-logo"/>
                 <span class="selected-team-name">{{ selectedTeam.full_name }}</span>
-                <p-button [rounded]="true" [text]="true" class="favorite-button" (onClick)="this.toggleFavoriteTeam()">
-                    <i 
-                        class="pi pi-star-fill" 
-                        style="font-size: 1rem;"
-                        [ngStyle]="{
-                            'color': (this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId === selectedTeam.nba_id ? '#fcba03' : 'grey')
-                        }"
-                        pTooltip="Favorite Team"
-                    ></i>
-                </p-button>
-                <p-button [rounded]="true" [text]="true" class="follow-button" (onClick)="this.toggleFollowTeam()">
-                    <i 
-                        [class]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(selectedTeam.nba_id) ? 'pi pi-eye' : 'pi pi-eye-slash'" 
-                        style="font-size: 1rem; color: grey;"
-                        [pTooltip]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(selectedTeam.nba_id) ? 'Following Team' : 'Follow Team'"
-                    ></i>
-                </p-button>
-                <p-button [rounded]="true" [text]="true" class="notification-button" (onClick)="this.openNotificationSettings()">
-                    <img 
-                        src="/assets/images/icons/{{this.notifications ? 'mat_notifications_active' : 'mat_notifications_add'}}.svg" 
-                        style="width: 20px"
-                        [pTooltip]="this.notifications ? 'Notifications On' : 'Notifications Off'"
-                    />
-                </p-button>
+                <div class="card flex justify-content-center">
+                    <p-button [rounded]="true" [text]="true" class="favorite-button" (onClick)="this.toggleFavoriteTeam()">
+                        <i 
+                            class="pi pi-star-fill" 
+                            style="font-size: 1rem;"
+                            [ngStyle]="{
+                                'color': (this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId === selectedTeam.nba_id ? '#fcba03' : 'grey')
+                            }"
+                            pTooltip="Favorite Team"
+                        ></i>
+                    </p-button>
+                    <p-button [rounded]="true" [text]="true" class="follow-button" (onClick)="this.toggleFollowTeam()">
+                        <i 
+                            [class]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(selectedTeam.nba_id) ? 'pi pi-eye' : 'pi pi-eye-slash'" 
+                            style="font-size: 1rem; color: grey;"
+                            [pTooltip]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(selectedTeam.nba_id) ? 'Following Team' : 'Follow Team'"
+                        ></i>
+                    </p-button>
+                    <p-button [rounded]="true" [text]="true" class="notification-button" (onClick)="this.openNotificationSettings()">
+                        <img 
+                            src="/assets/images/icons/{{this.notifications ? 'mat_notifications_active' : 'mat_notifications_add'}}.svg" 
+                            style="width: 20px"
+                            [pTooltip]="this.notifications ? 'Notifications On' : 'Notifications Off'"
+                        />
+                    </p-button>
+                </div>
                 <div *ngIf="this.espnStats" class="team-stats">
                     <span>{{this.winLossStr}}</span>
                     <span>{{this.standingStr}}</span>
@@ -55,12 +57,11 @@
                 </div>
             </ng-template>
         </p-dropdown>
-        <p-button label="Download" (onClick)="downloadSchedule()"></p-button>
         <p-button label="Notification" (onClick)="sendNotification()"></p-button>
     </div>
     <!-- 0022300848-->
     @if (nextGame$ | async; as nextGame) {
-        <app-nba-boxscore *ngIf="nextGame.gameId" [game]="nextGame"></app-nba-boxscore>
+        <app-nba-boxscore *ngIf="nextGame.gameId" class="next-game" [game]="nextGame"></app-nba-boxscore>
     }
     
     @if(selectedTeam$ | async; as selectedTeam){

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { NBATeam } from '../../../../../../interfaces/nba-team';
 import { NBAService } from '../../../../../../services/nba.service';
 import { CommonModule } from '@angular/common';
