@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { EMPTY_NBA_TEAM, NBATeam, TEAMS } from '../../../interfaces/nba-team';
 import { MenuItem } from 'primeng/api';
 import { NbaTabScheduleComponent } from './team-info/schedule/nba-tab-schedule/nba-tab-schedule.component';
@@ -18,7 +20,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { NotificationService } from '../../../services/notification.service';
 import { TAG_GENERAL_MESSAGE, ToastService } from '../../../services/toast.service';
-import { NBA_Notification } from '../../../interfaces/notification';
+import { NBA_Notification, NBA_NotificationSettings } from '../../../interfaces/notification';
 
 
 @Component({
@@ -32,6 +34,8 @@ import { NBA_Notification } from '../../../interfaces/notification';
     ButtonModule,
     DropdownModule,
     TabMenuModule,
+    DialogModule,
+    InputSwitchModule,
 
     NbaTabScheduleComponent,
     NbaBoxscoreComponent
@@ -52,6 +56,8 @@ export class NbaTabComponent implements OnInit {
   standingStr: string | undefined;  
 
   notifications: boolean = false;
+  notificationDialog: boolean = false;
+  teamNotificationSettings: NBA_NotificationSettings | undefined;
 
   tabs: MenuItem[] = [
     { id: 'schedule', label: 'Schedule', icon: 'pi pi-fw pi-calendar' }
@@ -118,6 +124,9 @@ export class NbaTabComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeTab = this.tabs[0];
+    if(this.selectedTeam()){
+      this.notifications = this.nbaService.settingsService.getNBATeamNotificationSettings(this.selectedTeam()) != null;
+    }
   }
 
   changeTeamDropdown(event: any): void {
@@ -220,15 +229,13 @@ export class NbaTabComponent implements OnInit {
     }
   }
 
-  //TODO Add Notification Dialog (Start Game, End Game)
-  toggleNotifications(): void {
-    this.notifications = !this.notifications;
-    if(this.notifications){
-      const defaultNotificationSettings = this.nbaService.createDefaultNotificationSettings(this.selectedTeam());
-      if(defaultNotificationSettings){
-        this.nbaService.settingsService.setNBATeamNotificationSettings(this.selectedTeam(), defaultNotificationSettings);
-      }
-      else {
+  openNotificationSettings(): void {
+    this.notificationDialog = true;
+
+    let currentSettings = this.nbaService.settingsService.getNBATeamNotificationSettings(this.selectedTeam());
+    if(!currentSettings){
+      currentSettings = this.nbaService.createDefaultNotificationSettings(this.selectedTeam());
+      if(!currentSettings){
         console.error("Unabled to create notifications");
         this.toastService.showInfoToast({ 
           key: TAG_GENERAL_MESSAGE, 
@@ -238,10 +245,26 @@ export class NbaTabComponent implements OnInit {
         });
       }
     }
+
+    this.teamNotificationSettings = currentSettings;
+  }
+
+  closeNotificationDialog(): void {
+    let deleteSettings = false;
+    
+    if(this.teamNotificationSettings == null){
+      deleteSettings = true;
+    }
+    else if(!this.teamNotificationSettings.gameReminder && !this.teamNotificationSettings.gameStart && !this.teamNotificationSettings.finalScore){
+      deleteSettings = true;
+    }
     else {
-      if(this.nextGameRefreshSubscription){
-        this.nextGameRefreshSubscription.unsubscribe();
-      }
+      this.notifications = true;
+      this.nbaService.settingsService.setNBATeamNotificationSettings(this.selectedTeam(), this.teamNotificationSettings);
+    }
+
+    if(deleteSettings){
+      this.notifications = false;
       this.nbaService.settingsService.setNBATeamNotificationSettings(this.selectedTeam(), undefined);
     }
     this.notificationService.buildNotifications();

@@ -25,11 +25,15 @@
                     <i 
                         [class]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(selectedTeam.nba_id) ? 'pi pi-eye' : 'pi pi-eye-slash'" 
                         style="font-size: 1rem; color: grey;"
-                        pTooltip="Following Team"
+                        [pTooltip]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(selectedTeam.nba_id) ? 'Following Team' : 'Follow Team'"
                     ></i>
                 </p-button>
-                <p-button [rounded]="true" [text]="true" class="notification-button" (onClick)="this.toggleNotifications()">
-                    <img src="/assets/images/icons/{{this.notifications ? 'mat_notifications_active' : 'mat_notifications_add'}}.svg" style="width: 20px"/>
+                <p-button [rounded]="true" [text]="true" class="notification-button" (onClick)="this.openNotificationSettings()">
+                    <img 
+                        src="/assets/images/icons/{{this.notifications ? 'mat_notifications_active' : 'mat_notifications_add'}}.svg" 
+                        style="width: 20px"
+                        [pTooltip]="this.notifications ? 'Notifications On' : 'Notifications Off'"
+                    />
                 </p-button>
                 <div *ngIf="this.espnStats" class="team-stats">
                     <span>{{this.winLossStr}}</span>
@@ -83,3 +87,32 @@
         }
     }
 </div>
+<p-dialog 
+    header="Notifications" 
+    [(visible)]="notificationDialog"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    position="center"
+    (onHide)="this.closeNotificationDialog()"
+>
+    @if(this.teamNotificationSettings; as settings){
+        <div class="notification-dialog-container">
+            <div class="notification-row">
+                <span class="notification-type">Game Reminder</span>
+                <p-inputSwitch [(ngModel)]="settings.gameReminder"></p-inputSwitch>
+            </div>
+            <div class="notification-row">
+                <span class="notification-type">Game Start</span>
+                <p-inputSwitch [(ngModel)]="settings.gameStart"></p-inputSwitch>
+            </div>
+            <div class="notification-row">
+                <span class="notification-type">Final Score</span>
+                <p-inputSwitch [(ngModel)]="settings.finalScore" [disabled]="true"></p-inputSwitch>
+            </div>
+        </div>
+    }
+    @else {
+        Missing Settings
+    }
+</p-dialog>
