@@ -37,7 +37,6 @@ export class NbaTabScheduleComponent implements OnInit {
 
   constructor(public nbaService: NBAService){
     this.nbaService.standings_loaded.subscribe((value) => {
-      console.log(this._team)
       this.loadGames(this._team);
     })
   }
@@ -64,7 +63,9 @@ export class NbaTabScheduleComponent implements OnInit {
     }
 
     this.games = this.nbaService.getTeamGames(team).filter((game) => this.filterGame(game));
-    console.log(this.games)
+    if(this.filterFuture){
+      this.games = this.games.slice(1); //Remove the first game because that is the game that is in the upcoming section
+    }
   }
 
   filterGame(game: NBAGame): boolean {

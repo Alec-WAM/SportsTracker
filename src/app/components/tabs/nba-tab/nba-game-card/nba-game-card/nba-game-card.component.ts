@@ -5,12 +5,15 @@ import { CommonModule } from '@angular/common';
 import { NBATeam } from '../../../../../interfaces/nba-team';
 import moment from "moment";
 import { ESPN_NBA_Stats } from '../../../../../interfaces/nba/espn-nba';
+import { TooltipModule } from 'primeng/tooltip';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nba-game-card',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    TooltipModule
   ],
   templateUrl: './nba-game-card.component.html',
   styleUrl: './nba-game-card.component.scss'
@@ -36,7 +39,7 @@ export class NbaGameCardComponent {
 
   constructor(public nbaService: NBAService){}
 
-  openLink(): void {
+   openLink(): void {
     if(this.link){
       window.open(this.link);
     }
@@ -67,7 +70,6 @@ export class NbaGameCardComponent {
       this.link = undefined;
       return;
     }
-    console.log(this._game);
     this.awayTeam = this.nbaService.getTeam(this._game?.awayTeam?.teamId);
     this.homeTeam = this.nbaService.getTeam(this._game?.homeTeam?.teamId);
     this.awayStats = this.nbaService.getStats(this.awayTeam);

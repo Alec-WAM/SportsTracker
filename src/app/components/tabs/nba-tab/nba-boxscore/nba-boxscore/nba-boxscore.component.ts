@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component,  OnInit, inject, input, signal} from '@angular/core';
+import { Component,  inject, input, signal} from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { NBABroudcaster, NBAGame } from '../../../../../interfaces/nba/league-schedule';
@@ -13,7 +13,6 @@ import { ProgressCircleComponent } from '../../../../misc/progress-circle/progre
 import { TooltipModule } from 'primeng/tooltip';
 import { TAG_GENERAL_MESSAGE, ToastService } from '../../../../../services/toast.service';
 
-//TODO Add clickable team logo
 @Component({
   selector: 'app-nba-boxscore',
   standalone: true,
@@ -225,7 +224,7 @@ export class NbaBoxscoreComponent {
     this.liveGameUpdateSubscription = timer(0, 1000).subscribe(value => {
       this.liveGameUpdateDelay--;
       this.liveGameUpdateDelayProgress = (this.liveGameUpdateDelay / this.LIVE_UPDATE_INTERVAL)
-      this.updateToolip = `Updating game in ${this.liveGameUpdateDelay}s`;
+      this.updateToolip = `Updating Boxscore in ${this.liveGameUpdateDelay}s`;
       if (this.liveGameUpdateDelay <= 0) {
         this.updateGame();
         this.liveGameUpdateSubscription?.unsubscribe();

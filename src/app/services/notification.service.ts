@@ -59,14 +59,14 @@ export class NotificationService {
     console.log("Building Daily Notifications")
     const nbaNotifications = this.nbaService.settingsService.settings?.notificationTeams?.nbaTeams ?? [];
     const now = moment();
-    console.log(now.format())
+    // console.log(now.format())
     for(let notSettings of nbaNotifications){
       const team = this.nbaService.getTeam(notSettings.team_id);
       if(team){
-        console.log('Team: ' + team.short_name);
+        // console.log('Team: ' + team.short_name);
         const todayGame = this.nbaService.getTodayGame(now, team);
         if(todayGame){
-          console.log(todayGame)
+          // console.log(todayGame)
           const gameMoment = moment(todayGame.gameDateTimeUTC, moment.ISO_8601);
           if(notSettings.gameReminder && now.isBefore(gameMoment)){
             const dateRemider = now.clone();
@@ -181,18 +181,25 @@ export class NotificationService {
     }
   }
 
-  showNotification(title: string, options?: NotificationOptions) {
+  isNBANotification(obj: any): obj is NBA_Notification {
+    return "team" in obj;
+  }
+
+  showNotification(title: string, notification: any, options?: NotificationOptions) {
     if (!('Notification' in window)) {
       console.log('This browser does not support notifications.');
+      this.fallbackToToastNotification(notification);
       return;
     }
 
     if (Notification.permission === 'granted') {
       // new Notification(title, options);
       navigator.serviceWorker.getRegistration().then((reg) => {
-        console.log(reg)
         if (reg != null) {
           reg.showNotification(title, options);
+        }
+        else {
+          this.fallbackToToastNotification(notification);
         }
       });
     } 
@@ -204,11 +211,21 @@ export class NotificationService {
           if (reg != null) {
             reg.showNotification(title, options);
           }
+          else {
+            this.fallbackToToastNotification(notification);
+          }
         });
       });
     }
     else {
       console.log('Notification permission is not granted.');
+      this.fallbackToToastNotification(notification);
+    }
+  }
+
+  fallbackToToastNotification(notification: any): void {
+    if(this.isNBANotification(notification)){
+      this.toastService.showNBAToast(notification);
     }
   }
 }
