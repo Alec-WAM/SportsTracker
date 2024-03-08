@@ -32,18 +32,22 @@
                     <div *ngIf="boxscore.tvBroadcasters" class="tv-providers">
                         @for (broadcaster of boxscore.tvBroadcasters; track broadcaster) {
                             @for (image of broadcaster.images; track image; let index = $index) {
-                                <img 
-                                    src="/assets/images/logos/broadcasters/{{image.image_name}}.svg" 
-                                    class="tv-provider" 
-                                    (click)="this.openBroadcaster(broadcaster, index)"
-                                    [ngStyle]="{
-                                        'width': image.width
-                                    }"
-                                />
+                                <p-button [text]="true" (onClick)="this.openBroadcaster(broadcaster, index)" [pTooltip]="broadcaster.name" tooltipPosition="bottom" [showDelay]="1000">
+                                    <img 
+                                        src="/assets/images/logos/broadcasters/{{image.image_name}}.svg" 
+                                        class="tv-provider"
+                                        [ngStyle]="{
+                                            'width': image.width
+                                        }"
+                                    />
+                                </p-button>
                             }
                         }
                     </div>
-                    <a *ngIf="boxscore.nbaLink" class="view-game-link" [href]="boxscore.nbaLink" target="_blank">View Game</a>
+                    <div *ngIf="boxscore.nbaLink" class="view-game-container">
+                        <a class="view-game-link" [href]="boxscore.nbaLink" target="_blank">View Game</a>
+                        <i class="pi pi-external-link view-game-icon"></i>
+                    </div>
                 </div>
 
                 <div *ngIf="boxscore.homeTeamScore && boxscore.gameStatus !== this.STATUS_LATER" class="game-team-score-container">

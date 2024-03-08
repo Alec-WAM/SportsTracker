@@ -1,3 +1,11 @@
+:host ::ng-deep {       
+    .tv-providers {             
+        .p-button-text {
+            padding: 5px;
+        }
+    }
+}
+
 .game-card-container {
     display: flex;
     flex-direction: column;
@@ -119,18 +127,30 @@
             .tv-providers {
                 display: flex;
                 gap: 0.5rem;
+                align-items: center;
 
                 .tv-provider {
-                    cursor: pointer;
                     z-index: 5;
                     width: 30px;
                 }
             }
 
-            .view-game-link {
-                font-size: 16px;
-                font-weight: bold;
-                text-decoration: none;
+            .view-game-container {
+                display: flex;
+                gap: 0.25rem;
+                align-items: center;
+
+                .view-game-link {
+                    font-size: 16px;
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+
+                .view-game-icon {
+                    margin-top: 2px;
+                    font-size: 12px;
+                    font-weight: bold;
+                }
             }
         }
     }

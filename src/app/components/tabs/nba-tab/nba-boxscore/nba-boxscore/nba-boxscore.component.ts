@@ -78,7 +78,12 @@ export class NbaBoxscoreComponent {
       timeText = gameTime.format("dddd, MMMM Do h:mm a");
     }
     else if(!gameTime.isSame(now, 'D')){
-      timeText = gameTime.format("dddd h:mm a");
+      if(gameTime.date() - now.date() === 1){
+        timeText = "Tomorrow " + gameTime.format("h:mm a");
+      }
+      else {
+        timeText = gameTime.format("dddd h:mm a");
+      }
     }
     else {
       timeText = gameTime.format("h:mm a");

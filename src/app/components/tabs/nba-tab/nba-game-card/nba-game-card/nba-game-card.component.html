@@ -14,18 +14,22 @@
             <div *ngIf="this._game.tvBroadcasters" class="tv-providers">
                 @for (broadcaster of this._game.tvBroadcasters; track broadcaster) {
                     @for (image of broadcaster.images; track image; let index = $index) {
-                        <img 
-                            src="/assets/images/logos/broadcasters/{{image.image_name}}.svg" 
-                            class="tv-provider" 
-                            (click)="this.openBroadcaster(broadcaster, index)"
-                            [ngStyle]="{
-                                'width': image.width
-                            }"
-                        />
+                        <p-button [text]="true" (onClick)="this.openBroadcaster(broadcaster, index)" [pTooltip]="broadcaster.name" tooltipPosition="bottom" [showDelay]="1000">
+                            <img 
+                                src="/assets/images/logos/broadcasters/{{image.image_name}}.svg" 
+                                class="tv-provider"                                
+                                [ngStyle]="{
+                                    'width': image.width
+                                }"
+                            />
+                        </p-button>
                     }
                 }
             </div>
-            <a *ngIf="this.link" class="view-game-link" [href]="this.link" target="_blank">View Game</a>
+            <div *ngIf="this.link" class="view-game-container">
+                <a *ngIf="this.link" class="view-game-link" [href]="this.link" target="_blank">View Game</a>
+                <i class="pi pi-external-link view-game-icon"></i>
+            </div>
         </div>
 
         <div *ngIf="this.homeTeam" class="game-team-info">

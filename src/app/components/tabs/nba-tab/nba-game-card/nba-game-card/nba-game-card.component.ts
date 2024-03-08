@@ -7,13 +7,15 @@ import moment from "moment";
 import { ESPN_NBA_Stats } from '../../../../../interfaces/nba/espn-nba';
 import { TooltipModule } from 'primeng/tooltip';
 import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-nba-game-card',
   standalone: true,
   imports: [
     CommonModule,
-    TooltipModule
+    TooltipModule,
+    ButtonModule
   ],
   templateUrl: './nba-game-card.component.html',
   styleUrl: './nba-game-card.component.scss'
@@ -79,13 +81,18 @@ export class NbaGameCardComponent {
     this.seriesText = this._game?.seriesText;
 
     const date = moment(this._game?.gameDateTimeUTC, moment.ISO_8601)
-    const now = moment.now();
+    const now = moment();
 
     if(!date.isSame(now, 'W') || date.isBefore(now, 'D')){
       this.dateStr = date.format("dddd, MMMM Do");
     }
     else if(!date.isSame(now, 'D')){
-      this.dateStr = date.format("dddd");
+      if(date.date() - now.date() === 1){
+        this.dateStr = "Tomorrow";
+      }
+      else {
+        this.dateStr = date.format("dddd");
+      }
     }
     else {
       this.dateStr = "Today";

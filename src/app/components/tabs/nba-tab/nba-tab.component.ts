@@ -21,6 +21,7 @@ import { Subscription, timer } from 'rxjs';
 import { NotificationService } from '../../../services/notification.service';
 import { TAG_GENERAL_MESSAGE, ToastService } from '../../../services/toast.service';
 import { NBA_Notification, NBA_NotificationSettings } from '../../../interfaces/notification';
+import { getOrdinal } from '../../../utils/util-functions';
 
 
 @Component({
@@ -152,8 +153,8 @@ export class NbaTabComponent implements OnInit {
     this.espnStats = undefined;
     if(team){
       this.espnStats = this.nbaService.getStats(team);
-      this.winLossStr = `W/L: ${this.espnStats?.wins ?? '?'}-${this.espnStats?.losses ?? '?'} (${this.espnStats?.winpercent ?? '?'})`;
-      this.standingStr = `Standings: ${this.espnStats?.playoffseed} ${team.conference === "East" ? "Eastern" : "Western"} Conference`
+      this.winLossStr = `W/L: ${this.espnStats?.wins ?? '?'}-${this.espnStats?.losses ?? '?'} (${this.espnStats?.winpercent.toFixed(2) ?? '?'})`;
+      this.standingStr = `Standings: ${this.espnStats?.playoffseed ? this.espnStats.playoffseed + getOrdinal(this.espnStats.playoffseed) : "?"} ${team.conference === "East" ? "Eastern" : "Western"} Conference`
     }
   }
 
