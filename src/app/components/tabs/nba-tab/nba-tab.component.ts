@@ -22,6 +22,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { TAG_GENERAL_MESSAGE, ToastService } from '../../../services/toast.service';
 import { NBA_Notification, NBA_NotificationSettings } from '../../../interfaces/notification';
 import { getOrdinal } from '../../../utils/util-functions';
+import { SvgIcon, SvgIconsComponent } from '../../../utils/svg-icons/svg-icons.component';
 
 
 @Component({
@@ -39,7 +40,8 @@ import { getOrdinal } from '../../../utils/util-functions';
     InputSwitchModule,
 
     NbaTabScheduleComponent,
-    NbaBoxscoreComponent
+    NbaBoxscoreComponent,
+    SvgIconsComponent
   ],
   templateUrl: './nba-tab.component.html',
   styleUrl: './nba-tab.component.scss',
@@ -47,6 +49,7 @@ import { getOrdinal } from '../../../utils/util-functions';
 })
 export class NbaTabComponent implements OnInit {
   TEAMS = TEAMS;
+  SvgIcon = SvgIcon;
   
   selectedTeam = signal<NBATeam>(EMPTY_NBA_TEAM);
   selectedTeam$ = toObservable(this.selectedTeam);

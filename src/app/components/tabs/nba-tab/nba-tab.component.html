@@ -1,6 +1,7 @@
 <div class="tab-container">
     <div class="tab-header"        
         [ngStyle]="{
+            '--team-color': this.selectedTeam().nba_id ? this.selectedTeam().primary_color : 'white',
             'border-bottom': '4px solid ' + (this.selectedTeam().nba_id ? this.selectedTeam().primary_color : 'black')
         }"
     >
@@ -11,13 +12,13 @@
             >
                 <img src="/assets/images/logos/{{selectedTeam.image}}.svg" class="selected-team-logo"/>
                 <span class="selected-team-name">{{ selectedTeam.full_name }}</span>
-                <div class="card flex justify-content-center">
+                <div class="team-button-container">
                     <p-button [rounded]="true" [text]="true" class="favorite-button" (onClick)="this.toggleFavoriteTeam()">
                         <i 
-                            class="pi pi-star-fill" 
+                            class="pi pi-star-fill border-icon" 
                             style="font-size: 1rem;"
                             [ngStyle]="{
-                                'color': (this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId === selectedTeam.nba_id ? '#fcba03' : 'grey')
+                                'color': (this.nbaService.settingsService.settings?.favoriteTeams?.nbaTeamId === selectedTeam.nba_id ? '#fcba03' : 'var(--text-color)')
                             }"
                             pTooltip="Favorite Team"
                         ></i>
@@ -25,16 +26,24 @@
                     <p-button [rounded]="true" [text]="true" class="follow-button" (onClick)="this.toggleFollowTeam()">
                         <i 
                             [class]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(selectedTeam.nba_id) ? 'pi pi-eye' : 'pi pi-eye-slash'" 
-                            style="font-size: 1rem; color: grey;"
+                            style="font-size: 1rem; color: var(--text-color);"
                             [pTooltip]="this.nbaService.settingsService.settings?.followingTeams?.nbaTeams?.includes(selectedTeam.nba_id) ? 'Following Team' : 'Follow Team'"
                         ></i>
                     </p-button>
                     <p-button [rounded]="true" [text]="true" class="notification-button" (onClick)="this.openNotificationSettings()">
-                        <img 
+                        <!-- <img 
                             src="/assets/images/icons/{{this.notifications ? 'mat_notifications_active' : 'mat_notifications_add'}}.svg" 
-                            style="width: 20px"
+                            style="width: 20px; color: var(--text-color);"
                             [pTooltip]="this.notifications ? 'Notifications On' : 'Notifications Off'"
-                        />
+                        /> -->
+                        <app-svg-icons 
+                            style="color: var(--text-color)"
+                            [name]="this.notifications ? SvgIcon.NOTIFICATIONS_ON : SvgIcon.NOTIFICATIONS_ADD"
+                            [pTooltip]="this.notifications ? 'Notifications On' : 'Notifications Off'"
+                            [width]="1.15"
+                            [height]="1.15"
+                        >
+                        </app-svg-icons>
                     </p-button>
                 </div>
                 <div *ngIf="this.espnStats" class="team-stats">
@@ -66,17 +75,11 @@
     
     @if(selectedTeam$ | async; as selectedTeam){
         @if(selectedTeam.nba_id){
-            <div class="team-info"
-                [ngStyle]="{
-                    'border': '2px solid ' + (selectedTeam?.primary_color ?? 'black')
-                }"
-            >
+            <div class="team-info">
                 <div 
                     class="tab-header-container"
                     [ngStyle]="{
-                        'border-bottom': '2px solid ' + (selectedTeam?.primary_color ?? 'black'),
-                        '--primary-color': (selectedTeam?.primary_color ?? 'black'),
-                        '--secondary-color': (selectedTeam?.secondary_color ?? 'white')
+                        '--team-color': (selectedTeam?.primary_color ?? 'black'),
                     }"
                 >
                     <p-tabMenu [model]="tabs" [activeItem]="activeTab" (activeItemChange)="onActiveTabChange($event)"></p-tabMenu>

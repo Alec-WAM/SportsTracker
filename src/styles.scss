@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "assets/styles/primary-color.scss";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
@@ -7,11 +7,16 @@ html, body {
   min-height: 100vh;
   height: auto;
   margin: 0;
+  background-color: var(--surface-ground);
 }
 
 :host ::ng-deep app-root {
   display: flex;
   flex-direction: column;
+}
+
+.p-button {
+  min-width: unset;
 }
 
 :host ::ng-deep .p-menuitem-icon {

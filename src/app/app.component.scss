@@ -16,12 +16,19 @@
     overflow-y: hidden;
 }
 
+.theme-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
 :host ::ng-deep .nba-game-ptoast {
     width: 50% !important;
+    opacity: 1;
 
     .p-toast-message-content {
-        background: white;
-        border: 2.5px solid black;
+        background: var(--surface-100);
+        border: 2.5px solid var(--toast-border);
     }
 }
 
@@ -34,11 +41,12 @@
         width: 100%;
         margin: 0 1rem;
         justify-content: space-between;
-        align-items: center;
+        align-items: center;  
 
         .team-logo-container {
             display: flex;
             align-items: center;
+            gap: 5px;
 
             .team-logo {
                 width: 50px;

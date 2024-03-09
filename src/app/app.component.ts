@@ -7,6 +7,7 @@ import { NBAService } from './services/nba.service';
 import { NotificationService } from './services/notification.service';
 import { ToastService } from './services/toast.service';
 import { ButtonModule } from 'primeng/button';
+import { Theme, ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,8 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+  Theme = Theme;
+  
   title = 'sports-app';
   
   tabs: MenuItem[] = [
@@ -47,6 +50,7 @@ export class AppComponent implements OnInit {
   nbaService = inject(NBAService);
   notificationService = inject(NotificationService);
   toastService = inject(ToastService);
+  themeService = inject(ThemeService);
 
   ngOnInit(): void {
     this.nbaService.loadLeagueSchedule();

@@ -2,6 +2,12 @@
 <div class="root-wrapper">
     <router-outlet></router-outlet>
 </div>
+<p-button 
+    class='theme-button' 
+    [icon]="'pi ' + (this.themeService.getTheme() === Theme.DARK ? 'pi-moon' : 'pi-sun')" 
+    [rounded]="true" [outlined]="true"
+    (onClick)="this.themeService.switchTheme()"
+></p-button>
 <p-toast 
     position="bottom-center"
     key="nba-game" 

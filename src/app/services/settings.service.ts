@@ -4,6 +4,8 @@ import { BROADCASTERS } from '../interfaces/nba/league-schedule';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { NBA_NotificationSettings } from '../interfaces/notification';
 import { NBATeam } from '../interfaces/nba-team';
+import { BehaviorSubject, Subject, single } from 'rxjs';
+import { Theme } from './theme.service';
 
 export const SETTINGS_LOCAL_STORAGE: string = "SportsApp-Settings";
 
@@ -13,6 +15,9 @@ export const SETTINGS_LOCAL_STORAGE: string = "SportsApp-Settings";
 export class SettingsService {
   
   settings: Settings|undefined;
+
+  theme = signal<Theme>(Theme.LIGHT);
+  theme$ = toObservable(this.theme);
 
   followedNBATeams = signal<string[]>([]);
   followedNBATeams$ = toObservable(this.followedNBATeams);
@@ -37,7 +42,8 @@ export class SettingsService {
     }
     const storedFollowedNBATeams = this.settings?.followingTeams?.nbaTeams ?? [];
     this.followedNBATeams.set(storedFollowedNBATeams);
-    console.log(this.settings)    
+    console.log(this.settings);
+    this.theme.set(this.settings?.theme ?? Theme.LIGHT);
   }
 
   notifyNBAFavoritesChange(): void {
@@ -85,6 +91,18 @@ export class SettingsService {
     //     nbaTeams: new Map<string, NotificationSettings>()
     //   }
     // } as Settings;
+    this.saveSettings();
+  }
+
+  getTheme(): Theme {
+    return this.settings?.theme ?? Theme.LIGHT;
+  }
+
+  setTheme(value: Theme): void {
+    if(!this.settings){
+      return;
+    }
+    this.settings.theme = value;
     this.saveSettings();
   }
 

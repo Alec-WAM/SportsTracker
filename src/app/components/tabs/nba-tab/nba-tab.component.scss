@@ -15,6 +15,9 @@ app-nba-tab {
     display: flex;
     width: 100%;
     padding: 5px;
+    // background-color: var(--surface-100);
+    background-color: color-mix(in srgb, var(--team-color), transparent 80%);
+    align-items: center;
 
     .selected-team-header {
         display: flex;
@@ -25,24 +28,29 @@ app-nba-tab {
             width: 50px;
         }
 
-        .favorite-button {
-            .p-button {
-                border-radius: 5rem;
-                padding: 0.5rem;
-            }
-        }
+        .team-button-container {
+            display: flex;
+            align-items: center;
 
-        .notification-button {
-            .p-button {
-                border-radius: 5rem;
-                padding: 0.5rem;
+            .favorite-button {
+                .p-button {
+                    border-radius: 5rem;
+                    padding: 0.5rem;
+                }
             }
-        }
 
-        .follow-button {
-            .p-button {
-                border-radius: 5rem;
-                padding: 0.5rem;
+            .notification-button {
+                .p-button {
+                    border-radius: 5rem;
+                    padding: 0.5rem;
+                }
+            }
+
+            .follow-button {
+                .p-button {
+                    border-radius: 5rem;
+                    padding: 0.5rem;
+                }
             }
         }
 
@@ -87,13 +95,15 @@ app-nba-tab {
     height: 100%;
     margin: 0 2rem 1rem 2rem;
     border-radius: 5px;
+    border: 2px solid var(--surface-border);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
     .tab-header-container {
         width: 100%;
 
         .p-tabmenu .p-tabmenu-nav {
-            background: var(--primary-color);
+            background: color-mix(in srgb, var(--team-color), transparent 80%);
+            // background: var(--surface-100);
         }
 
         .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
@@ -101,9 +111,9 @@ app-nba-tab {
         }
 
         .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            background-color: white;
+            // color: var(--primary-color);
+            // border-color: var(--primary-color);
+            // background-color: white;
         }
     }
 }
