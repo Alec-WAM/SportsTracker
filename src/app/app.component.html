@@ -14,6 +14,7 @@
     (onClose)="this.toastService.closeNBAToast($event)" 
     [baseZIndex]="5000"
     styleClass="nba-game-ptoast"
+    [preventDuplicates]="true"
  >
     <ng-template let-message pTemplate="message">
         <div class="toast-message">

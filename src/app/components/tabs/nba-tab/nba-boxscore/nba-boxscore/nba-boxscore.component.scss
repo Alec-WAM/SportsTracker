@@ -106,16 +106,13 @@
                 font-weight: bold;
             }
 
-            .game-time-live {                
+            .game-time-status {                
                 font-size: 14px;
-                color: var(--game-card-red);
+                background-color: var(--game-card-red);
+                border-radius: 5px;
+                color: var(--game-card-status-text);
                 font-weight: bold;
-            }
-
-            .game-time-later {                
-                font-size: 14px;
-                color: var(--game-card-red);
-                font-weight: bold;
+                padding: 2px 4px;
             }
 
             .game-time-countdown {                

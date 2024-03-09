@@ -19,6 +19,7 @@
     .upcoming-games-container {
         display: flex;
         flex-direction: column;
+        background-color: var(--surface-100);
 
         .upcoming-game-skeleton {
             width: 100%;

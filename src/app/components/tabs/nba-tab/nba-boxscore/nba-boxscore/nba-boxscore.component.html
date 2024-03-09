@@ -25,8 +25,8 @@
                 </div>
 
                 <div class="game-time-info">
-                    <span *ngIf="boxscore.gameStatus === STATUS_LATER" class="game-time-later">Upcoming</span>
-                    <span *ngIf="boxscore.gameStatus === STATUS_IN_PROGRESS" class="game-time-live">In Progress</span>
+                    <span *ngIf="boxscore.gameStatus === STATUS_LATER" class="game-time-status">Upcoming</span>
+                    <span *ngIf="boxscore.gameStatus === STATUS_IN_PROGRESS" class="game-time-status">Live</span>
                     <span *ngIf="boxscore.gameStatusText" class="game-time">{{boxscore.gameStatusText}}</span>
                     <span *ngIf="boxscore.gameStatus === STATUS_LATER && time_til_start" class="game-time-countdown">{{time_til_start}}</span>
                     <div *ngIf="boxscore.tvBroadcasters" class="tv-providers">

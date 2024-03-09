@@ -52,7 +52,7 @@
                 </div>
             </div>
         }        
-        <p-dropdown class="team-dropdown" [options]="this.TEAMS" [(ngModel)]="dropDownValue" optionLabel="full_name" placeholder="Select a Team" (onChange)="this.changeTeamDropdown($event)">
+        <p-dropdown class="team-dropdown" [options]="this.TEAMS" [(ngModel)]="dropDownValue" optionLabel="full_name" [filter]="true" filterBy="full_name" placeholder="Select a Team" (onChange)="this.changeTeamDropdown($event)">
             <ng-template pTemplate="selectedItem">
                 <div class="team-list-selected-item" *ngIf="this.selectedTeam().nba_id">
                     <div>{{ this.selectedTeam().full_name }}</div>

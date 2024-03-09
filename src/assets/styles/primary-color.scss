@@ -16,6 +16,7 @@ html body.light-theme {
     --primary-900:#183462;
 
     --game-card-red: red;
+    --game-card-status-text: white;
     --toast-border: black;
 }
 
@@ -37,5 +38,6 @@ html body.dark-theme {
     --primary-900:#264264;
 
     --game-card-red: #f87171;
+    --game-card-status-text: white;
     --toast-border: black;
 }
