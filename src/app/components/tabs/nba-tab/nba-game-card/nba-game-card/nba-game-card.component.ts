@@ -8,6 +8,7 @@ import { ESPN_NBA_Stats } from '../../../../../interfaces/nba/espn-nba';
 import { TooltipModule } from 'primeng/tooltip';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { Pages } from '../../../../header/header.component';
 
 @Component({
   selector: 'app-nba-game-card',
@@ -21,6 +22,7 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './nba-game-card.component.scss'
 })
 export class NbaGameCardComponent {
+  Pages = Pages;
 
   @Input() set game(game: NBAGame|undefined) {
     this._game = game;

@@ -16,12 +16,6 @@
     overflow-y: hidden;
 }
 
-.theme-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-
 :host ::ng-deep .nba-game-ptoast {
     width: 50% !important;
     opacity: 1;

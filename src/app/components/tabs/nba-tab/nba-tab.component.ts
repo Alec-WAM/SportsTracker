@@ -23,6 +23,7 @@ import { TAG_GENERAL_MESSAGE, ToastService } from '../../../services/toast.servi
 import { NBA_Notification, NBA_NotificationSettings } from '../../../interfaces/notification';
 import { getOrdinal } from '../../../utils/util-functions';
 import { SvgIcon, SvgIconsComponent } from '../../../utils/svg-icons/svg-icons.component';
+import { Pages } from '../../header/header.component';
 
 
 @Component({
@@ -109,7 +110,7 @@ export class NbaTabComponent implements OnInit {
           summary: 'Error', 
           detail: `Invalid Team URL (${slug})` 
         });
-        this.router.navigate(["/nba/"]);
+        this.router.navigate([Pages.NBA_TEAMS + '/']);
       }
     }
     else {
@@ -136,7 +137,7 @@ export class NbaTabComponent implements OnInit {
   changeTeamDropdown(event: any): void {
     const team: NBATeam = event.value;
     // console.log("New Team: " + team.url_slug)
-    this.router.navigate(["/nba/" + team.url_slug]);
+    this.router.navigate([Pages.NBA_TEAMS + '/' + team.url_slug]);
   }
 
   updateTeamInfo(team: NBATeam, teamSwitch: boolean = true){

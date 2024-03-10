@@ -1,0 +1,62 @@
+<div class="app-header">
+    <p-button icon="pi pi-bars" class="side-bar-button" [text]="true" (onClick)="this.sidebarVisible = !this.sidebarVisible"></p-button>
+    @if(pageTitle$ | async; as pageTitle){
+        <span class="header-text">{{pageTitle}}</span>
+    }
+</div>
+<p-sidebar [(visible)]="sidebarVisible">
+    <ng-template pTemplate="headless">
+        <div pFocusTrap class="sidebar-container">
+            <div class="side-bar-header">
+                <span class="side-bar-title">Sports App</span>
+                <p-button icon="pi pi-times" class="side-bar-close-button" size="small" [outlined]="true" [rounded]="true" [text]="true" (onClick)="this.sidebarVisible = false"></p-button>
+            </div>
+            <div class="side-bar-pages">
+                <p-button 
+                    class="side-bar-page-button" 
+                    label="Dashboard" icon="pi pi-home" [text]="true" [raised]="true"                    
+                    (onClick)="this.navigateToPage(Pages.DASHBOARD)"
+                >
+                </p-button>
+                <p-accordion [activeIndex]="0">
+                    <p-accordionTab iconPos="end">
+                        <ng-template pTemplate="header">
+                            <div class="side-bar-accordion-header">
+                                <img 
+                                    src="/assets/images/logos/nba.svg" 
+                                    class="nba-logo"
+                                />
+                                <span class="nba-name-text">NBA</span>
+                            </div>
+                        </ng-template>
+                        <div class="accordion-page-contents">
+                            <p-button 
+                                class="side-bar-page-button" 
+                                label="Teams" icon="pi pi-users" [text]="true"                                              
+                                (onClick)="this.navigateToPage(Pages.NBA_TEAMS)"
+                            >
+                            </p-button>
+                            <p-button class="side-bar-page-button" label="Playoffs" icon="pi pi-sitemap" [text]="true" [disabled]="true"></p-button>
+                        </div>
+                    </p-accordionTab>
+                </p-accordion>
+            </div>
+            <div class="side-bar-footer">
+                <p-button 
+                    class='settings-button' 
+                    icon='pi pi-cog'
+                    [rounded]="true"
+                    (onClick)="this.navigateToPage(Pages.SETTINGS)"
+                >
+                </p-button>
+                <p-button 
+                    class='theme-button' 
+                    [icon]="'pi ' + (this.themeService.getTheme() === Theme.DARK ? 'pi-moon' : 'pi-sun')" 
+                    [rounded]="true"
+                    (onClick)="this.themeService.switchTheme()"
+                >
+                </p-button>
+            </div>            
+        </div>        
+    </ng-template>
+</p-sidebar>

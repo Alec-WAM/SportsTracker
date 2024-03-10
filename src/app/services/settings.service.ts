@@ -4,7 +4,6 @@ import { BROADCASTERS } from '../interfaces/nba/league-schedule';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { NBA_NotificationSettings } from '../interfaces/notification';
 import { NBATeam } from '../interfaces/nba-team';
-import { BehaviorSubject, Subject, single } from 'rxjs';
 import { Theme } from './theme.service';
 
 export const SETTINGS_LOCAL_STORAGE: string = "SportsApp-Settings";

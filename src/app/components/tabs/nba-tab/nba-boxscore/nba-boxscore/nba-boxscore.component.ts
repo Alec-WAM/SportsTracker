@@ -12,6 +12,7 @@ import { EMPTY_NBA_STATS } from '../../../../../interfaces/nba/espn-nba';
 import { ProgressCircleComponent } from '../../../../misc/progress-circle/progress-circle.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { TAG_GENERAL_MESSAGE, ToastService } from '../../../../../services/toast.service';
+import { Pages } from '../../../../header/header.component';
 
 @Component({
   selector: 'app-nba-boxscore',
@@ -27,6 +28,8 @@ import { TAG_GENERAL_MESSAGE, ToastService } from '../../../../../services/toast
   styleUrl: './nba-boxscore.component.scss'
 })
 export class NbaBoxscoreComponent {
+  Pages = Pages;
+
   readonly TIMEOUTS_ARRAY = Array.from(Array(7).keys());
   readonly LIVE_UPDATE_INTERVAL = 60;
 

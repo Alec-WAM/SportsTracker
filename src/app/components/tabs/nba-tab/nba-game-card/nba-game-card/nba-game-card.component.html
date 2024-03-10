@@ -2,7 +2,7 @@
     <div *ngIf="this._game" class="game-card-main">
         <!-- Away Team -->
         <div *ngIf="this.awayTeam" class="game-team-info">
-            <a [href]="'/nba/'+this.awayTeam.url_slug"><img src="/assets/images/logos/{{this.awayTeam.image}}.svg" class="team-logo" /></a>
+            <a [href]="Pages.NBA_TEAMS + '/' + this.awayTeam.url_slug"><img src="/assets/images/logos/{{this.awayTeam.image}}.svg" class="team-logo" /></a>
             <span class="team-name">{{this.awayTeam.short_name}}</span>
             <span *ngIf="this.awayStats" class="stats">{{this.awayStats.wins}}-{{this.awayStats.losses}}</span>
         </div>
@@ -33,7 +33,7 @@
         </div>
 
         <div *ngIf="this.homeTeam" class="game-team-info">
-            <a [href]="'/nba/'+this.homeTeam.url_slug"><img src="/assets/images/logos/{{this.homeTeam.image}}.svg" class="team-logo" /></a>
+            <a [href]="Pages.NBA_TEAMS + '/' + this.homeTeam.url_slug"><img src="/assets/images/logos/{{this.homeTeam.image}}.svg" class="team-logo" /></a>
             <span class="team-name">{{this.homeTeam.short_name}}</span>
             <span *ngIf="this.homeStats" class="stats">{{this.homeStats.wins}}-{{this.homeStats.losses}}</span>
         </div>

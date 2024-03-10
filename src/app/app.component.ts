@@ -7,25 +7,29 @@ import { NBAService } from './services/nba.service';
 import { NotificationService } from './services/notification.service';
 import { ToastService } from './services/toast.service';
 import { ButtonModule } from 'primeng/button';
-import { Theme, ThemeService } from './services/theme.service';
+import { SidebarModule } from 'primeng/sidebar';
+import { HeaderComponent, Pages } from './components/header/header.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, 
+    RouterOutlet,
+    SidebarModule,
     TabMenuModule,
     ToastModule,
-    ButtonModule
+    ButtonModule,
+
+    HeaderComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
-  Theme = Theme;
+export class AppComponent implements OnInit {  
+  Pages = Pages;
   
   title = 'sports-app';
-  
+
   tabs: MenuItem[] = [
     { 
       id: 'home', 
@@ -50,7 +54,6 @@ export class AppComponent implements OnInit {
   nbaService = inject(NBAService);
   notificationService = inject(NotificationService);
   toastService = inject(ToastService);
-  themeService = inject(ThemeService);
 
   ngOnInit(): void {
     this.nbaService.loadLeagueSchedule();

@@ -15,9 +15,12 @@ html body.light-theme {
     --primary-800:#204887;
     --primary-900:#183462;
 
+    --header-background: var(--surface-400);
+    --side-bar-button-color: var(--primary-color);
+    --toast-border: black;
+
     --game-card-red: red;
     --game-card-status-text: white;
-    --toast-border: black;
 }
 
 html body.dark-theme {
@@ -37,7 +40,10 @@ html body.dark-theme {
     --primary-800:#355b8a;
     --primary-900:#264264;
 
+    --header-background: var(--surface-100);
+    --side-bar-button-color: var(--primary-color);
+    --toast-border: black;
+
     --game-card-red: #f87171;
     --game-card-status-text: white;
-    --toast-border: black;
 }

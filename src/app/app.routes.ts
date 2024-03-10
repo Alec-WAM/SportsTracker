@@ -6,25 +6,29 @@ import { HomeTabComponent } from './components/tabs/home-tab/home-tab.component'
 export const routes: Routes = [
     {
         path: '', 
-        redirectTo: 'home', 
+        redirectTo: 'dashboard', 
         pathMatch: 'full' 
     },
     {
-        path: 'home',
+        path: 'dashboard',
         pathMatch: 'full',
+        title: "Dashboard",
         component: HomeTabComponent
     },
     {
-        path: 'nba/:team', 
+        path: 'nba/team/:team', 
+        title: "NBA",
         component: NbaTabComponent
     },
     {
-        path: 'nba', 
+        path: 'nba/team', 
+        title: "NBA",
         component: NbaTabComponent
     },
     {
         path: 'settings', 
         pathMatch: 'full',
+        title: "Settings",
         component: SettingsTabComponent
     }
 ];

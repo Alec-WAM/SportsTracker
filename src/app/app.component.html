@@ -1,13 +1,8 @@
-<p-tabMenu [model]="tabs"></p-tabMenu>
+<app-header></app-header>
 <div class="root-wrapper">
     <router-outlet></router-outlet>
 </div>
-<p-button 
-    class='theme-button' 
-    [icon]="'pi ' + (this.themeService.getTheme() === Theme.DARK ? 'pi-moon' : 'pi-sun')" 
-    [rounded]="true" [outlined]="true"
-    (onClick)="this.themeService.switchTheme()"
-></p-button>
+
 <p-toast 
     position="bottom-center"
     key="nba-game" 
@@ -21,9 +16,9 @@
             @if(message.data?.nbaGame; as game){
                 <div class="nba-game-toast">
                     <div class="team-logo-container">
-                        <a [href]="'/nba/'+game.awayTeam.url_slug"><img src="/assets/images/logos/{{game.awayTeam.image}}.svg" class="team-logo" /></a>
+                        <a [href]="Pages.NBA_TEAMS + '/' + game.awayTeam.url_slug"><img src="/assets/images/logos/{{game.awayTeam.image}}.svg" class="team-logo" /></a>
                         <span class="versus-text">vs.</span>
-                        <a [href]="'/nba/'+game.homeTeam.url_slug"><img src="/assets/images/logos/{{game.homeTeam.image}}.svg" class="team-logo"/></a>
+                        <a [href]="Pages.NBA_TEAMS + '/' + game.homeTeam.url_slug"><img src="/assets/images/logos/{{game.homeTeam.image}}.svg" class="team-logo"/></a>
                     </div>
                     <span class="message-summary">{{message.summary ? message.summary+": " : ""}}{{message.detail}}</span>
                     <p-button 

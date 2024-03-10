@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Subscription, timer } from 'rxjs';
 import { NBAService } from './nba.service';
 import { ToastService } from './toast.service';
+import { Pages } from '../components/header/header.component';
 
 @Injectable({
   providedIn: 'root'
@@ -158,7 +159,7 @@ export class NotificationService {
       const actions: NotificationAction[] = [];
       const data = {
         "onActionClick": {
-          "default": {"operation": "navigateLastFocusedOrOpen", url: `/nba/${notification.team?.url_slug ?? ""}`},
+          "default": {"operation": "navigateLastFocusedOrOpen", url: `${Pages.NBA_TEAMS}/${notification.team?.url_slug ?? ""}`},
         } as any
       }
       

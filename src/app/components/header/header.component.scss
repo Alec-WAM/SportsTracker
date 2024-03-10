@@ -1,0 +1,112 @@
+:host ::ng-deep {
+
+    .side-bar-button{
+        .p-button.p-button-text {
+            color: var(--text-color);
+        }
+    }
+
+    .side-bar-page-button {
+        .p-button {
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1rem;
+            // background-color: var(--side-bar-button-color);
+        }
+        .p-button.p-button-text {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+    }
+
+    .side-bar-pages {
+        .p-accordion .p-accordion-header .p-accordion-header-link {
+            // background-color: var(--side-bar-button-color);
+            padding: 0.5rem 1rem;
+        }
+    }
+
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+
+    padding: 1rem 0rem;
+    background-color: var(--header-background);
+
+    .header-text {
+        font-size: 30px;
+        font-weight: bold;
+    }
+}
+
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    .side-bar-header {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 2px solid var(--surface-border);
+
+        .side-bar-title {
+            font-size: 30px;
+            font-weight: bold;
+            color: orange;
+        }
+
+        .side-bar-close-button {
+            margin-left: auto;
+        }
+    }
+
+    .side-bar-pages {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        padding: 1rem;
+        gap: 5px;
+        overflow-y: auto;
+
+        .side-bar-accordion-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .nba-logo {
+                width: 15px;
+            }
+
+            .nba-name-text {
+                font-family: Helvetica, sans-serif;
+                font-size: 1rem;
+                font-weight: bold;
+                color: var(--text-color);
+            }
+        }
+
+        .accordion-page-contents {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+
+    .side-bar-footer {
+        display: flex;
+        align-items: center;
+        height: 4rem;
+        width: 100%;
+        gap: 5px;
+        padding: 1rem;
+        border-top: 2px solid var(--surface-border);
+    }
+}
