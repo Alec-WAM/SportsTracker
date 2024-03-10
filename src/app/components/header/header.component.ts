@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { AccordionModule } from 'primeng/accordion';
 import { FocusTrapModule } from 'primeng/focustrap';
 import { Theme, ThemeService } from '../../services/theme.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 export enum Pages {
@@ -21,6 +22,7 @@ export enum Pages {
   imports: [
     CommonModule,
     FocusTrapModule,
+    TooltipModule,
 
     SidebarModule,
     ButtonModule,

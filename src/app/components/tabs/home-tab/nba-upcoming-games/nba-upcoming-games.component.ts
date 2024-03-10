@@ -62,7 +62,6 @@ export class NbaUpcomingGamesComponent implements OnInit {
       this.upcomingGames.set(nextGames);
     }
     else {      
-      console.log("Empty Upcoming")
       this.followingCount = [];
       this.upcomingGames.set([]);
     }

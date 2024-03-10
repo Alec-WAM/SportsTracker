@@ -9,7 +9,7 @@
         <div pFocusTrap class="sidebar-container">
             <div class="side-bar-header">
                 <span class="side-bar-title">Sports App</span>
-                <p-button icon="pi pi-times" class="side-bar-close-button" size="small" [outlined]="true" [rounded]="true" [text]="true" (onClick)="this.sidebarVisible = false"></p-button>
+                <p-button icon="pi pi-times" class="side-bar-close-button" size="small" [rounded]="true" [text]="true" (onClick)="this.sidebarVisible = false"></p-button>
             </div>
             <div class="side-bar-pages">
                 <p-button 
@@ -43,17 +43,21 @@
             </div>
             <div class="side-bar-footer">
                 <p-button 
-                    class='settings-button' 
-                    icon='pi pi-cog'
-                    [rounded]="true"
-                    (onClick)="this.navigateToPage(Pages.SETTINGS)"
-                >
-                </p-button>
-                <p-button 
                     class='theme-button' 
                     [icon]="'pi ' + (this.themeService.getTheme() === Theme.DARK ? 'pi-moon' : 'pi-sun')" 
                     [rounded]="true"
+                    pTooltip="Change Theme"
+                    [showDelay]="1000"
                     (onClick)="this.themeService.switchTheme()"
+                >
+                </p-button>
+                <p-button 
+                    class='settings-button' 
+                    icon='pi pi-cog'
+                    [rounded]="true"
+                    pTooltip="Settings"
+                    [showDelay]="1000"
+                    (onClick)="this.navigateToPage(Pages.SETTINGS)"
                 >
                 </p-button>
             </div>            

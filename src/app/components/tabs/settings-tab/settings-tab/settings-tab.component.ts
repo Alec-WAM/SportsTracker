@@ -54,6 +54,10 @@ export class SettingsTabComponent implements OnInit {
   }
 
   updateNBAScheduleMessage(): void {
+    if(this.nbaService.schedule_download_error){
+      this.nbaScheduleDate.set("Error Downloading Schedule (see logs)");
+      return;
+    }
     this.dbService.getJSONData(DB_JSON_KEY_NBA_SCHEDULE).then((value) => {
       if(!value){
         this.nbaScheduleDate.set("Schedule is not downloaded");
@@ -74,7 +78,8 @@ export class SettingsTabComponent implements OnInit {
       }
     })
     .catch((error) => {
-      this.nbaScheduleDate.set("Error loading Schedule");
+      this.nbaScheduleDate.set("Error Loading Schedule");
+      console.error(error);
     });
   }
 

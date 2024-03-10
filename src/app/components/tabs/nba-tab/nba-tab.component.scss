@@ -89,6 +89,26 @@ app-nba-tab {
     padding: 1rem;
 }
 
+.select-team-warning {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    font-size: 34px;
+    font-weight: bold;
+
+    span {
+        text-align: center;
+    }
+
+    .select-team-info {
+        display: flex;
+        font-size: 10px;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+}
+
 .team-info {
     display: flex;
     flex-direction: column;

@@ -89,6 +89,21 @@
                 </div>
             </div>
         }
+        @else {
+            <div class="select-team-warning">
+                <span>Please Select a Team</span>
+                <div class="select-team-info">
+                    <span>Click the</span>
+                    <i [class]="'pi pi-star-fill'" style="font-size: 0.8rem; color: var(--text-color);"></i>
+                    <span>button on a team's page to load their page by default</span>
+                </div>
+            </div>
+        }
+    }
+    @else {
+        <div class="select-team-warning">
+            Please Select a Team
+        </div>
     }
 </div>
 <p-dialog 

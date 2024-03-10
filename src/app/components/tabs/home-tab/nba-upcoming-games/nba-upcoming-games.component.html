@@ -12,10 +12,19 @@
             }
             @empty {
                 @if(this.followingCount && this.followingCount.length > 0) {
-                    <div class="upcoming-game-empty">No Games Found</div>
+                    <div class="upcoming-game-empty">
+                        No Games Found
+                    </div>
                 }
                 @else {            
-                    <div class="upcoming-game-empty">You are not following any teams</div>
+                    <div class="upcoming-game-empty">
+                        You are not following any teams
+                        <div class="follow-team-instructions">
+                            <span>Click the</span>
+                            <i [class]="'pi pi-eye'" style="font-size: 0.8rem; color: var(--text-color);"></i>
+                            <span>button on a team's page to see their upcoming games here</span>
+                        </div>
+                    </div>
                 }
             }
         }
@@ -24,11 +33,20 @@
                 <p-skeleton height="6rem" width="calc(100% - 2rem)" class="upcoming-game-skeleton mb-2"></p-skeleton>
             }
             @empty {
-                <div class="upcoming-game-empty">No Games Found</div>
+                <div class="upcoming-game-empty">
+                    No Games Found
+                </div>
             }
         }
         @else {            
-            <div class="upcoming-game-empty">You are not following any teams</div>
+            <div class="upcoming-game-empty">
+                You are not following any teams
+                <div class="follow-team-instructions">
+                    <span>Click the</span>
+                    <i [class]="'pi pi-eye'" style="font-size: 0.8rem; color: var(--text-color);"></i>
+                    <span>button on a team's page to see their upcoming games here</span>
+                </div>
+            </div>
         }
     </div>
 </div>

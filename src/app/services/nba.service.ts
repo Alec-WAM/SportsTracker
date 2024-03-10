@@ -29,6 +29,7 @@ export class NBAService {
   messageService = inject(MessageService);
   
   schedule_data_changed: Subject<void> = new Subject();
+  schedule_download_error: boolean = false;
 
   schedule: LeagueSchedule | undefined;
   schedule_loaded: Subject<void> = new Subject();
@@ -97,36 +98,36 @@ export class NBAService {
 
   downloadNBAJSONSchedule(): void {
     from(fetch(`${NBA_JSON_ENDPOINT}/staticData/scheduleLeagueV2.json`)).pipe(
-      switchMap(response => response.json()),
-      catchError((err, caught) => {
-        console.error(err);
+      switchMap(response => response.json())
+    )
+    .subscribe({
+      next: (response) => {
+        console.info("Downloaded NBA Schedule");
+        this.dbService.saveJSONData(DB_JSON_KEY_NBA_SCHEDULE, response).then(() => {
+          this.convertSchedule(response);
+          this.schedule_download_error = false;
+          this.schedule_data_changed.next();
+          
+          this.messageService.add({ 
+            key: TAG_GENERAL_MESSAGE, 
+            severity: 'success', 
+            summary: 'Success', 
+            detail: 'Downloaded the NBA Schedule' 
+          });
+        })
+      },
+      error: (error) => {
+        console.error("Unable to load NBA Schedule")
+        console.error(error);
         this.messageService.add({ 
           key: TAG_GENERAL_MESSAGE, 
           severity: 'error', 
           summary: 'Error', 
           detail: 'Unable to download NBA Schedule' 
         });
-        return "error";
-      })
-    )
-    .subscribe((response) => {
-      if(response === "error"){
-        console.error("Unable to load NBA Schedule")
-        return;
-      }
-
-      console.info("Downloaded NBA Schedule")
-      this.dbService.saveJSONData(DB_JSON_KEY_NBA_SCHEDULE, response).then(() => {
-        this.convertSchedule(response);
+        this.schedule_download_error = true;
         this.schedule_data_changed.next();
-        
-        this.messageService.add({ 
-          key: TAG_GENERAL_MESSAGE, 
-          severity: 'success', 
-          summary: 'Success', 
-          detail: 'Downloaded the NBA Schedule' 
-        });
-      })
+      }
     });
   }
 
