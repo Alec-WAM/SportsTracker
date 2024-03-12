@@ -1,11 +1,15 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
-import { NBA_Notification } from '../interfaces/notification';
+import { NBA_Game_Notification, NBA_Notification, NBA_Upcoming_Notification, isNBAGameNotification, isNBAUpcomingNotification } from '../interfaces/notification';
 import moment from 'moment';
 import { Subscription, timer } from 'rxjs';
 import { NBAService } from './nba.service';
 import { ToastService } from './toast.service';
 import { Pages } from '../components/header/header.component';
+import { NBAGame } from '../interfaces/nba/league-schedule';
+import { toObservable } from '@angular/core/rxjs-interop';
+
+export const NOTIFICATION_ACTION_NBA_UPCOMING = 'nba-upcoming';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +18,11 @@ export class NotificationService {
   readonly NOTIFICATION_TIME = 10;
   swPush = inject(SwPush);
   nbaService = inject(NBAService);
-  toastService = inject(ToastService);
+  toastService = inject(ToastService);  
+
+  showUpcomingNBAGames: boolean = false;
+  upcomingNBAGames = signal<NBAGame[]>([]);
+  upcomingNBAGames$ = toObservable(this.upcomingNBAGames);
 
   dailyTimerSub: Subscription | undefined;
   todaysNBANotifications: NBA_Notification[] = [];
@@ -23,6 +31,16 @@ export class NotificationService {
     this.nbaService.schedule_loaded.subscribe((value) => {      
       this.setupNotificationLoop();
     })
+    // this.swPush.notificationClicks.subscribe((value) => {
+    //   const action = value.action;
+    //   const notification = value.notification;
+    //   if(action === NOTIFICATION_ACTION_NBA_UPCOMING){
+    //     const data = notification.data;
+    //     if(data && data['games']){
+    //       this.viewUpcomingNBAGames(data['games']);
+    //     }
+    //   }
+    // });
   }
 
   setupNotificationLoop(): void {
@@ -61,6 +79,8 @@ export class NotificationService {
     const nbaNotifications = this.nbaService.settingsService.settings?.notificationTeams?.nbaTeams ?? [];
     const now = moment();
     // console.log(now.format())
+    const upcomingGames: NBAGame[] = [];
+
     for(let notSettings of nbaNotifications){
       const team = this.nbaService.getTeam(notSettings.team_id);
       if(team){
@@ -70,26 +90,7 @@ export class NotificationService {
           // console.log(todayGame)
           const gameMoment = moment(todayGame.gameDateTimeUTC, moment.ISO_8601);
           if(notSettings.gameReminder && now.isBefore(gameMoment)){
-            const dateRemider = now.clone();
-            dateRemider.set('hour', this.NOTIFICATION_TIME);
-            dateRemider.set('minute', 0);
-            dateRemider.set('second', 0);
-            dateRemider.set('millisecond', 0);
-
-            const awayTeam = this.nbaService.getTeam(todayGame.awayTeam.teamId);
-            const homeTeam = this.nbaService.getTeam(todayGame.homeTeam.teamId);
-
-            const description = `${awayTeam?.short_name} vs. ${homeTeam?.short_name} @ ${gameMoment.format("h:mm a")}`;
-
-            const remiderNotification: NBA_Notification = {
-              team: team,
-              title: "Upcoming Game",
-              description: description,
-              nbaGame: todayGame
-            };
-
-            const notification = this.sendNotificationAtTime(now, dateRemider, remiderNotification);
-            this.todaysNBANotifications.push(notification);
+            upcomingGames.push(todayGame);
           }
 
           const gameStartMaxTime = gameMoment.clone().add(2, 'hours');
@@ -101,7 +102,7 @@ export class NotificationService {
 
             const title = now.isBefore(preGameTime) ? "Game Starting" : "Game in Progress";
             const description = `${awayTeam?.short_name} vs. ${homeTeam?.short_name}`;
-            const remiderNotification: NBA_Notification = {
+            const remiderNotification: NBA_Game_Notification = {
               team: team,
               title: title,
               description: description,
@@ -114,6 +115,32 @@ export class NotificationService {
         }
       }
     }
+
+    if(upcomingGames.length > 0){
+      const dateRemider = now.clone();
+      dateRemider.set('hour', this.NOTIFICATION_TIME);
+      dateRemider.set('minute', 0);
+      dateRemider.set('second', 0);
+      dateRemider.set('millisecond', 0);
+
+      const description = `${upcomingGames.length} Upcoming Game${upcomingGames.length > 1 ? 's' : ''} Today`;
+
+      const sortedGames = upcomingGames.sort((a, b) => {
+        const dateA = moment(a.gameDateTimeUTC, moment.ISO_8601);
+        const dateB = moment(b.gameDateTimeUTC, moment.ISO_8601);
+        return dateA.diff(dateB);
+      });
+
+      const remiderNotification: NBA_Upcoming_Notification = {
+        title: "Upcoming NBA Games",
+        description: description,
+        nbaGames: sortedGames
+      };
+
+      const notification = this.sendNotificationAtTime(now, dateRemider, remiderNotification);
+      this.todaysNBANotifications.push(notification);
+    }
+    
 
     console.log(this.todaysNBANotifications);
   }
@@ -148,38 +175,51 @@ export class NotificationService {
 
   sendNotification(notification: NBA_Notification): void {
     //Toast message if page is visible
-    if(!document.hidden){
+    /*if(!document.hidden && false){
       this.toastService.showNBAToast(notification);
     }
-    else {
+    else {*/
       let icon = "";
-      if(notification.team){
+      if(isNBAGameNotification(notification) && notification.team){
         icon = `/assets/images/logos/${notification.team.image}.svg`;
       }
       const actions: NotificationAction[] = [];
-      const data = {
-        "onActionClick": {
-          "default": {"operation": "navigateLastFocusedOrOpen", url: `${Pages.NBA_TEAMS}/${notification.team?.url_slug ?? ""}`},
-        } as any
-      }
+      let data: any = {
+        "onActionClick": {} as any
+      };
       
-      if(notification.nbaGame){
+      if(isNBAGameNotification(notification)){
+        data.onActionClick["default"] = {"operation": "navigateLastFocusedOrOpen", url: `${Pages.NBA_TEAMS}/${notification.team?.url_slug ?? ""}`};
+      
+        if(notification.nbaGame){
+          actions.push({
+            action: 'nba-game',
+            title: 'View Game'
+          })
+          data.onActionClick["nba-game"] = {"operation": "openWindow", "url": notification.nbaGame.branchLink};
+        }
+      }
+
+      if(isNBAUpcomingNotification(notification)){
         actions.push({
-          action: 'game',
-          title: 'View Game'
+          action: NOTIFICATION_ACTION_NBA_UPCOMING,
+          title: `View Game${notification.nbaGames?.length > 1 ? 's' : ''}`
         })
-        data.onActionClick["game"] = {"operation": "openWindow", "url": notification.nbaGame.branchLink};
+        data.onActionClick["default"] = {"operation": "navigateLastFocusedOrOpen", url: Pages.DASHBOARD};
+        data.onActionClick[NOTIFICATION_ACTION_NBA_UPCOMING] = {"operation": "navigateLastFocusedOrOpen", url: Pages.NBA_TEAMS};
       }
       
-      const options = {
+      const options: NotificationOptions = {
         body: notification.description,
         icon: icon,
         actions: actions,
         data: data
       }
+      console.log(options)
+      console.log(notification)
       
       this.showNotification(notification.title, options);
-    }
+    //}
   }
 
   isNBANotification(obj: any): obj is NBA_Notification {
@@ -196,6 +236,7 @@ export class NotificationService {
     if (Notification.permission === 'granted') {
       // new Notification(title, options);
       navigator.serviceWorker.getRegistration().then((reg) => {
+        console.log(reg);
         if (reg != null) {
           reg.showNotification(title, options);
         }
@@ -228,5 +269,10 @@ export class NotificationService {
     if(this.isNBANotification(notification)){
       this.toastService.showNBAToast(notification);
     }
+  } 
+
+  viewUpcomingNBAGames(games: NBAGame[]): void {
+    this.showUpcomingNBAGames = true;
+    this.upcomingNBAGames.set(games);
   }
 }

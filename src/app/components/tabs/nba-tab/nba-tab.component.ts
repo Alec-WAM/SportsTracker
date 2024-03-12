@@ -20,7 +20,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { NotificationService } from '../../../services/notification.service';
 import { TAG_GENERAL_MESSAGE, ToastService } from '../../../services/toast.service';
-import { NBA_Notification, NBA_NotificationSettings } from '../../../interfaces/notification';
+import { NBA_Game_Notification, NBA_NotificationSettings } from '../../../interfaces/notification';
 import { getOrdinal } from '../../../utils/util-functions';
 import { SvgIcon, SvgIconsComponent } from '../../../utils/svg-icons/svg-icons.component';
 import { Pages } from '../../header/header.component';
@@ -282,9 +282,9 @@ export class NbaTabComponent implements OnInit {
   sendNotification(): void {
     if(this.selectedTeam()){
       if(this.nextGame()){
-        const notification: NBA_Notification = {
+        const notification: NBA_Game_Notification = {
           team: this.selectedTeam(),
-          title: '',
+          title: 'Test Notification',
           description: 'Game in Progress',
           nbaGame: this.nextGame()
         };

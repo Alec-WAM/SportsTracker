@@ -58,7 +58,7 @@ export class SettingsService {
   }
 
   resetToDefault(): void {
-    const defaultURLs: BroadcasterURLSetting[] = [];
+    const defaultURLs: BroadcasterURLSetting[] = [];    
 
     for(const broadcaster of BROADCASTERS){
       if(!broadcaster.default_url){
@@ -76,20 +76,24 @@ export class SettingsService {
           nbaURLs: defaultURLs
       };
     }
-    // this.settings = {
-    //   broadcasterURLs: {
-    //     nbaURLs: defaultURLs
-    //   },
-    //   favoriteTeams: {
-    //     nbaTeamId: undefined
-    //   },
-    //   followingTeams: {
-    //     nbaTeams: []
-    //   },
-    //   notificationTeams: {
-    //     nbaTeams: new Map<string, NotificationSettings>()
-    //   }
-    // } as Settings;
+    else {
+      this.settings = {
+        broadcasterURLs: {
+          nbaURLs: defaultURLs
+        },
+        favoriteTeams: {
+          nbaTeamId: undefined
+        },
+        followingTeams: {
+          nbaTeams: []
+        },
+        theme: Theme.LIGHT,
+        notificationTeams: {
+          nbaTeams: []
+        }
+      } as Settings;
+    }
+    
     this.saveSettings();
   }
 

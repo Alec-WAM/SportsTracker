@@ -11,28 +11,48 @@
     styleClass="nba-game-ptoast"
     [preventDuplicates]="true"
  >
-    <ng-template let-message pTemplate="message">
+    <ng-template let-message pTemplate="headless" let-closeFn="closeFn">
         <div class="toast-message">
-            @if(message.data?.nbaGame; as game){
-                <div class="nba-game-toast">
-                    <div class="team-logo-container">
-                        <a [href]="Pages.NBA_TEAMS + '/' + game.awayTeam.url_slug"><img src="/assets/images/logos/{{game.awayTeam.image}}.svg" class="team-logo" /></a>
-                        <span class="versus-text">vs.</span>
-                        <a [href]="Pages.NBA_TEAMS + '/' + game.homeTeam.url_slug"><img src="/assets/images/logos/{{game.homeTeam.image}}.svg" class="team-logo"/></a>
+            @if(message.data?.type === NBA_Notification_Type.GAME){
+                @if(message.data?.nbaGame; as game){
+                    <div class="nba-game-toast">
+                        <div class="team-logo-container">
+                            <a *ngIf="game.awayTeam" [href]="Pages.NBA_TEAMS + '/' + game.awayTeam.url_slug"><img src="/assets/images/logos/{{game.awayTeam.image}}.svg" class="team-logo" /></a>
+                            <span class="versus-text">vs.</span>
+                            <a *ngIf="game.homeTeam" [href]="Pages.NBA_TEAMS + '/' + game.homeTeam.url_slug"><img src="/assets/images/logos/{{game.homeTeam.image}}.svg" class="team-logo"/></a>
+                        </div>
+                        <span class="message-summary">{{message.summary ? message.summary+": " : ""}}{{message.detail}}</span>
+                        <p-button 
+                            class="p-button-sm nba-game-toast-button" 
+                            label="View Game" 
+                            (click)="this.toastService.viewNBATeam(message.data?.team); closeFn($event);"
+                        ></p-button>
                     </div>
-                    <span class="message-summary">{{message.summary ? message.summary+": " : ""}}{{message.detail}}</span>
-                    <p-button 
-                        class="p-button-sm" 
-                        [link]="true" 
-                        label="View Game" 
-                        icon="pi pi-external-link" iconPos="right"
-                        (click)="this.toastService.viewNBAGame(game)"
-                    ></p-button>
-                </div>
+                }
+                @else {
+                    Missing Game
+                }
             }
-            @else {
-                Missing Game
+            @else if(message.data?.type === NBA_Notification_Type.UPCOMING){
+                @if(message.data?.nbaGames; as games){
+                    <div class="nba-game-toast">
+                        <div class="game-count">
+                            <span>{{games.length}}</span>
+                        </div>
+
+                        <span class="message-summary">{{message.summary ? message.summary+": " : ""}}{{message.detail}}</span>
+                        
+                        <p-button 
+                            class="p-button-sm nba-game-toast-button" 
+                            [label]="'View Game' + (games.length > 1 ? 's' : '')" 
+                            icon="pi pi-window-maximize" 
+                            iconPos="right"
+                            (click)="this.notificationService.viewUpcomingNBAGames(games); closeFn($event);"
+                        ></p-button>
+                    </div>
+                }
             }
+            <p-button icon="pi pi-times" class="toast-close-button" [rounded]="true" [text]="true" (click)="closeFn($event)"></p-button>
         </div>
     </ng-template>
 </p-toast>
@@ -43,3 +63,12 @@
     [baseZIndex]="5000"
  >
 </p-toast>
+<p-dialog header="Upcoming NBA Games" [(visible)]="this.notificationService.showUpcomingNBAGames" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    @if(this.notificationService.upcomingNBAGames$ | async; as games){
+        <div class="upcoming-games-dialog">
+            @for(game of games; track game.gameId){
+                <app-nba-game-card [game]="game"></app-nba-game-card>
+            }
+        </div>
+    }
+</p-dialog>

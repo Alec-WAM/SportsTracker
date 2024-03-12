@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -9,25 +9,35 @@ import { ToastService } from './services/toast.service';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { HeaderComponent, Pages } from './components/header/header.component';
+import { NBA_Notification_Type } from './interfaces/notification';
+import { DialogModule } from 'primeng/dialog';
+import { NBAGame } from './interfaces/nba/league-schedule';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
+import { NbaGameCardComponent } from './components/tabs/nba-tab/nba-game-card/nba-game-card/nba-game-card.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+    CommonModule,    
     RouterOutlet,
     SidebarModule,
     TabMenuModule,
     ToastModule,
     ButtonModule,
+    DialogModule,
 
-    HeaderComponent
+    HeaderComponent,
+    NbaGameCardComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {  
   Pages = Pages;
-  
+  NBA_Notification_Type = NBA_Notification_Type;
+
   title = 'sports-app';
 
   tabs: MenuItem[] = [
