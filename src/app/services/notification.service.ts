@@ -31,16 +31,16 @@ export class NotificationService {
     this.nbaService.schedule_loaded.subscribe((value) => {      
       this.setupNotificationLoop();
     })
-    // this.swPush.notificationClicks.subscribe((value) => {
-    //   const action = value.action;
-    //   const notification = value.notification;
-    //   if(action === NOTIFICATION_ACTION_NBA_UPCOMING){
-    //     const data = notification.data;
-    //     if(data && data['games']){
-    //       this.viewUpcomingNBAGames(data['games']);
-    //     }
-    //   }
-    // });
+    this.swPush.notificationClicks.subscribe((value) => {
+      const action = value.action;
+      const notification = value.notification;
+      const data = notification.data;
+      if(data){
+        if(data.type === NOTIFICATION_ACTION_NBA_UPCOMING && data['games']){
+          this.viewUpcomingNBAGames(data['games']);
+        }
+      }
+    });
   }
 
   setupNotificationLoop(): void {
@@ -175,10 +175,10 @@ export class NotificationService {
 
   sendNotification(notification: NBA_Notification): void {
     //Toast message if page is visible
-    /*if(!document.hidden && false){
+    if(!document.hidden){
       this.toastService.showNBAToast(notification);
     }
-    else {*/
+    else {
       let icon = "";
       if(isNBAGameNotification(notification) && notification.team){
         icon = `/assets/images/logos/${notification.team.image}.svg`;
@@ -201,12 +201,9 @@ export class NotificationService {
       }
 
       if(isNBAUpcomingNotification(notification)){
-        actions.push({
-          action: NOTIFICATION_ACTION_NBA_UPCOMING,
-          title: `View Game${notification.nbaGames?.length > 1 ? 's' : ''}`
-        })
-        data.onActionClick["default"] = {"operation": "navigateLastFocusedOrOpen", url: Pages.DASHBOARD};
-        data.onActionClick[NOTIFICATION_ACTION_NBA_UPCOMING] = {"operation": "navigateLastFocusedOrOpen", url: Pages.NBA_TEAMS};
+        data.onActionClick["default"] = { "operation": "focusLastFocusedOrOpen", url: Pages.DASHBOARD };
+        data['type'] = NOTIFICATION_ACTION_NBA_UPCOMING;
+        data['games'] = notification.nbaGames;
       }
       
       const options: NotificationOptions = {
@@ -215,11 +212,9 @@ export class NotificationService {
         actions: actions,
         data: data
       }
-      console.log(options)
-      console.log(notification)
       
-      this.showNotification(notification.title, options);
-    //}
+      this.showNotification(notification.title, notification, options);
+    }
   }
 
   isNBANotification(obj: any): obj is NBA_Notification {
