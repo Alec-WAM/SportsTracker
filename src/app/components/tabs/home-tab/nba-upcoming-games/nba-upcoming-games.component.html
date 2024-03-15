@@ -1,0 +1,47 @@
+<div class="nba-upcoming-games-container">
+    <div class="upcoming-games-header">
+        <img 
+            src="/assets/images/logos/nba-full.svg" 
+            class="nba-logo"
+        />
+    </div>
+    <div class="upcoming-games-container">
+        @if(upcomingGames$ | async; as upcomingGames){
+            @for(game of upcomingGames; track game.gameId){
+                <app-nba-boxscore [game]="game"></app-nba-boxscore>
+            }
+            @empty {
+                @if(this.followingCount && this.followingCount.length > 0) {
+                    @for(gameNumber of this.followingCount; track gameNumber){
+                        <p-skeleton height="10rem" width="calc(100% - 2rem)" class="upcoming-game-skeleton mb-2"></p-skeleton>
+                    }
+                    @empty {
+                        <div class="upcoming-game-empty">
+                            No Games Found False
+                        </div>
+                    }
+                }
+                @else {            
+                    <div class="upcoming-game-empty">
+                        You are not following any teams
+                        <div class="follow-team-instructions">
+                            <span>Click the</span>
+                            <i [class]="'pi pi-eye'" style="font-size: 0.8rem; color: var(--text-color);"></i>
+                            <span>button on a team's page to see their upcoming games here</span>
+                        </div>
+                    </div>
+                }
+            }
+        }
+        @else {            
+            <div class="upcoming-game-empty">
+                You are not following any teams
+                <div class="follow-team-instructions">
+                    <span>Click the</span>
+                    <i [class]="'pi pi-eye'" style="font-size: 0.8rem; color: var(--text-color);"></i>
+                    <span>button on a team's page to see their upcoming games here</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>

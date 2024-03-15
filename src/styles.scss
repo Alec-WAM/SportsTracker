@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/styles/primary-color.scss";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+html, body {
+  min-height: 100vh;
+  height: auto;
+  margin: 0;
+  background-color: var(--surface-ground);
+}
+
+:host ::ng-deep app-root {
+  display: flex;
+  flex-direction: column;
+}
+
+.p-button {
+  min-width: unset;
+}
+
+:host ::ng-deep .p-menuitem-icon {
+  .custom-icons {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+  }
+   
+  .nba-icon {
+    background-image: url("assets/images/logos/nba.svg");
+  }
+}

@@ -1,0 +1,91 @@
+<div class="game-card-container">
+    @if (boxscore$ | async; as boxscore) {
+        @if(this.invalidGame){
+            <span class="invalid-game">Error Loading Game</span>
+        }
+        @else {
+            <div class="game-card-main">
+                <!-- Away Team -->
+                <div *ngIf="boxscore.awayTeam" class="game-team-info">
+                    <a [href]="Pages.NBA_TEAMS + '/' + boxscore.awayTeam.url_slug"><img src="/assets/images/logos/{{boxscore.awayTeam.image}}.svg" class="team-logo" /></a>
+                    <span class="team-name">{{boxscore.awayTeam.short_name}}</span>
+                    <span *ngIf="boxscore.awayTeamStandings" class="stats">
+                        {{boxscore.awayTeamStandings.wins}}-{{boxscore.awayTeamStandings.losses}} ({{boxscore.awayTeamStandings.playoffseed}}{{boxscore.awayTeam.conference === "West" ? "W" : "E"}})
+                    </span>
+                </div>
+
+                <div *ngIf="boxscore.awayTeamScore && boxscore.gameStatus !== this.STATUS_LATER" class="game-team-score-container">
+                    <span class="game-team-score">{{boxscore.awayTeamScore.score}}</span>
+                    <span *ngIf="boxscore.awayTeamScore.inBonus" class="game-team-score-bonus">{{"B O N U S"}}</span>
+                    <div class="game-team-score-timeout-container" pTooltip="Timeouts" tooltipPosition="bottom">
+                        @for (timeout of this.TIMEOUTS_ARRAY; track timeout) {
+                            <span class="dot" [ngStyle]="{'background': (boxscore.awayTeamScore.timeoutsRemaining > timeout ? 'black' : 'grey')}"></span>
+                        }
+                    </div>
+                </div>
+
+                <div class="game-time-info">
+                    <span *ngIf="boxscore.gameStatus === STATUS_LATER" class="game-time-status">Upcoming</span>
+                    <span *ngIf="boxscore.gameStatus === STATUS_IN_PROGRESS" class="game-time-status">Live</span>
+                    <div class="game-time-container">
+                        <span *ngIf="boxscore.gameStatusText" class="game-time">{{boxscore.gameStatusText}}</span>
+                        <div *ngIf="boxscore.gameStatus === STATUS_IN_PROGRESS" class="update-spinner-container">
+                            <app-progress-circle 
+                                *ngIf="this.liveGameUpdateDelay > 0" 
+                                [size]="50" 
+                                [progress]="this.liveGameUpdateDelayProgress"
+                                [pTooltip]="this.updateToolip" tooltipPosition="left"
+                            ></app-progress-circle>
+                        </div>
+                    </div>
+                    <span *ngIf="boxscore.gameStatus === STATUS_LATER && time_til_start" class="game-time-countdown">{{time_til_start}}</span>
+                    <div *ngIf="boxscore.tvBroadcasters" class="tv-providers">
+                        @for (broadcaster of boxscore.tvBroadcasters; track broadcaster) {
+                            @for (image of broadcaster.images; track image; let index = $index) {
+                                <p-button [text]="true" (onClick)="this.openBroadcaster(broadcaster, index)" [pTooltip]="broadcaster.name" tooltipPosition="bottom" [showDelay]="1000">
+                                    <img 
+                                        src="/assets/images/logos/broadcasters/{{image.image_name}}.svg" 
+                                        class="tv-provider"
+                                        [ngStyle]="{
+                                            'width': image.width
+                                        }"
+                                    />
+                                </p-button>
+                            }
+                        }
+                    </div>
+                    <div *ngIf="boxscore.nbaLink" class="view-game-container">
+                        <a class="view-game-link" [href]="boxscore.nbaLink" target="_blank">View Game</a>
+                        <i class="pi pi-external-link view-game-icon"></i>
+                    </div>
+                </div>
+
+                <div *ngIf="boxscore.homeTeamScore && boxscore.gameStatus !== this.STATUS_LATER" class="game-team-score-container">
+                    <span class="game-team-score">{{boxscore.homeTeamScore.score}}</span>
+                    <span *ngIf="boxscore.homeTeamScore.inBonus" class="game-team-score-bonus">{{"B O N U S"}}</span>
+                    <div class="game-team-score-timeout-container" pTooltip="Timeouts" tooltipPosition="bottom">
+                        @for (timeout of this.TIMEOUTS_ARRAY; track timeout) {
+                            <span class="dot" [ngStyle]="{'background': (boxscore.homeTeamScore.timeoutsRemaining > timeout ? 'black' : 'grey')}"></span>
+                        }
+                    </div>
+                </div>
+
+                <div *ngIf="boxscore.homeTeam" class="game-team-info">
+                    <a [href]="Pages.NBA_TEAMS + '/'+ boxscore.homeTeam.url_slug"><img src="/assets/images/logos/{{boxscore.homeTeam.image}}.svg" class="team-logo" /></a>
+                    <span class="team-name">{{boxscore.homeTeam.short_name}}</span>
+                    <span *ngIf="boxscore.homeTeamStandings" class="stats">
+                        {{boxscore.homeTeamStandings.wins}}-{{boxscore.homeTeamStandings.losses}} ({{boxscore.homeTeamStandings.playoffseed}}{{boxscore.homeTeam.conference === "West" ? "W" : "E"}})
+                    </span>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="card-buttons">        
+        <p-button class="refresh-button" icon="pi pi-refresh" [rounded]="true" [text]="true" (onClick)="updateGame()" pTooltip="Force Reload Boxscore" tooltipPosition="left"></p-button>
+    </div>
+    
+    <div *ngIf="this.liveGameLastUpdate" class="update-time-container">
+        <span class="update-time-text">{{this.liveGameLastUpdate}}</span>
+    </div>
+</div>

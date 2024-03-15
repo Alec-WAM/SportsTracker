@@ -1,0 +1,52 @@
+
+/* Modern browsers with `scrollbar-*` support */
+// @supports (scrollbar-width: auto) {
+//     .scroller {
+//         scrollbar-color: var(--primary-color) var(--surface-200);
+//     }
+// }
+
+/* Legacy browsers with `::-webkit-scrollbar-*` support */
+// @supports selector(::-webkit-scrollbar) {
+//     .scroller::-webkit-scrollbar-thumb {
+//         background: var(--primary-color);
+//         border-radius: 5px;
+//     }
+//     .scroller::-webkit-scrollbar-track {
+//         background-color: #e4e4e4;
+//         border-radius: 5px;
+//     }
+// }
+
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: var(--surface-100);
+
+    .schedule-filters {
+        display: flex;
+        align-items: center;
+        padding: 0 0.5rem;
+        gap: 1rem;
+        height: 2rem;
+        // background-color: color-mix(in srgb, var(--primary-color), transparent 90%);
+        background-color: var(--surface-50);
+        border-bottom: 2px solid var(--surface-border);
+    }
+
+    .schedule-list {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+
+        .empty-list {
+            margin: auto;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    }
+}

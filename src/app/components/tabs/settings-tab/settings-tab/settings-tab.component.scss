@@ -1,0 +1,91 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    overflow-y: auto;
+
+    .settings-container {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        height: 500px;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+        .settings-accordion-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 1rem;
+
+
+            .nba-schedule-container{
+                display: flex;
+                justify-content: space-between;
+
+                .nba-schedule-header-text {
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+
+                .nba-schedule-text {
+                    font-size: 14px;
+                }
+
+                .nba-schedule-button-container {
+                    display: flex;
+                    gap: 5px;
+                }
+            }
+
+            .tv-provider {
+                display: flex;
+                align-items: center;
+                height: 5rem;
+                width: 100%;
+                padding: 0.5rem;
+                border: 1px black solid;
+                border-radius: 5px;
+
+                .broadcaster-logo {
+                    margin-left: 1rem;
+                    width: 50px;
+                }
+
+                .broadcaster-name {
+                    margin: 0 1rem;
+                }
+
+                .broadcaster-url {
+                    margin-left: auto;
+                    width: 75%;
+                }
+
+                .broadcaster-reset-url {
+                    margin-left: 0.5rem;
+                }
+            }
+        }
+    }
+
+    .reset-button-container {
+        display: flex;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+
+    .app-version {
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+    }
+}
