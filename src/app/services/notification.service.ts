@@ -93,7 +93,7 @@ export class NotificationService {
             upcomingGames.push(todayGame);
           }
 
-          const gameStartMaxTime = gameMoment.clone().add(2, 'hours');
+          const gameStartMaxTime = gameMoment.clone().add(2, 'hours').add(30, 'minutes');
           if(notSettings.gameStart && now.isBefore(gameStartMaxTime)){
             const awayTeam = this.nbaService.getTeam(todayGame.awayTeam.teamId);
             const homeTeam = this.nbaService.getTeam(todayGame.homeTeam.teamId);

@@ -27,7 +27,17 @@
                 <div class="game-time-info">
                     <span *ngIf="boxscore.gameStatus === STATUS_LATER" class="game-time-status">Upcoming</span>
                     <span *ngIf="boxscore.gameStatus === STATUS_IN_PROGRESS" class="game-time-status">Live</span>
-                    <span *ngIf="boxscore.gameStatusText" class="game-time">{{boxscore.gameStatusText}}</span>
+                    <div class="game-time-container">
+                        <span *ngIf="boxscore.gameStatusText" class="game-time">{{boxscore.gameStatusText}}</span>
+                        <div *ngIf="boxscore.gameStatus === STATUS_IN_PROGRESS" class="update-spinner-container">
+                            <app-progress-circle 
+                                *ngIf="this.liveGameUpdateDelay > 0" 
+                                [size]="50" 
+                                [progress]="this.liveGameUpdateDelayProgress"
+                                [pTooltip]="this.updateToolip" tooltipPosition="left"
+                            ></app-progress-circle>
+                        </div>
+                    </div>
                     <span *ngIf="boxscore.gameStatus === STATUS_LATER && time_til_start" class="game-time-countdown">{{time_til_start}}</span>
                     <div *ngIf="boxscore.tvBroadcasters" class="tv-providers">
                         @for (broadcaster of boxscore.tvBroadcasters; track broadcaster) {
@@ -71,16 +81,8 @@
         }
     }
 
-    <div class="card-buttons">
-        <div class="update-spinner-container">
-            <app-progress-circle 
-                *ngIf="this.liveGameUpdateDelay > 0" 
-                [size]="50" 
-                [progress]="this.liveGameUpdateDelayProgress"
-                [pTooltip]="this.updateToolip" tooltipPosition="left"
-            ></app-progress-circle>
-        </div>
-        <p-button class="refresh-button" icon="pi pi-refresh" [rounded]="true" [text]="true" (onClick)="updateGame()" pTooltip="Force Reload Boxscore"></p-button>
+    <div class="card-buttons">        
+        <p-button class="refresh-button" icon="pi pi-refresh" [rounded]="true" [text]="true" (onClick)="updateGame()" pTooltip="Force Reload Boxscore" tooltipPosition="left"></p-button>
     </div>
     
     <div *ngIf="this.liveGameLastUpdate" class="update-time-container">

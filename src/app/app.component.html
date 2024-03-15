@@ -24,7 +24,9 @@
                         <span class="message-summary">{{message.summary ? message.summary+": " : ""}}{{message.detail}}</span>
                         <p-button 
                             class="p-button-sm nba-game-toast-button" 
-                            label="View Game" 
+                            label="Game"
+                            icon="pi pi-arrow-right"
+                            iconPos="right"
                             (click)="this.toastService.viewNBATeam(message.data?.team); closeFn($event);"
                         ></p-button>
                     </div>
@@ -44,7 +46,7 @@
                         
                         <p-button 
                             class="p-button-sm nba-game-toast-button" 
-                            [label]="'View Game' + (games.length > 1 ? 's' : '')" 
+                            [label]="'Show Game' + (games.length > 1 ? 's' : '')" 
                             icon="pi pi-window-maximize" 
                             iconPos="right"
                             (click)="this.notificationService.viewUpcomingNBAGames(games); closeFn($event);"

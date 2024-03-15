@@ -8,10 +8,12 @@ import { SettingsService } from '../../../../services/settings.service';
 import { FormsModule } from '@angular/forms';
 import { BroadcasterURLSetting } from '../../../../interfaces/settings';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { DBService, DB_JSON_KEY_NBA_SCHEDULE, DB_STORE_JSON } from '../../../../services/db.service';
+import { DBService, DB_JSON_KEY_NBA_SCHEDULE } from '../../../../services/db.service';
 import moment from 'moment';
 import { NBAService } from '../../../../services/nba.service';
+import { version } from '../../../../../../package.json';
 
+// TODO Show app version in settings page
 @Component({
   selector: 'app-settings-tab',
   standalone: true,
@@ -28,6 +30,7 @@ import { NBAService } from '../../../../services/nba.service';
 })
 export class SettingsTabComponent implements OnInit {
   NBA_LEAGUE_PASS_ID = BROADCASTER_NBA_LEAGUE_PASS_ID;
+  APP_VERSION:string = version;
   
   nbaScheduleDate = signal<string>("");
   nbaScheduleDate$ = toObservable(this.nbaScheduleDate)

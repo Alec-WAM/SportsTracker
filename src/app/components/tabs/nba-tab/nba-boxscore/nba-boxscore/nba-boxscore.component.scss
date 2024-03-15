@@ -101,6 +101,17 @@
                 font-weight: bold;
             }
 
+            .game-time-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;                
+
+                .update-spinner-container {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+            }
+
             .game-time {
                 font-size: 30px;
                 font-weight: bold;
