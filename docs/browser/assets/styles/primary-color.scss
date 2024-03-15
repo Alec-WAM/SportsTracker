@@ -1,0 +1,49 @@
+html body.light-theme {
+    --primary-color: #007aff;
+    --primary-color-color: 0, 90, 201;
+    --primary-color-accent: #007aff2d;
+    --secondary-color: #2D313C;
+
+    --primary-50:#f5f9ff;
+    --primary-100:#d0e1fd;
+    --primary-200:#abc9fb;
+    --primary-300:#85b2f9;
+    --primary-400:#609af8;
+    --primary-500:#3b82f6;
+    --primary-600:#326fd1;
+    --primary-700:#295bac;
+    --primary-800:#204887;
+    --primary-900:#183462;
+
+    --header-background: var(--surface-0);
+    --side-bar-button-color: var(--primary-color);
+    --toast-border: black;
+
+    --game-card-red: red;
+    --game-card-status-text: white;
+}
+
+html body.dark-theme {
+    --primary-color: #58abff;
+    --primary-color-color: 147, 178, 250;
+    --primary-color-accent: #373736;
+    --secondary-color: #58abff2e !important;
+
+    --primary-50:#f7fbff;
+    --primary-100:#d9e9fe;
+    --primary-200:#bbd8fd;
+    --primary-300:#9cc7fc;
+    --primary-400:#7eb6fb;
+    --primary-500:#60a5fa;
+    --primary-600:#528cd5;
+    --primary-700:#4374af;
+    --primary-800:#355b8a;
+    --primary-900:#264264;
+
+    --header-background: var(--surface-100);
+    --side-bar-button-color: var(--primary-color);
+    --toast-border: black;
+
+    --game-card-red: #f87171;
+    --game-card-status-text: white;
+}
