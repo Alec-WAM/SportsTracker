@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1710476690121,
+  "timestamp": 1710549590044,
   "index": "/SportsTracker/index.html",
   "assetGroups": [
     {
@@ -15,7 +15,7 @@
         "/SportsTracker/favicon.ico",
         "/SportsTracker/index.html",
         "/SportsTracker/light-theme.css",
-        "/SportsTracker/main-SGNHJNLI.js",
+        "/SportsTracker/main-PQP2AUO3.js",
         "/SportsTracker/manifest.webmanifest",
         "/SportsTracker/polyfills-RT5I6R6G.js",
         "/SportsTracker/styles-V3GP2B3V.css"
@@ -181,9 +181,9 @@
     "/SportsTracker/assets/themes/material-light-blue/theme.css": "63807020342b66965d48de321c65dc1a8b78e0cd",
     "/SportsTracker/dark-theme.css": "96152ae3e86440a9fd81a969107b9be0f1827aef",
     "/SportsTracker/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
-    "/SportsTracker/index.html": "00f490f1a6a648bd04413470f5d6d7d76b9219b3",
+    "/SportsTracker/index.html": "1113f8f152c512d1bb2a07943125bf65886331ba",
     "/SportsTracker/light-theme.css": "3d3f36d22946e243361c81f57dddb54c81f05c9e",
-    "/SportsTracker/main-SGNHJNLI.js": "ede8783cd227ef596e27cf1c5a757e9a88ec2ae9",
+    "/SportsTracker/main-PQP2AUO3.js": "67c9ca6d7e137b4de16ae6e1b5a6f88cd12e5cfc",
     "/SportsTracker/manifest.webmanifest": "9ef9172fa26b4a2faa7c9060d024d7d599f52e15",
     "/SportsTracker/media/color-3LUHUBGQ.png": "ff4c4bcb2207891b292f544edb4da9d2df5d45cf",
     "/SportsTracker/media/hue-RMMBQOAC.png": "f81ae627637a684614aa726e206c73ce099a01fd",
