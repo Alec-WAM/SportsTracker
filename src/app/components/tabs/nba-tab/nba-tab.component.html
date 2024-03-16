@@ -10,7 +10,7 @@
                 class="selected-team-header" 
                 *ngIf="selectedTeam.nba_id"
             >
-                <img src="/assets/images/logos/{{selectedTeam.image}}.svg" class="selected-team-logo"/>
+                <img src="./assets/images/logos/{{selectedTeam.image}}.svg" class="selected-team-logo"/>
                 <span class="selected-team-name">{{ selectedTeam.full_name }}</span>
                 <div class="team-button-container">
                     <p-button [rounded]="true" [text]="true" class="favorite-button" (onClick)="this.toggleFavoriteTeam()">
@@ -32,7 +32,7 @@
                     </p-button>
                     <p-button [rounded]="true" [text]="true" class="notification-button" (onClick)="this.openNotificationSettings()">
                         <!-- <img 
-                            src="/assets/images/icons/{{this.notifications ? 'mat_notifications_active' : 'mat_notifications_add'}}.svg" 
+                            src="./assets/images/icons/{{this.notifications ? 'mat_notifications_active' : 'mat_notifications_add'}}.svg" 
                             style="width: 20px; color: var(--text-color);"
                             [pTooltip]="this.notifications ? 'Notifications On' : 'Notifications Off'"
                         /> -->
@@ -61,7 +61,7 @@
             <ng-template let-team pTemplate="item">
                 <div class="team-list-selected-item">
                     <!-- <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + country.code.toLowerCase()" style="width: 18px"/> -->
-                    <img src="/assets/images/logos/{{team.image}}.svg" class="team-logo" style="width: 20px"/>
+                    <img src="./assets/images/logos/{{team.image}}.svg" class="team-logo" style="width: 20px"/>
                     <div>{{ team.full_name }}</div>
                 </div>
             </ng-template>

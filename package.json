@@ -1,12 +1,14 @@
 {
   "name": "sports-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "app.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "electron": "ng build && electron .",
     "build": "ng build",
+    "gh-pages": "ng build --configuration production --output-path docs --base-href /SportsTracker/",
+    "http-server": "npx http-server -p 8080 --cors -c-1 dist/sports-app/browser",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
