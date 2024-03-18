@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BROADCASTERS, BROADCASTER_NBA_LEAGUE_PASS_ID, EMPTY_NBA_GAME, LeagueSchedule, NBABroudcaster, NBAGame, NBAGameDate } from '../interfaces/nba/league-schedule';
 import local_schedule from '../../../2023-24_schedule.json';
-import { Subject, catchError, from, switchMap } from 'rxjs';
+import { Subject, from, switchMap } from 'rxjs';
 import { NBATeam, TEAMS } from '../interfaces/nba-team';
 import { ESPN_NBA_Stats } from '../interfaces/nba/espn-nba';
 import { SettingsService } from './settings.service';
@@ -15,13 +15,13 @@ import { TAG_GENERAL_MESSAGE } from './toast.service';
 
 export const DB_OBJECT_NBA_SCHEDULE = 'nba-schedule';
 
-export const NBA_JSON_ENDPOINT: string = "https://cdn.nba.com/static/json"
+export const NBA_JSON_ENDPOINT: string = "https://worker-sports-app-nba-api.alecwam.workers.dev/static/json"
 
 @Injectable({
   providedIn: 'root'
 })
 export class NBAService {
-  readonly NBA_SCHEDULE: string = "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json";
+  readonly NBA_SCHEDULE: string = `${NBA_JSON_ENDPOINT}/staticData/scheduleLeagueV2.json`;
   readonly DEV_NBA_SCHEDULE: string = "http://localhost:4200/static/json/staticData/scheduleLeagueV2.json";
   readonly ESPN_STANDINGS: string = "https://site.web.api.espn.com/apis/v2/sports/basketball/nba/standings?season=2024"
 

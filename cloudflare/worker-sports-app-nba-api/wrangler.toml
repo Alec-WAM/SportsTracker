@@ -1,0 +1,6 @@
+name = "worker-sports-app-nba-api"
+main = "src/index.ts"
+compatibility_date = "2024-03-17"
+
+[vars]
+API_HOST = "https://cdn.nba.com"

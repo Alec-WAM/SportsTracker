@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+#Cloudflare
+/cloudflare/worker-sports-app-nba-api/node_modules
