@@ -6,7 +6,7 @@ import { NBATeam } from '../../../../../interfaces/nba-team';
 import moment from "moment";
 import { ESPN_NBA_Stats } from '../../../../../interfaces/nba/espn-nba';
 import { TooltipModule } from 'primeng/tooltip';
-import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { Pages } from '../../../../header/header.component';
 
@@ -15,6 +15,7 @@ import { Pages } from '../../../../header/header.component';
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     TooltipModule,
     ButtonModule
   ],

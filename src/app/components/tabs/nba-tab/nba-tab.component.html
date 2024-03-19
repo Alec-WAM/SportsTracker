@@ -66,45 +66,51 @@
                 </div>
             </ng-template>
         </p-dropdown>
-        <p-button label="Notification" (onClick)="sendNotification()"></p-button>
+        <!-- <p-button label="Notification" (onClick)="sendNotification()"></p-button> -->
     </div>
-    <!-- 0022300848-->
-    @if (nextGame$ | async; as nextGame) {
-        <app-nba-boxscore *ngIf="nextGame.gameId" class="next-game" [game]="nextGame"></app-nba-boxscore>
-    }
     
-    @if(selectedTeam$ | async; as selectedTeam){
-        @if(selectedTeam.nba_id){
-            <div class="team-info">
-                <div 
-                    class="tab-header-container"
-                    [ngStyle]="{
-                        '--team-color': (selectedTeam?.primary_color ?? 'black'),
-                    }"
-                >
-                    <p-tabMenu [model]="tabs" [activeItem]="activeTab" (activeItemChange)="onActiveTabChange($event)"></p-tabMenu>
-                </div>
-                <div class="team-tab-content" [ngSwitch]="this.activeTab?.id">
-                    <app-nba-tab-schedule *ngSwitchDefault class="nba-tab-component" [team]="selectedTeam"></app-nba-tab-schedule>
-                </div>
+    <div class="team-container">        
+        @if(selectedTeam$ | async; as selectedTeam){
+            <div class="team-slide-container" [@slideAnimation]="selectedTeam.nba_id">
+                
+                @if (nextGame$ | async; as nextGame) {
+                    <app-nba-boxscore *ngIf="nextGame.gameId" class="next-game" [game]="nextGame"></app-nba-boxscore>
+                } 
+                
+                @if(selectedTeam.nba_id){
+                    <div class="team-info">
+                        <div 
+                            class="tab-header-container"
+                            [ngStyle]="{
+                                '--team-color': (selectedTeam?.primary_color ?? 'black'),
+                            }"
+                        >
+                            <p-tabMenu [model]="tabs" [activeItem]="activeTab" (activeItemChange)="onActiveTabChange($event)"></p-tabMenu>
+                        </div>
+                        <div class="team-tab-content" [ngSwitch]="this.activeTab?.id">
+                            <app-nba-tab-schedule *ngSwitchDefault class="nba-tab-component" [team]="selectedTeam"></app-nba-tab-schedule>
+                        </div>
+                    </div>
+                }
+                @else {
+                    <div class="select-team-warning">
+                        <span>Please Select a Team</span>
+                        <div class="select-team-info">
+                            <span>Click the</span>
+                            <i [class]="'pi pi-star-fill'" style="font-size: 0.8rem; color: var(--text-color);"></i>
+                            <span>button on a team's page to load their page by default</span>
+                        </div>
+                    </div>
+                }
+                
             </div>
         }
         @else {
             <div class="select-team-warning">
-                <span>Please Select a Team</span>
-                <div class="select-team-info">
-                    <span>Click the</span>
-                    <i [class]="'pi pi-star-fill'" style="font-size: 0.8rem; color: var(--text-color);"></i>
-                    <span>button on a team's page to load their page by default</span>
-                </div>
+                Please Select a Team
             </div>
         }
-    }
-    @else {
-        <div class="select-team-warning">
-            Please Select a Team
-        </div>
-    }
+    </div>
 </div>
 <p-dialog 
     header="Notifications" 

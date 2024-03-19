@@ -24,7 +24,7 @@ import { NBA_Game_Notification, NBA_NotificationSettings } from '../../../interf
 import { getOrdinal } from '../../../utils/util-functions';
 import { SvgIcon, SvgIconsComponent } from '../../../utils/svg-icons/svg-icons.component';
 import { Pages } from '../../header/header.component';
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-nba-tab',
@@ -43,6 +43,16 @@ import { Pages } from '../../header/header.component';
     NbaTabScheduleComponent,
     NbaBoxscoreComponent,
     SvgIconsComponent
+  ],
+  animations: [
+    trigger('slideAnimation', [   
+      state('void', style({ transform: 'translateY(0) scale(1)', opacity: 1})),
+      transition(':enter', animate(0)),
+      transition('* => *', [
+        style({ transform: 'translateY(100%) scale(0)', opacity: 0}),
+        animate('350ms ease-out')
+      ])
+    ])
   ],
   templateUrl: './nba-tab.component.html',
   styleUrl: './nba-tab.component.scss',

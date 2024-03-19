@@ -28,6 +28,7 @@ export class NotificationService {
   todaysNBANotifications: NBA_Notification[] = [];
 
   constructor() {
+    this.requestPermission(() => {});
     this.nbaService.schedule_loaded.subscribe((value) => {      
       this.setupNotificationLoop();
     })
