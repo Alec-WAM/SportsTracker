@@ -9,6 +9,7 @@ app-nba-tab {
     flex-direction: column;
     width: 100%;
     height: 100%;
+    overflow-x: hidden;
 }
 
 .tab-header {
@@ -82,6 +83,24 @@ app-nba-tab {
         display: flex;
         gap: 1rem;
     }
+}
+
+.team-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.team-slide-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
 }
 
 .next-game {

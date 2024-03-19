@@ -7,7 +7,7 @@
             <div class="game-card-main">
                 <!-- Away Team -->
                 <div *ngIf="boxscore.awayTeam" class="game-team-info">
-                    <a [href]="Pages.NBA_TEAMS + '/' + boxscore.awayTeam.url_slug"><img src="./assets/images/logos/{{boxscore.awayTeam.image}}.svg" class="team-logo" /></a>
+                    <a [routerLink]="Pages.NBA_TEAMS + '/' + boxscore.awayTeam.url_slug"><img src="./assets/images/logos/{{boxscore.awayTeam.image}}.svg" class="team-logo" /></a>
                     <span class="team-name">{{boxscore.awayTeam.short_name}}</span>
                     <span *ngIf="boxscore.awayTeamStandings" class="stats">
                         {{boxscore.awayTeamStandings.wins}}-{{boxscore.awayTeamStandings.losses}} ({{boxscore.awayTeamStandings.playoffseed}}{{boxscore.awayTeam.conference === "West" ? "W" : "E"}})
@@ -71,7 +71,7 @@
                 </div>
 
                 <div *ngIf="boxscore.homeTeam" class="game-team-info">
-                    <a [href]="Pages.NBA_TEAMS + '/'+ boxscore.homeTeam.url_slug"><img src="./assets/images/logos/{{boxscore.homeTeam.image}}.svg" class="team-logo" /></a>
+                    <a [routerLink]="Pages.NBA_TEAMS + '/'+ boxscore.homeTeam.url_slug"><img src="./assets/images/logos/{{boxscore.homeTeam.image}}.svg" class="team-logo" /></a>
                     <span class="team-name">{{boxscore.homeTeam.short_name}}</span>
                     <span *ngIf="boxscore.homeTeamStandings" class="stats">
                         {{boxscore.homeTeamStandings.wins}}-{{boxscore.homeTeamStandings.losses}} ({{boxscore.homeTeamStandings.playoffseed}}{{boxscore.homeTeam.conference === "West" ? "W" : "E"}})

@@ -17,9 +17,9 @@
                 @if(message.data?.nbaGame; as game){
                     <div class="nba-game-toast">
                         <div class="team-logo-container">
-                            <a *ngIf="game.awayTeam" [href]="Pages.NBA_TEAMS + '/' + game.awayTeam.url_slug"><img src="./assets/images/logos/{{game.awayTeam.image}}.svg" class="team-logo" /></a>
+                            <a *ngIf="game.awayTeam" [routerLink]="Pages.NBA_TEAMS + '/' + game.awayTeam.url_slug"><img src="./assets/images/logos/{{game.awayTeam.image}}.svg" class="team-logo" /></a>
                             <span class="versus-text">vs.</span>
-                            <a *ngIf="game.homeTeam" [href]="Pages.NBA_TEAMS + '/' + game.homeTeam.url_slug"><img src="./assets/images/logos/{{game.homeTeam.image}}.svg" class="team-logo"/></a>
+                            <a *ngIf="game.homeTeam" [routerLink]="Pages.NBA_TEAMS + '/' + game.homeTeam.url_slug"><img src="./assets/images/logos/{{game.homeTeam.image}}.svg" class="team-logo"/></a>
                         </div>
                         <span class="message-summary">{{message.summary ? message.summary+": " : ""}}{{message.detail}}</span>
                         <p-button 
