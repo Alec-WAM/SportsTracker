@@ -13,12 +13,14 @@ import { ProgressCircleComponent } from '../../../../misc/progress-circle/progre
 import { TooltipModule } from 'primeng/tooltip';
 import { TAG_GENERAL_MESSAGE, ToastService } from '../../../../../services/toast.service';
 import { Pages } from '../../../../header/header.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-nba-boxscore',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     ButtonModule,
     TooltipModule,
 

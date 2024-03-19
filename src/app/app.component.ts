@@ -11,8 +11,6 @@ import { SidebarModule } from 'primeng/sidebar';
 import { HeaderComponent, Pages } from './components/header/header.component';
 import { NBA_Notification_Type } from './interfaces/notification';
 import { DialogModule } from 'primeng/dialog';
-import { NBAGame } from './interfaces/nba/league-schedule';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { NbaGameCardComponent } from './components/tabs/nba-tab/nba-game-card/nba-game-card/nba-game-card.component';
 
