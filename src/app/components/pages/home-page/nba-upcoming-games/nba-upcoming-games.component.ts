@@ -6,7 +6,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { EMPTY_NBA_GAME, NBAGame } from '../../../../interfaces/nba/league-schedule';
 import moment from "moment";
 import { deepCopy } from '../../../../utils/util-functions';
-import { NbaBoxscoreComponent } from '../../nba-tab/nba-boxscore/nba-boxscore/nba-boxscore.component';
+import { NbaBoxscoreComponent } from '../../nba-pages/nba-boxscore/nba-boxscore/nba-boxscore.component';
 
 @Component({
   selector: 'app-nba-upcoming-games',

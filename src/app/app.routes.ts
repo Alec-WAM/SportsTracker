@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { NbaTabComponent } from './components/tabs/nba-tab/nba-tab.component';
-import { SettingsTabComponent } from './components/tabs/settings-tab/settings-tab/settings-tab.component';
-import { HomeTabComponent } from './components/tabs/home-tab/home-tab.component';
+import { NBATeamPageComponent } from './components/pages/nba-pages/nba-team-page/nba-team-page.component';
+import { SettingsPageComponent } from './components/pages/settings-page/settings-page.component';
+import { HomeTabComponent } from './components/pages/home-page/home-tab.component';
 
 export const routes: Routes = [
     {
@@ -18,17 +18,17 @@ export const routes: Routes = [
     {
         path: 'nba/team/:team', 
         title: "NBA",
-        component: NbaTabComponent
+        component: NBATeamPageComponent
     },
     {
         path: 'nba/team', 
         title: "NBA",
-        component: NbaTabComponent
+        component: NBATeamPageComponent
     },
     {
         path: 'settings', 
         pathMatch: 'full',
         title: "Settings",
-        component: SettingsTabComponent
+        component: SettingsPageComponent
     }
 ];

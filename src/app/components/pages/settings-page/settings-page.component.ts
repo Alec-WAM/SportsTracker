@@ -3,19 +3,18 @@ import { Component, OnInit, signal } from '@angular/core';
 import { AccordionModule } from 'primeng/accordion';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { BROADCASTERS, BROADCASTER_NBA_LEAGUE_PASS_ID, NBABroudcaster } from '../../../../interfaces/nba/league-schedule';
-import { SettingsService } from '../../../../services/settings.service';
+import { BROADCASTERS, BROADCASTER_NBA_LEAGUE_PASS_ID, NBABroudcaster } from '../../../interfaces/nba/league-schedule';
+import { SettingsService } from '../../../services/settings.service';
 import { FormsModule } from '@angular/forms';
-import { BroadcasterURLSetting } from '../../../../interfaces/settings';
+import { BroadcasterURLSetting } from '../../../interfaces/settings';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { DBService, DB_JSON_KEY_NBA_SCHEDULE } from '../../../../services/db.service';
+import { DBService, DB_JSON_KEY_NBA_SCHEDULE } from '../../../services/db.service';
 import moment from 'moment';
-import { NBAService } from '../../../../services/nba.service';
-import { version } from '../../../../../../package.json';
+import { NBAService } from '../../../services/nba.service';
+import { version } from '../../../../../package.json';
 
-// TODO Show app version in settings page
 @Component({
-  selector: 'app-settings-tab',
+  selector: 'app-settings-page',
   standalone: true,
   imports: [
     CommonModule,
@@ -25,10 +24,10 @@ import { version } from '../../../../../../package.json';
     InputTextModule,
     ButtonModule
   ],
-  templateUrl: './settings-tab.component.html',
-  styleUrl: './settings-tab.component.scss'
+  templateUrl: './settings-page.component.html',
+  styleUrl: './settings-page.component.scss'
 })
-export class SettingsTabComponent implements OnInit {
+export class SettingsPageComponent implements OnInit {
   NBA_LEAGUE_PASS_ID = BROADCASTER_NBA_LEAGUE_PASS_ID;
   APP_VERSION:string = version;
   

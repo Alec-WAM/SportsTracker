@@ -6,28 +6,28 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { EMPTY_NBA_TEAM, NBATeam, TEAMS } from '../../../interfaces/nba-team';
+import { EMPTY_NBA_TEAM, NBATeam, TEAMS } from '../../../../interfaces/nba-team';
 import { MenuItem } from 'primeng/api';
-import { NbaTabScheduleComponent } from './team-info/schedule/nba-tab-schedule/nba-tab-schedule.component';
-import { NBAService } from '../../../services/nba.service';
-import { ESPN_NBA_Stats } from '../../../interfaces/nba/espn-nba';
-import { NbaBoxscoreComponent } from './nba-boxscore/nba-boxscore/nba-boxscore.component';
-import { EMPTY_NBA_GAME, NBAGame } from '../../../interfaces/nba/league-schedule';
+import { NBAService } from '../../../../services/nba.service';
+import { ESPN_NBA_Stats } from '../../../../interfaces/nba/espn-nba';
+import { NbaBoxscoreComponent } from '../nba-boxscore/nba-boxscore/nba-boxscore.component';
+import { EMPTY_NBA_GAME, NBAGame } from '../../../../interfaces/nba/league-schedule';
 import { toObservable } from '@angular/core/rxjs-interop';
 import moment from 'moment';
 import { TooltipModule } from 'primeng/tooltip';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
-import { NotificationService } from '../../../services/notification.service';
-import { TAG_GENERAL_MESSAGE, ToastService } from '../../../services/toast.service';
-import { NBA_Game_Notification, NBA_NotificationSettings } from '../../../interfaces/notification';
-import { getOrdinal } from '../../../utils/util-functions';
-import { SvgIcon, SvgIconsComponent } from '../../../utils/svg-icons/svg-icons.component';
-import { Pages } from '../../header/header.component';
+import { NotificationService } from '../../../../services/notification.service';
+import { TAG_GENERAL_MESSAGE, ToastService } from '../../../../services/toast.service';
+import { NBA_Game_Notification, NBA_NotificationSettings } from '../../../../interfaces/notification';
+import { getOrdinal } from '../../../../utils/util-functions';
+import { SvgIcon, SvgIconsComponent } from '../../../../utils/svg-icons/svg-icons.component';
+import { Pages } from '../../../header/header.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { NBATeamScheduleComponent } from './nba-team-schedule/nba-team-schedule.component';
 
 @Component({
-  selector: 'app-nba-tab',
+  selector: 'app-nba-team-page',
   standalone: true,
   imports: [
     CommonModule,
@@ -40,7 +40,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     DialogModule,
     InputSwitchModule,
 
-    NbaTabScheduleComponent,
+    NBATeamScheduleComponent,
     NbaBoxscoreComponent,
     SvgIconsComponent
   ],
@@ -54,11 +54,11 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
       ])
     ])
   ],
-  templateUrl: './nba-tab.component.html',
-  styleUrl: './nba-tab.component.scss',
+  templateUrl: './nba-team-page.component.html',
+  styleUrl: './nba-team-page.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class NbaTabComponent implements OnInit {
+export class NBATeamPageComponent implements OnInit {
   TEAMS = TEAMS;
   SvgIcon = SvgIcon;
   

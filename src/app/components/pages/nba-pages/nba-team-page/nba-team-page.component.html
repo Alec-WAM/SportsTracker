@@ -88,7 +88,7 @@
                             <p-tabMenu [model]="tabs" [activeItem]="activeTab" (activeItemChange)="onActiveTabChange($event)"></p-tabMenu>
                         </div>
                         <div class="team-tab-content" [ngSwitch]="this.activeTab?.id">
-                            <app-nba-tab-schedule *ngSwitchDefault class="nba-tab-component" [team]="selectedTeam"></app-nba-tab-schedule>
+                            <app-nba-team-schedule *ngSwitchDefault class="nba-tab-component" [team]="selectedTeam"></app-nba-team-schedule>
                         </div>
                     </div>
                 }

@@ -25,6 +25,10 @@ export class NBAService {
   readonly DEV_NBA_SCHEDULE: string = "http://localhost:4200/static/json/staticData/scheduleLeagueV2.json";
   readonly ESPN_STANDINGS: string = "https://site.web.api.espn.com/apis/v2/sports/basketball/nba/standings?season=2024"
 
+  readonly NBA_PLAYOFF_BRACKET = "https://cdn.nba.com/static/json/staticData/brackets/2023/PlayoffBracket.json";
+  readonly NBA_PLAYOFF_PLAYIN = "https://cdn.nba.com/static/json/staticData/brackets/2023/PlayInBracket.json";
+  readonly NBA_PLAYOFF_PICTURE = "https://cdn.nba.com/static/json/staticData/brackets/2023/PlayoffPicture.json";
+
   dbService = inject(DBService);
   messageService = inject(MessageService);
   
