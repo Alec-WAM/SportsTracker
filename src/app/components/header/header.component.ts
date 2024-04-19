@@ -13,6 +13,7 @@ import { TooltipModule } from 'primeng/tooltip';
 export enum Pages {
   DASHBOARD = '/dashboard',
   NBA_TEAMS = '/nba/team',
+  NBA_PLAYOFFS = '/nba/playoffs',
   SETTINGS = '/settings'
 }
 
@@ -57,6 +58,9 @@ export class HeaderComponent {
     }
     else if(url.includes(Pages.NBA_TEAMS)){
       newHeader = "NBA";
+    }
+    else if(url.includes(Pages.NBA_PLAYOFFS)){
+      newHeader = "NBA - Playoffs";
     }
     else if(url.includes(Pages.SETTINGS)){
       newHeader = "Settings";

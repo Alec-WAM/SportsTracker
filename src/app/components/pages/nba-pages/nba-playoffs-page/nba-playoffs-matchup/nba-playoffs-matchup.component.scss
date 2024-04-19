@@ -1,0 +1,101 @@
+:host {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+.nba-playoff-matchup-container {
+    display: flex;
+    flex-direction: column;
+    // flex-grow: 1;
+    width: 100%;
+    min-width: 0;
+    max-height: 10rem;
+    aspect-ratio: 1.0/0.25;
+    // height: 65%;
+    // flex-grow: 30rem;
+    // flex-shrink: 17rem;
+    background-color: var(--surface-50);
+    border-radius: 5px;
+    border: 2.5px solid black;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
+  
+    .top-matchup {
+        border-top-left-radius: 2.5px;
+        border-top-right-radius: 2.5px;
+    }
+
+    .bottom-matchup {
+        border-bottom-left-radius: 2.5px;
+        border-bottom-right-radius: 2.5px;
+    }
+
+    .nba-playoff-matchup-team {
+        display: flex;
+        align-items: center;
+        padding: 2px;
+        height: 50%;
+        gap: 2px;
+        background-color: white;
+        border-bottom: 1px solid black;
+
+        .team-rank {
+            color: black;
+            // font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin: 2px;
+            flex: 0.25;
+        }
+
+        a {
+            display: flex;
+            align-items: center;
+            flex: 0.5;
+        }
+
+        .team-logo {
+            width: 1rem;
+            flex: 1;
+        }
+
+        .team-name {
+            color: black;
+            padding-left: 0.5rem;
+            // font-size: 16px;
+            font-weight: bold;
+            flex: 3;
+        }
+
+        .series-score {
+            margin-left: auto;
+            margin-right: 2px;
+            color: black;
+            // font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+        }
+
+        .alt-text {
+            display: flex;
+            align-items: center;
+            // height: 2rem;
+            padding: 5px;
+            color: black;
+            // font-size: 12px;
+            font-weight: bold;
+            flex: 3;
+        }
+    }
+
+    .nba-matchup-losing-team {
+        opacity: 0.25;
+        background-color: var(--surface-100);
+
+        .team-name {            
+            text-decoration: line-through;
+        }
+    }
+}
