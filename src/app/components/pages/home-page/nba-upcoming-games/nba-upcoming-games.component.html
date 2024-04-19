@@ -12,14 +12,14 @@
             }
             @empty {
                 @if(this.followingCount && this.followingCount.length > 0) {
-                    @for(gameNumber of this.followingCount; track gameNumber){
+                    <!-- @for(gameNumber of this.followingCount; track gameNumber){
                         <p-skeleton height="10rem" width="calc(100% - 2rem)" class="upcoming-game-skeleton mb-2"></p-skeleton>
-                    }
-                    @empty {
+                    } -->
+                    <!-- @empty { -->
                         <div class="upcoming-game-empty">
-                            No Games Found False
+                            No Games Found
                         </div>
-                    }
+                    <!-- } -->
                 }
                 @else {            
                     <div class="upcoming-game-empty">

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NbaTabComponent } from './nba-tab.component';
+import { NBATeamScheduleComponent } from './nba-team-schedule.component';
 
-describe('NbaTabComponent', () => {
-  let component: NbaTabComponent;
-  let fixture: ComponentFixture<NbaTabComponent>;
+describe('NbaTabScheduleComponent', () => {
+  let component: NBATeamScheduleComponent;
+  let fixture: ComponentFixture<NBATeamScheduleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NbaTabComponent]
+      imports: [NBATeamScheduleComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(NbaTabComponent);
+    fixture = TestBed.createComponent(NBATeamScheduleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

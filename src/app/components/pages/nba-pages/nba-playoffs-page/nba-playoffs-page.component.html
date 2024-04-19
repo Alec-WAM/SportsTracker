@@ -1,0 +1,121 @@
+<div class="tab-container">
+    <div class="nba-playoffs-bracket">
+        <!-- Play-In West -->
+        @if(showPlayIn$ | async; as showPlayIn) {
+            @if(playInWest$ | async; as playInWest) {            
+                <div class="nba-playoffs-round-container">
+                    <span class="round-title">Play-In West</span>   
+                    <div class="playin-matchup-container">
+                        <span class="round-subtitle">8 Seed - Round 1</span>         
+                        <app-nba-playoffs-matchup [series]="playInWest[1]"></app-nba-playoffs-matchup>
+                    </div>
+                    <div class="playin-matchup-container">
+                        <span class="round-subtitle">8 Seed - WvL</span>
+                        <app-nba-playoffs-matchup [series]="playInWest[2]"></app-nba-playoffs-matchup>
+                    </div>
+                    <div class="playin-matchup-container">
+                        <span class="round-subtitle">7 Seed</span>
+                        <app-nba-playoffs-matchup [series]="playInWest[0]"></app-nba-playoffs-matchup>
+                    </div>
+                </div>
+            }
+        }
+        <!-- West -->
+        @if(showRound1$ | async; as showRound1) {
+            @if(westRound1$ | async; as westRound1) {            
+                <div class="nba-playoffs-round-container">
+                    <span class="round-title">Round 1</span>
+                    <app-nba-playoffs-matchup [series]="westRound1[0]"></app-nba-playoffs-matchup>
+                    <app-nba-playoffs-matchup [series]="westRound1[3]"></app-nba-playoffs-matchup>
+                    <app-nba-playoffs-matchup [series]="westRound1[2]"></app-nba-playoffs-matchup>
+                    <app-nba-playoffs-matchup [series]="westRound1[1]"></app-nba-playoffs-matchup>
+                </div>
+            }
+        } 
+        @if(showRound2$ | async; as showRound2) {
+            @if(westRound2$ | async; as westRound2){
+                <div class="nba-playoffs-round-container">
+                    <span class="round-title">Round 2</span>
+                    <app-nba-playoffs-matchup [series]="westRound2[0]"></app-nba-playoffs-matchup>
+                    <app-nba-playoffs-matchup [series]="westRound2[1]"></app-nba-playoffs-matchup>
+                </div>
+            }  
+        }
+        @if(showRound3$ | async; as showRound3) {
+            @if(westRound3$ | async; as westRound3){
+                <div class="nba-playoffs-round-container">
+                    <span class="round-title">Round 3</span>
+                    <app-nba-playoffs-matchup [series]="westRound3[0]"></app-nba-playoffs-matchup>
+                </div>
+            } 
+        }
+        <!-- Finals -->
+        @if(showFinals$ | async; as showFinals) {
+            @if(finalsRound$ | async; as finalsRound){
+                <div class="nba-playoffs-round-container">
+                    <div class="finals-container">
+                        @if(finalsYear){
+                            <img [src]="NBA_API_ENDPOINT + '/logos/playoffs/' + finalsYear + '/L/finals.svg'" class="finals-image" />
+                        }
+                        <app-nba-playoffs-matchup [series]="finalsRound"></app-nba-playoffs-matchup>  
+                        <span class="finals-bottom-span"></span>
+                    </div>
+                </div>
+            }
+        }
+        <!-- East -->
+
+        @if(showRound3$ | async; as showRound3) {
+            @if(eastRound3$ | async; as eastRound3){
+                <div class="nba-playoffs-round-container">
+                    <span class="round-title">Round 3</span>
+                    <app-nba-playoffs-matchup [series]="eastRound3[0]"></app-nba-playoffs-matchup>
+                </div>
+            } 
+        }
+        @if(showRound2$ | async; as showRound2) {
+            @if(eastRound2$ | async; as eastRound2){
+                <div class="nba-playoffs-round-container">
+                    <span class="round-title">Round 2</span>
+                    <app-nba-playoffs-matchup [series]="eastRound2[0]"></app-nba-playoffs-matchup>
+                    <app-nba-playoffs-matchup [series]="eastRound2[1]"></app-nba-playoffs-matchup>
+                </div>
+            }  
+        }
+        @if(showRound1$ | async; as showRound1) {
+            @if(eastRound1$ | async; as eastRound1) {            
+                <div class="nba-playoffs-round-container">
+                    <span class="round-title">Round 1</span>            
+                    <app-nba-playoffs-matchup [series]="eastRound1[0]"></app-nba-playoffs-matchup>
+                    <app-nba-playoffs-matchup [series]="eastRound1[3]"></app-nba-playoffs-matchup>
+                    <app-nba-playoffs-matchup [series]="eastRound1[2]"></app-nba-playoffs-matchup>
+                    <app-nba-playoffs-matchup [series]="eastRound1[1]"></app-nba-playoffs-matchup>
+                </div>
+            }
+        } 
+        <!-- Play-In East -->
+        @if(showPlayIn$ | async; as showPlayIn) {
+            @if(playInEast$ | async; as playInEast) {            
+                <div class="nba-playoffs-round-container">
+                    <span class="round-title">Play-In East</span>  
+                    <div class="playin-matchup-container">
+                        <span class="round-subtitle">8 Seed - Round 1</span>         
+                        <app-nba-playoffs-matchup [series]="playInEast[1]"></app-nba-playoffs-matchup>
+                    </div>
+                    <div class="playin-matchup-container">
+                        <span class="round-subtitle">8 Seed - WvL</span>
+                        <app-nba-playoffs-matchup [series]="playInEast[2]"></app-nba-playoffs-matchup>
+                    </div>
+                    <div class="playin-matchup-container">
+                        <span class="round-subtitle">7 Seed</span>
+                        <app-nba-playoffs-matchup [series]="playInEast[0]"></app-nba-playoffs-matchup>
+                    </div>
+                </div>
+            }
+        }
+
+        @if(this.nbaService.NBA_PLAYOFFS_DEBUG){
+            <p-slider class="round-slider" [(ngModel)]="this.roundCount" [min]="1" [max]="4"></p-slider>
+        }
+    </div>
+</div>
