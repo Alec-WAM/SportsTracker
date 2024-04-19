@@ -115,6 +115,12 @@ export const BROADCASTERS: NBABroudcaster[] = [
         images: [BROADCASTER_IMAGE_ESPN2]
     },
     {
+        id: "1001155",
+        name: 'ESPN/ESPN2',
+        images: [BROADCASTER_IMAGE_ESPN, BROADCASTER_IMAGE_ESPN2],
+        parent_ids: ["2", "127"]
+    },
+    {
         id: BROADCASTER_NBA_LEAGUE_PASS_ID,
         name: "NBA League Pass",
         images: [BROADCASTER_IMAGE_LEAGUEPASS]

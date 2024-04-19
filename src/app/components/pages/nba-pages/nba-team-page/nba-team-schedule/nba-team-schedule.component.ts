@@ -1,15 +1,15 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { NBATeam } from '../../../../../../interfaces/nba-team';
-import { NBAService } from '../../../../../../services/nba.service';
+import { NBATeam } from '../../../../../interfaces/nba-team';
+import { NBAService } from '../../../../../services/nba.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NbaGameCardComponent } from '../../../nba-game-card/nba-game-card/nba-game-card.component';
+import { NbaGameCardComponent } from '../../nba-game-card/nba-game-card/nba-game-card.component';
 import { CheckboxModule } from 'primeng/checkbox';
-import { NBAGame } from '../../../../../../interfaces/nba/league-schedule';
+import { NBAGame } from '../../../../../interfaces/nba/league-schedule';
 import moment from "moment";
 
 @Component({
-  selector: 'app-nba-tab-schedule',
+  selector: 'app-nba-team-schedule',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,10 +19,10 @@ import moment from "moment";
 
     NbaGameCardComponent
   ],
-  templateUrl: './nba-tab-schedule.component.html',
-  styleUrl: './nba-tab-schedule.component.scss'
+  templateUrl: './nba-team-schedule.component.html',
+  styleUrl: './nba-team-schedule.component.scss'
 })
-export class NbaTabScheduleComponent implements OnInit {
+export class NBATeamScheduleComponent implements OnInit {
   @Input() set team(team: NBATeam|undefined) {
     this._team = team;
     this.loadGames(team);

@@ -36,9 +36,11 @@
                                 (onClick)="this.navigateToPage(Pages.NBA_TEAMS)"
                             >
                             </p-button>
-                            <div pTooltip="Coming Soon" tooltipPosition="bottom">
-                                <p-button class="side-bar-page-button" label="Playoffs" icon="pi pi-sitemap" [text]="true" [disabled]="true"></p-button>
-                            </div>
+                            <p-button 
+                                class="side-bar-page-button" 
+                                label="Playoffs" icon="pi pi-sitemap" [text]="true"                                             
+                                (onClick)="this.navigateToPage(Pages.NBA_PLAYOFFS)">
+                            </p-button>
                         </div>
                     </p-accordionTab>
                 </p-accordion>
